@@ -1,0 +1,7 @@
+{
+  "name": "KnowPrice",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
