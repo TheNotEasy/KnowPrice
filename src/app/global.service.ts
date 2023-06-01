@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ItemComponent } from './components/item/item.component';
+import { Item } from './components/item/item.component';
 import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalService {
-  public cartList: Array<ItemComponent> = []
+  public cartList: Array<number> = []
+  public cachedItems: Record<number, Item> = {}
 
   private keysList: Array<string>
 
@@ -21,7 +22,9 @@ export class GlobalService {
     this.storage = await this.storage.create()
 
     for (const key of this.keysList) {
-      this[key] = await this.storage.get(key)
+      const data = await this.storage.get(key)
+      if (data === null) {continue}
+      this[key] = data
     }
   }
 

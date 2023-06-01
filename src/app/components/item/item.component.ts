@@ -2,13 +2,17 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { GlobalService } from 'src/app/global.service';
 import { LanguageService } from 'src/app/language.service';
 
+export class Item {
+  constructor(id: number, name: string, image: string, imageAlt: string, price: number, shopId: number) {}
+}
+
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss'],
 })
 export class ItemComponent implements OnInit {
-
+  @Input() id: number = 0;
   @Input() name: string = '';
   @Input() image: string = '';
   @Input() imageAlt: string = '';
@@ -27,7 +31,7 @@ export class ItemComponent implements OnInit {
   constructor(public global: GlobalService, public lang: LanguageService) { }
 
   ngOnInit() {
-    this.clicked = this.global.cartList.includes(this)
+    this.clicked = this.global.cartList.includes(1)
   }
 
   ngAfterViewInit() {
@@ -47,6 +51,12 @@ export class ItemComponent implements OnInit {
   }
 
   onClick() {
-    this.global.cartList.push(this)
+    if (!this.clicked) {
+      this.global.cartList.push(this.id)
+    } else {
+      this.global.cartList.splice(this.global.cartList.indexOf(this.id), 1)
+    }
+
+    this.global.commit()
   }
 }
