@@ -25,5 +25,11 @@ export class GlobalService {
     }
   }
 
+  commit() {
+    for (const key of this.keysList) {
+      this.storage.set(key, this[key])
+    }
+  }
+
   [key: string]: any
 }
