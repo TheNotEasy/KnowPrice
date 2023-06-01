@@ -21,7 +21,7 @@
       <ng-container *ngFor="let category of data?.items">
         <div class="goods__list">
             <ng-container *ngFor="let item of category?.items">
-              <app-item [name]="item.name" [price]="item.price" [imageAlt]="item.name" [shopId]="data.id"></app-item>
+              <app-item [id]="item.id" [name]="item.name" [price]="item.price" [imageAlt]="item.name" [shopId]="data.id"></app-item>
             </ng-container>
         </div>
       </ng-container>

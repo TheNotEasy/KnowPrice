@@ -23,6 +23,7 @@ export class ItemComponent implements OnInit {
   element!: {"nativeElement": HTMLElement};
 
   cardButton!: HTMLIonButtonElement | null;
+  icons!: NodeListOf<HTMLIonIconElement> | undefined;
 
   private clicked: boolean = false
 
@@ -31,7 +32,7 @@ export class ItemComponent implements OnInit {
   constructor(public global: GlobalService, public lang: LanguageService) { }
 
   ngOnInit() {
-    this.clicked = this.global.cartList.includes(1)
+    this.clicked = this.global.cartList.includes(this.id)
   }
 
   ngAfterViewInit() {
@@ -44,10 +45,15 @@ export class ItemComponent implements OnInit {
                        "backgroundColor": this.element.nativeElement.style.backgroundColor,
                        "transitionDuration": this.element.nativeElement.style.transitionDuration}
     
-    const icons = this.cardButton?.querySelectorAll('ion-icon')
-    if (icons === undefined) {throw Error("icons list is undefined")}
-    icons[0].hidden = this.clicked
-    icons[1].hidden = !this.clicked
+    this.icons = this.cardButton?.querySelectorAll('ion-icon')
+
+    this.updateView()
+  }
+
+  updateView() {
+    if (this.icons === undefined) {throw Error("icons list is undefined")}
+    this.icons[0].hidden = this.clicked
+    this.icons[1].hidden = !this.clicked
   }
 
   onClick() {
@@ -57,6 +63,9 @@ export class ItemComponent implements OnInit {
       this.global.cartList.splice(this.global.cartList.indexOf(this.id), 1)
     }
 
+    this.clicked = !this.clicked
     this.global.commit()
+
+    this.updateView()
   }
 }

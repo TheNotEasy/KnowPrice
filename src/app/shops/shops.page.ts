@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ItemComponent } from '../components/item/item.component';
 
 type Item = {
+  "id": number,
   "name": string,
   "price": number,
 }
@@ -76,18 +77,18 @@ export class ShopsPage implements OnInit {
       "rating": 4.2,
       "items": [
         {"category": 0, "items": [
-          {"name": "1", "price": 180},
-          {"name": "test", "price": 180},
-          {"name": "test", "price": 180},
+          {"id": 0, "name": "1", "price": 180},
+          {"id": 1, "name": "test", "price": 180},
+          {"id": 2, "name": "test", "price": 180},
         ]},
         {"category": 1, "items": [
-          {"name": "2", "price": 180},
-          {"name": "test", "price": 180},
-          {"name": "test", "price": 180},
+          {"id": 0, "name": "2", "price": 180},
+          {"id": 1, "name": "test", "price": 180},
+          {"id": 2, "name": "test", "price": 180},
         ]},
         {"category": 2, "items": [
-          {"name": "3", "price": 180},
-          {"name": "test", "price": 180},
+          {"id": 0, "name": "3", "price": 180},
+          {"id": 1, "name": "test", "price": 180},
         ]}
       ]
     }
