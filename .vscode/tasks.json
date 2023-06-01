@@ -1,0 +1,43 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start ionic server",
+            "command": "ionic",
+            "args": [
+                "serve"
+            ],
+            "type": "shell"
+        },
+        {
+            "label": "Start external ionic server",
+            "command": "ionic",
+            "args": [
+                "serve",
+                "--external"
+            ],
+            "type": "shell",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build app",
+            "command": "ionic",
+            "args": [
+                "capacitor",
+                "copy",
+                "android"
+            ]
+        },
+        {
+            "label": "Start live reload server on build",
+            "command": "ionic",
+            "args": [
+                "capacitor",
+                "run",
+                "android",
+                "-l",
+                "--external"
+            ]
+        }
+    ]
+}

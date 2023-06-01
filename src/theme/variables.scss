@@ -74,6 +74,9 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  --theme-progressbar-color: #d1d1d1;
+  --theme-progressbar-fill-color: #bdbdbd;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -145,6 +148,9 @@
     --ion-color-light-contrast-rgb: 255,255,255;
     --ion-color-light-shade: #1e2023;
     --ion-color-light-tint: #383a3e;
+
+    --theme-progressbar-color: #777b80;
+    --theme-progressbar-fill-color: #4e5153;
   }
 
   /*
@@ -197,7 +203,7 @@
    */
 
   .md body {
-    --ion-background-color: #121212;
+    --ion-background-color: #1d1e1f;
     --ion-background-color-rgb: 18,18,18;
 
     --ion-text-color: #ffffff;

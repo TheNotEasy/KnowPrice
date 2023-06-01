@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 
+import { ProductViewPage } from '../product-view/product-view.page';
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
-
-  constructor() {}
-
-}
+export class Tab1Page {}

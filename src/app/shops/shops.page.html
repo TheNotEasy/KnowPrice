@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="wrapper">
+    <div class="container shop">
+      <p class="shop__name">Манчаары</p>
+      <p class="shop__address">Адрес: ул. Манчаары, 21</p>
+    </div>
+    <div class="goods container">
+      <p class="shop__name">Товары</p>
+      <div class="goods__list-categories">
+        <ng-container *ngFor="let category of data?.categories">
+          <p class="goods__category">{{ category }}</p>
+        </ng-container>
+      </div>
+      <ng-container *ngFor="let category of data?.items">
+        <div class="goods__list">
+            <ng-container *ngFor="let item of category?.items">
+              <app-item [name]="item.name" [price]="item.price" [imageAlt]="item.name" [shopId]="data.id"></app-item>
+            </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="contacts-btn">
+    Контакты
+  </div>
+</ion-content>

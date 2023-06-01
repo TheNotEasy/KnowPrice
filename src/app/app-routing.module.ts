@@ -5,7 +5,23 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  }
+  },
+  {
+    path: 'product-view',
+    loadChildren: () => import('./product-view/product-view.module').then( m => m.ProductViewPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'shops/:id',
+    loadChildren: () => import('./shops/shops.module').then( m => m.ShopsPageModule)
+  },
+  {
+    path: 'item-list',
+    loadChildren: () => import('./item-list/item-list.module').then( m => m.ItemListPageModule)
+  },
 ];
 @NgModule({
   imports: [

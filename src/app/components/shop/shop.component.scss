@@ -1,0 +1,55 @@
+.shops__list-item {
+    display: flex;
+    background-color: var(--ion-color-light);
+
+    margin: auto;
+
+    width: 100%;
+    height: 125px;
+    max-width: 500px;
+    padding: 10px;
+
+    border-radius: 20px;
+    align-items: center;
+    justify-content: space-around;
+
+    flex-direction: column;
+    transition-duration: 0.2s;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--ion-color-light-shade);
+    }
+}
+
+.shop__title {
+    font-size: 20px;
+}
+
+.shop__rating {
+    display: flex;
+    justify-content: space-around;
+
+    width: 70%;
+    height: 20px;
+
+    gap: 20px;
+}
+
+.shop__rating-bar {
+    width: 100%;
+    height: 20px;
+    background-color: var(--theme-progressbar-color);
+    border-radius: 20px;
+    overflow: hidden;
+
+    &::before {
+        display: block;
+        content: '';
+
+        width: calc(100% / 5 * 4.1);
+        height: 100%;
+        background-color: var(--theme-progressbar-fill-color);
+        border-radius: 20px;
+    }
+}
