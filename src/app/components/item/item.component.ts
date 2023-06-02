@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ApiService, RequestMethod, RequestTarget } from 'src/app/api.service';
 import { GlobalService } from 'src/app/global.service';
 import { LanguageService } from 'src/app/language.service';
 
@@ -18,6 +19,7 @@ export class ItemComponent implements OnInit {
   @Input() imageAlt: string = '';
   @Input() price: number = 0;
   @Input() shopId: number = 0;
+  @Input() category: number = 0;
 
   @ViewChild('card')
   element!: {"nativeElement": HTMLElement};
@@ -29,7 +31,7 @@ export class ItemComponent implements OnInit {
 
   private originalEl!: {"innerHTML": any, "backgroundColor": any, "transitionDuration": any};
   
-  constructor(public global: GlobalService, public lang: LanguageService) { }
+  constructor(public global: GlobalService, public lang: LanguageService, public api: ApiService) { }
 
   ngOnInit() {
     this.clicked = this.global.cartList.includes(this.id)
@@ -65,6 +67,8 @@ export class ItemComponent implements OnInit {
 
     this.clicked = !this.clicked
     this.global.commit()
+
+    this.api.makeRequest(RequestMethod.GET, RequestTarget.ITEM)
 
     this.updateView()
   }

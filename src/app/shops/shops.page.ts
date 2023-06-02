@@ -1,6 +1,7 @@
 import { Component, NgIterable, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ItemComponent } from '../components/item/item.component';
+import { LanguageService } from '../language.service';
 
 type Item = {
   "id": number,
@@ -13,7 +14,8 @@ type ResponseData = {
   "name": string,
   "categories": Array<string>,
   "rating": number,
-  "items": Array<{"category": number, "items": Array<Item>}>
+  "items": Array<{'id': number, 'name': string, 'price': number, 'category': number}>,
+  'address': string,
 }
 
 @Component({
@@ -29,6 +31,7 @@ export class ShopsPage implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    public lang: LanguageService,
   ) {}
 
   async ngOnInit() {
@@ -75,22 +78,17 @@ export class ShopsPage implements OnInit {
       "name": "Манчаары",
       "categories": ['Мучное', 'Консервы', 'Салаты'],
       "rating": 4.2,
+      'address': 'ул. Манчаары, 21',
       "items": [
-        {"category": 0, "items": [
-          {"id": 0, "name": "1", "price": 180},
-          {"id": 1, "name": "test", "price": 180},
-          {"id": 2, "name": "test", "price": 180},
-        ]},
-        {"category": 1, "items": [
-          {"id": 0, "name": "2", "price": 180},
-          {"id": 1, "name": "test", "price": 180},
-          {"id": 2, "name": "test", "price": 180},
-        ]},
-        {"category": 2, "items": [
-          {"id": 0, "name": "3", "price": 180},
-          {"id": 1, "name": "test", "price": 180},
-        ]}
-      ]
+        {"id": 0, "name": "1", "price": 180, 'category': 0},
+        {"id": 1, "name": "test", "price": 180, 'category': 0},
+        {"id": 2, "name": "test", "price": 180, 'category': 0},
+        {"id": 3, "name": "2", "price": 180, 'category': 1},
+        {"id": 4, "name": "test", "price": 180, 'category': 1},
+        {"id": 5, "name": "test", "price": 180, 'category': 1},
+        {"id": 6, "name": "3", "price": 180, 'category': 2},
+        {"id": 7, "name": "test", "price": 180, 'category': 2},
+    ]
     }
   }
 

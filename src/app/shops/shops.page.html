@@ -8,23 +8,20 @@
 <ion-content>
   <div class="wrapper">
     <div class="container shop">
-      <p class="shop__name">Манчаары</p>
-      <p class="shop__address">Адрес: ул. Манчаары, 21</p>
+      <p class="shop__name">{{ data.name }}</p>
+      <p class="shop__address">Адрес: {{ data.address }}</p>
     </div>
     <div class="goods container">
-      <p class="shop__name">Товары</p>
       <div class="goods__list-categories">
         <ng-container *ngFor="let category of data?.categories">
           <p class="goods__category">{{ category }}</p>
         </ng-container>
       </div>
-      <ng-container *ngFor="let category of data?.items">
-        <div class="goods__list">
-            <ng-container *ngFor="let item of category?.items">
-              <app-item [id]="item.id" [name]="item.name" [price]="item.price" [imageAlt]="item.name" [shopId]="data.id"></app-item>
-            </ng-container>
-        </div>
-      </ng-container>
+      <div class="goods__list">
+          <ng-container *ngFor="let item of data?.items">
+            <app-item [id]="item.id" [name]="item.name" [price]="item.price" [imageAlt]="item.name" [shopId]="data.id" [category]="item.category"></app-item>
+          </ng-container>
+      </div>
     </div>
   </div>
   <div class="contacts-btn">

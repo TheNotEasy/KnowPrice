@@ -10,8 +10,9 @@ export class LanguageService {
     'ru': 'Товар был доюавлен в корзину',
     'en': 'asd'
   };
-
+  
   getString(localization: any) {
+    console.log(localization)
     return localization[this.lang]
   }
 
