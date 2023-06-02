@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { GlobalService } from './global.service';
 
 export enum RequestMethod {
   GET = 'get',
@@ -14,13 +15,24 @@ export enum RequestTarget {
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'https://127.0.0.1:8000/api/v1'
+  private apiHost = 'http://127.0.0.1:8000'
+  private apiUrl = `${this.apiHost}/api/v1`
+  private apiAuthUrl = `${this.apiHost}/auth/token`
 
-  constructor() { }
+  constructor(public global: GlobalService) { }
 
-  makeRequest(type: RequestMethod, target: RequestTarget) {
+  async makeRequest(type: RequestMethod, target: RequestTarget) {
     let finalUrl = `${this.apiUrl}/${target}`
     
-    fetch(finalUrl, {method: type})
+    return await fetch(finalUrl, {method: type})
+  }
+
+  async makeAuthorization(username: string, password: string) {
+    const resp = await fetch(this.apiAuthUrl, {body: `{
+      "username": ${username},
+      "password": ${password},
+    }`})
+    const token = await resp.text()
+    this.global.apiToken = token
   }
 }

@@ -27,7 +27,8 @@ type ResponseData = {
 export class ShopsPage implements OnInit {
   public data!: ResponseData
 
-  private itemsGroups!: NodeListOf<Element>;
+  private itemsGroups!: NodeListOf<Element>
+  private selectedCategoryGroup!: NodeListOf<HTMLElement>
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -69,6 +70,10 @@ export class ShopsPage implements OnInit {
     itemsGroups[0].classList.add('selected')
 
     this.itemsGroups = itemsGroups
+    
+    this.selectedCategoryGroup = document.querySelectorAll('[ng-reflect-category="0"]')
+
+    this.categoryChanged(0)
   }
 
   fetchShopData(id: number) {
@@ -93,7 +98,8 @@ export class ShopsPage implements OnInit {
   }
 
   categoryChanged(id: number) {
-    document.querySelector('.goods__list.selected')?.classList.remove('selected')
-    this.itemsGroups[id].classList.add('selected')
+    document.querySelectorAll('app-item').forEach(el => {
+      el.hidden = el.getAttribute('ng-reflect-category') !== String(id)
+    })
   }
 }

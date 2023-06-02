@@ -5,7 +5,7 @@
             "label": "Start ionic server",
             "command": "ionic",
             "args": [
-                "serve"
+                "serve", "--no-open"
             ],
             "type": "shell"
         },

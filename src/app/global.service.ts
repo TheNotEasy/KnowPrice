@@ -9,6 +9,8 @@ export class GlobalService {
   public cartList: Array<number> = []
   public cachedItems: Record<number, Item> = {}
 
+  public apiToken: string | undefined;
+
   private keysList: Array<string>
 
   constructor(private storage: Storage) {

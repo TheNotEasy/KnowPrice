@@ -68,8 +68,6 @@ export class ItemComponent implements OnInit {
     this.clicked = !this.clicked
     this.global.commit()
 
-    this.api.makeRequest(RequestMethod.GET, RequestTarget.ITEM)
-
     this.updateView()
   }
 }
