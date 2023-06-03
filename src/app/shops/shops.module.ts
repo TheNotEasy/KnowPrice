@@ -8,17 +8,18 @@ import { ShopsPageRoutingModule } from './shops-routing.module';
 
 import { ShopsPage } from './shops.page';
 import { ItemComponent } from '../components/item/item.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ShopsPageRoutingModule
+    ShopsPageRoutingModule,
+    SharedModule
   ],
   declarations: [
     ShopsPage,
-    ItemComponent,
   ]
 })
 export class ShopsPageModule {

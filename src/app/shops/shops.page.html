@@ -7,24 +7,26 @@
 </ion-header>
 <ion-content>
   <div class="wrapper">
-    <div class="container shop">
-      <p class="shop__name">{{ data.name }}</p>
-      <p class="shop__address">Адрес: {{ data.address }}</p>
-    </div>
-    <div class="goods container">
-      <div class="goods__list-categories">
-        <ng-container *ngFor="let category of data?.categories">
-          <p class="goods__category">{{ category }}</p>
-        </ng-container>
+    <div *ngIf="readyPromise | async; else loading">
+      <div class="container shop">
+        <p class="shop__name">{{ data.name }}</p>
+        <p class="shop__address">Адрес: {{ data.address }}</p>
       </div>
-      <div class="goods__list">
-          <ng-container *ngFor="let item of data?.items">
+      <div class="goods container">
+        <div class="goods__list-categories">
+          <ng-container *ngFor="let category of data?.categories">
+            <p class="goods__category">{{ category }}</p>
+          </ng-container>
+        </div>
+        <div class="goods__list">
+          <ng-container *ngFor="let item of data?.item_set">
             <app-item [id]="item.id" [name]="item.name" [price]="item.price" [imageAlt]="item.name" [shopId]="data.id" [category]="item.category"></app-item>
           </ng-container>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="contacts-btn">
-    Контакты
+    <ng-template #loading>
+      <p style="margin: 100px auto; text-align: center; width: 70%;" id="loading">Загрузка...</p>
+    </ng-template>
   </div>
 </ion-content>

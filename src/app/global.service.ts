@@ -7,7 +7,9 @@ import { Storage } from '@ionic/storage-angular';
 })
 export class GlobalService {
   public cartList: Array<number> = []
+
   public cachedItems: Record<number, Item> = {}
+  public cache: Record<any, any> = {}
 
   public apiToken: string | undefined;
 
@@ -24,6 +26,8 @@ export class GlobalService {
     this.storage = await this.storage.create()
 
     for (const key of this.keysList) {
+      if (key === 'cache') {continue}
+
       const data = await this.storage.get(key)
       if (data === null) {continue}
       this[key] = data

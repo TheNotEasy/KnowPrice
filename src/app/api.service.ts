@@ -21,10 +21,15 @@ export class ApiService {
 
   constructor(public global: GlobalService) { }
 
-  async makeRequest(type: RequestMethod, target: RequestTarget) {
-    let finalUrl = `${this.apiUrl}/${target}`
+  async makeRequest(type: RequestMethod, target: RequestTarget, url: string = ''): Promise<any> {
+    let finalUrl = `${this.apiUrl}/${target}/${url}`
+
+    const cache = this.global.cache[finalUrl]
+    if (cache !== undefined) {return cache}
     
-    return await fetch(finalUrl, {method: type})
+    const result = await (await fetch(finalUrl, {method: type})).json()
+    this.global.cache[finalUrl] = result
+    return result
   }
 
   async makeAuthorization(username: string, password: string) {

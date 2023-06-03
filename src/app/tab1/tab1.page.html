@@ -1,3 +1,4 @@
+<div *ngIf="readyPromise | async">
 <ion-content [fullscreen]="true">
   <div class="wrapper">
     <div class="search container">
@@ -7,19 +8,14 @@
       <section class="shops__section">
         <div class="section__title">Магазины поблизости</div>
         <ul class="section__list">
-          <li>
-            <app-shop [name]="'Манчаары'" [rating]="'4.1'"></app-shop>
-          </li>
-          <li>
-            <app-shop [name]="'Манчаары'" [rating]="'4.1'"></app-shop>
-          </li>
-          <li></li>
-          <li></li>
-          <li>
-            <ng-template #dynamic></ng-template>
-          </li>
+          <ng-container *ngFor="let shop of data">
+            <li>
+              <app-shop [name]="shop.name" [rating]="shop.rating"></app-shop>
+            </li>
+          </ng-container>
         </ul>
       </section>
     </div>
   </div>
 </ion-content>
+</div>

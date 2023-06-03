@@ -46,6 +46,8 @@
 .goods {
     flex-direction: column;
     gap: 30px;
+
+    margin-top: 40px;
 }
 
 .goods__list {
@@ -79,9 +81,10 @@
     width: fit-content;
 
     margin: auto;
-    max-width: 100%;
+    width: 100%;
 
-    border: 2px solid var(--ion-color-light-tint);
+    // border-left: 2px solid var(--ion-color-light-tint);
+    // border-right: 2px solid var(--ion-color-light-tint);
 
     overflow: scroll;
 
@@ -91,7 +94,7 @@
 }
 
 .goods__category {
-    padding: 5px 10px;
+    padding: 5px 15px;
     background-color: var(--ion-color-light);
     border-radius: 10px;
 

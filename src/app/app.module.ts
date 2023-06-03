@@ -10,6 +10,7 @@ import { GlobalService } from './global.service';
 import { LanguageService } from './language.service';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { ApiService } from './api.service';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent],

@@ -43,11 +43,10 @@
     border-radius: 20px;
     overflow: hidden;
 
-    &::before {
+    &>.shop__rating-bar-fill {
         display: block;
         content: '';
 
-        width: calc(100% / 5 * 4.1);
         height: 100%;
         background-color: var(--theme-progressbar-fill-color);
         border-radius: 20px;
