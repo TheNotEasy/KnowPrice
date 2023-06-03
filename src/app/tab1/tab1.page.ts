@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 
-import { ProductViewPage } from '../product-view/product-view.page';
 import { ApiService, RequestMethod, RequestTarget } from '../api.service';
 
 @Component({
@@ -9,7 +8,7 @@ import { ApiService, RequestMethod, RequestTarget } from '../api.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  public data!: Array<{'name': string, 'ratings': string}>
+  public data!: Array<{id: number, 'name': string, 'ratings': string}>
 
   public readyPromise!: Promise<any>
 

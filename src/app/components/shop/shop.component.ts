@@ -8,12 +8,14 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 export class ShopComponent implements OnInit {
   @Input() name: string = '';
   @Input() rating: string = '';
+  @Input() id: number = 0;
 
   @ViewChild('main') private main!: {'nativeElement': HTMLElement}
 
   constructor() { }
 
   ngOnInit() {}
+
   ngAfterViewInit() {
     setTimeout(() => {
       const barFill: HTMLElement | null = this.main.nativeElement.querySelector('.shop__rating-bar-fill')
