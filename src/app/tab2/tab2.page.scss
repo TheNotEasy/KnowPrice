@@ -1,7 +1,32 @@
 .list {
-    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 50px;
 }
 
-.list__item {
+.goods__list {
+    display: flex;
+
+    // border: 2px solid var(--ion-color-light-tint);
+    width: 100%;
+
+    margin: auto;
+
+    margin-top: 50px;
     
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+
+    flex-wrap: wrap;
+
+    &.selected {
+        display: flex;
+    }
+}
+
+.list__title {
+    margin: auto;
+    font-size: 30px;
 }

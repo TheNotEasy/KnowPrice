@@ -1,9 +1,21 @@
-<ion-content [fullscreen]="true">
-  <div class="container list">
-    <ng-container>
-      <div class="list__item">
-        asd
+<ng-container>
+  <ion-content [fullscreen]="true">
+    <div class="container list">
+      <p class="list__title">Список покупок</p>
+      <div class="goods__list">
+        <ng-container *ngFor="let item of items">
+          <app-item 
+            [id]="item.id" 
+            [name]="item.name" 
+            [price]="item.price" 
+            [buttonIcon]="'close'" 
+            [image]="item.image" 
+            [imageAlt]="item.imageAlt"
+            [category]="-1"
+            [showShop]="true"></app-item>
+        </ng-container>
       </div>
-    </ng-container>
-  </div>
-</ion-content>
+    </div>
+  </ion-content>
+</ng-container>
+

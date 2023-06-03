@@ -1,21 +1,21 @@
-<div *ngIf="readyPromise | async">
 <ion-content [fullscreen]="true">
   <div class="wrapper">
     <div class="search container">
       <ion-searchbar></ion-searchbar>
     </div>
-    <div class="shops container">
-      <section class="shops__section">
-        <div class="section__title">Магазины поблизости</div>
-        <ul class="section__list">
-          <ng-container *ngFor="let shop of data">
-            <li>
-              <app-shop [name]="shop.name" [rating]="shop.rating"></app-shop>
-            </li>
-          </ng-container>
-        </ul>
-      </section>
+    <div *ngIf="readyPromise | async">
+      <div class="shops container">
+        <section class="shops__section">
+          <div class="section__title">Магазины поблизости</div>
+          <ul class="section__list">
+            <ng-container *ngFor="let shop of data">
+              <li>
+                <app-shop [name]="shop.name" [rating]="shop.ratings"></app-shop>
+              </li>
+            </ng-container>
+          </ul>
+        </section>
+      </div>
     </div>
   </div>
 </ion-content>
-</div>

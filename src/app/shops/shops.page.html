@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div class="wrapper">
+  <div class="wrapper" #content>
     <div *ngIf="readyPromise | async; else loading">
       <div class="container shop">
         <p class="shop__name">{{ data.name }}</p>

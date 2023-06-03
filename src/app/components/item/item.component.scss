@@ -36,11 +36,15 @@
 }
 
 .item__name {
-    font-size: 25px;
+    font-size: 20px;
+
+    font-weight: bold;
 }
 
 .item__price {
-    font-size: 15px;
+    font-size: 25px;
+
+    font-weight: bold;
 }
 
 .item__image {
@@ -70,12 +74,13 @@
 
 .item__info {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 
     width: 100%;
 
     justify-content: space-around;
-    align-items: center;
+
+    gap: 10px;
 
     margin-top: 10px;
 }

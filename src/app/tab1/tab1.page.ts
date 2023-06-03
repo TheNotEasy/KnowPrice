@@ -9,7 +9,7 @@ import { ApiService, RequestMethod, RequestTarget } from '../api.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  public data!: Array<{'name': string, 'rating': string}>
+  public data!: Array<{'name': string, 'ratings': string}>
 
   public readyPromise!: Promise<any>
 

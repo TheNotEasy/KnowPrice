@@ -51,7 +51,7 @@
 }
 
 .goods__list {
-    display: none;
+    display: flex;
 
     // border: 2px solid var(--ion-color-light-tint);
     width: 100%;
@@ -63,10 +63,6 @@
     gap: 20px;
 
     flex-wrap: wrap;
-
-    &.selected {
-        display: flex;
-    }
 }
 
 .goods__list-categories {

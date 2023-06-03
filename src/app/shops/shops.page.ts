@@ -1,4 +1,4 @@
-import { Component, NgIterable, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, NgIterable, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ItemComponent } from '../components/item/item.component';
 import { LanguageService } from '../language.service';
@@ -37,10 +37,12 @@ export class ShopsPage implements OnInit {
   ) {}
 
   @ViewChild('loading') public loadingEl!: {'nativeElement': HTMLElement}
+  @ViewChild('content') public page!: ElementRef<HTMLElement>
 
   ngOnInit() {
     const rawId = this.activatedRoute.snapshot.paramMap.get('id')
-    this.readyPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP)
+    if (rawId === null) {throw Error("got null on rawId")}
+    this.readyPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP, rawId)
     this.readyPromise.then((data) => {
       this.data = data
     })
@@ -78,7 +80,7 @@ export class ShopsPage implements OnInit {
 
         this.categoryChanged(0)
       }, 1)
-    }, (reason) => {
+    }, () => {
       const loadingText = document.getElementById('loading')
       if (loadingText === null) {return}
       loadingText.innerText = "Упс... Произошла непредвиденная ошибка! Убедитесь, что вы подключены к интернету и повторите попытку"
@@ -92,7 +94,7 @@ export class ShopsPage implements OnInit {
   }
 
   categoryChanged(id: number) {
-    document.querySelectorAll('app-item').forEach(el => {
+    this.page.nativeElement.querySelectorAll('app-item').forEach(el => {
       el.hidden = el.getAttribute('ng-reflect-category') !== String(id)
     })
   }

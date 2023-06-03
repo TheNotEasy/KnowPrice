@@ -4,7 +4,7 @@ import { GlobalService } from 'src/app/global.service';
 import { LanguageService } from 'src/app/language.service';
 
 export class Item {
-  constructor(id: number, name: string, image: string, imageAlt: string, price: number, shopId: number) {}
+  constructor(public id: number, public name: string, public image: string, public imageAlt: string, public price: number, public shopId: number) {}
 }
 
 @Component({
@@ -20,6 +20,8 @@ export class ItemComponent implements OnInit {
   @Input() price: number = 0;
   @Input() shopId: number = 0;
   @Input() category: number = 0;
+  @Input() buttonIcon: string = '';
+  @Input() showShop: boolean = false;
 
   @ViewChild('card')
   element!: {"nativeElement": HTMLElement};
@@ -28,7 +30,7 @@ export class ItemComponent implements OnInit {
   icons!: NodeListOf<HTMLIonIconElement> | undefined;
 
   private clicked: boolean = false
-
+  
   private originalEl!: {"innerHTML": any, "backgroundColor": any, "transitionDuration": any};
   
   constructor(public global: GlobalService, public lang: LanguageService, public api: ApiService) { }
@@ -50,9 +52,17 @@ export class ItemComponent implements OnInit {
     this.icons = this.cardButton?.querySelectorAll('ion-icon')
 
     this.updateView()
+
+    console.log('asd')
   }
 
   updateView() {
+    if (this.buttonIcon) {
+      if (!this.clicked)
+        this.element.nativeElement.remove()
+      return
+    }
+
     if (this.icons === undefined) {throw Error("icons list is undefined")}
     this.icons[0].hidden = this.clicked
     this.icons[1].hidden = !this.clicked
@@ -61,6 +71,7 @@ export class ItemComponent implements OnInit {
   onClick() {
     if (!this.clicked) {
       this.global.cartList.push(this.id)
+      this.global.cachedItems[this.id] = new Item(this.id, this.name, this.image, this.imageAlt, this.price, this.shopId)
     } else {
       this.global.cartList.splice(this.global.cartList.indexOf(this.id), 1)
     }
