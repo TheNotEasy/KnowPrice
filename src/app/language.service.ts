@@ -4,15 +4,24 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class LanguageService {
-  public lang: string = 'en';
+  public lang: string = 'ru';
 
   public addedToList = {
-    'ru': 'Товар был доюавлен в корзину',
-    'en': 'asd'
+    ru: "Товар был доюавлен в корзину",
+    en: 'asd',
   };
 
+  public signInText = {
+    ru: "Войти",
+    en: "Sign in",
+  }
+
+  public signUpText = {
+    ru: "Зарегистрироваться",
+    en: "Sign up"
+  }
+
   getString(localization: any) {
-    console.log(localization)
     return localization[this.lang]
   }
 

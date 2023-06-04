@@ -4,8 +4,9 @@
 
 .search {
     display: flex;
-    margin-top: 30px;
     gap: 30px;
+
+    margin-top: 30px;
 
     .search__bar {
         ion-input {
@@ -53,6 +54,8 @@
     flex-direction: column;
     width: 100%;
     justify-content: center;
+
+    margin-top: 0;
 }
 
 .shops__section {

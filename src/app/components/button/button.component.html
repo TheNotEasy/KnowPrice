@@ -1,0 +1,10 @@
+<li [routerLink]="[navItem.redirectTo]" #button>
+  <ion-icon name="{{navItem.icon}}" color="dark"></ion-icon> 
+  <p>{{navItem.text}}</p>
+  <ion-icon name="chevron-forward" color="dark" class="nav-menu__arrow" #right></ion-icon>
+</li>
+<ng-container *ngIf="clicked">
+  <div class="dropDownMenu">
+    <ng-container *ngTemplateOutlet="$any(navItem.dropMenu)"></ng-container>
+  </div>
+</ng-container>

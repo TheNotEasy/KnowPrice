@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GlobalService } from './global.service';
+import { RequestTargetTypesMap } from './target.types';
 
 export enum RequestMethod {
   GET = 'get',
@@ -8,6 +9,7 @@ export enum RequestMethod {
 export enum RequestTarget { 
   ITEM = 'item',
   SHOP = 'shop',
+  SHOPDATA = 'shop-data',
   USER = 'user',
 }
 
@@ -21,9 +23,10 @@ export class ApiService {
 
   constructor(public global: GlobalService) { }
 
-  async makeRequest(type: RequestMethod, target: RequestTarget, url: string = ''): Promise<any> {
+  async makeRequest<K extends keyof RequestTargetTypesMap>
+                   (type: RequestMethod, target: K | RequestTarget, url: string = ''): Promise<RequestTargetTypesMap[K]> {
     let finalUrl = `${this.apiUrl}/${target}/${url}`
-
+    
     const cache = this.global.cache[finalUrl]
     if (cache !== undefined) {return cache}
     

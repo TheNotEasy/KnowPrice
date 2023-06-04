@@ -8,11 +8,9 @@
         <section class="shops__section">
           <div class="section__title">Магазины поблизости</div>
           <ul class="section__list">
-            <ng-container *ngFor="let shop of data">
-              <li>
-                <app-shop [id]="shop.id" [name]="shop.name" [rating]="shop.ratings"></app-shop>
-              </li>
-            </ng-container>
+            <li *ngFor="let shop of data">
+              <app-shop [id]="shop.id" [name]="shop.name" [rating]="shop.ratings"></app-shop>
+            </li>
           </ul>
         </section>
       </div>

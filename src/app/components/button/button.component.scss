@@ -1,0 +1,47 @@
+li {
+    display: flex;
+    align-items: center;
+
+    padding: 0 30px;
+
+    gap: 30px;
+
+    width: 100%;
+    height: 70px;
+
+    text-align: center;
+    background-color: var(--ion-color-light);
+    transition-duration: 0.3s;
+
+    border-bottom: 2px solid var(--ion-color-light-shade);
+
+    &:last-of-type {
+        border-bottom: none;
+    }
+    
+    &>p {
+        flex: 1 1 auto;
+        text-align: left;
+        padding-left: 20px;
+    }
+
+    font-size: 30px;
+}
+
+.nav-menu__arrow {
+    width: 20px;
+
+    transition-duration: 0.2s;
+
+    &.rotated {
+        transform: rotate(90deg);
+    }
+}
+
+.dropDownMenu {
+    width: 100%;
+    height: fit-content;
+    padding: 20px;
+
+    background-color: var(--ion-color-light-shade);
+}

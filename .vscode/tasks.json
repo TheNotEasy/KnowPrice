@@ -5,9 +5,11 @@
             "label": "Start ionic server",
             "command": "ionic",
             "args": [
-                "serve", "--no-open"
+                "serve",
+                "--no-open"
             ],
-            "type": "shell"
+            "type": "shell",
+            "problemMatcher": []
         },
         {
             "label": "Start external ionic server",
