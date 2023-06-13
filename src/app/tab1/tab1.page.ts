@@ -10,13 +10,13 @@ import { ApiService, RequestMethod, RequestTarget } from '../api.service';
 export class Tab1Page {
   public data!: Array<{id: number, 'name': string, 'ratings': string}>
 
-  public readyPromise!: Promise<any>
+  public readyPromise!: Promise<[any, number]>
 
   constructor(public api: ApiService) {}
 
   ngOnInit() {
     this.readyPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP)
-    this.readyPromise.then((data) => {
+    this.readyPromise.then(([data, status]) => {
       this.data = data
     })
   }

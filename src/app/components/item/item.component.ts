@@ -33,7 +33,7 @@ export class ItemComponent implements OnInit {
   
   private originalEl!: {"innerHTML": any, "backgroundColor": any, "transitionDuration": any};
   
-  constructor(public global: GlobalService, public lang: LanguageService, public api: ApiService) { }
+  constructor(public global: GlobalService, public lang: LanguageService) { }
 
   ngOnInit() {
     this.clicked = this.global.cartList.includes(this.id)
@@ -42,9 +42,6 @@ export class ItemComponent implements OnInit {
   ngAfterViewInit() {
     this.cardButton = this.element.nativeElement.querySelector('ion-button')
 
-    this.element.nativeElement.addEventListener("click", () => {
-      this.onClick()
-    })
     this.originalEl = {"innerHTML": this.element.nativeElement.innerHTML,
                        "backgroundColor": this.element.nativeElement.style.backgroundColor,
                        "transitionDuration": this.element.nativeElement.style.transitionDuration}

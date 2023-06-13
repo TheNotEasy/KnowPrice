@@ -23,5 +23,7 @@ export type Shop = ShopData & {
 export interface RequestTargetTypesMap {
     'item': Item
     'shop': Shop
-    'shop-data': ShopData
+    'shop-data': ShopData,
+    'auth/token/login': {auth_token: string, username?: Array<string>, password?: Array<string>, non_field_errors?: Array<string>},
+    'auth/users': {auth_token: string, username?: Array<string>, password?: Array<string>, non_field_errors?: Array<string>},
 }

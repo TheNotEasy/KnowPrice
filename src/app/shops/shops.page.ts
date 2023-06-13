@@ -28,7 +28,7 @@ type ResponseData = {
 export class ShopsPage implements OnInit {
   public data!: ResponseData
 
-  public readyPromise!: Promise<any>
+  public readyPromise!: Promise<any[]>
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -43,7 +43,7 @@ export class ShopsPage implements OnInit {
     const rawId = this.activatedRoute.snapshot.paramMap.get('id')
     if (rawId === null) {throw Error("got null on rawId")}
     this.readyPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP, rawId)
-    this.readyPromise.then((data) => {
+    this.readyPromise.then(([data, status]) => {
       this.data = data
     })
   }

@@ -11,15 +11,17 @@ export class GlobalService {
   public cachedItems: Record<number, Item> = {}
   public cache: Record<any, any> = {}
 
-  public apiToken: string | undefined;
+  public apiToken: string | undefined = undefined;
+  public accountData: Record<string, string | null> = {'username': null}
 
   private keysList: Array<string>
+  public readyPromise: Promise<void>
 
   constructor(private storage: Storage) {
     this.keysList = Object.getOwnPropertyNames(this)
-    this.keysList.splice(0, 1)  // remove 'storage' property
+    this.keysList.splice(0, 1);  // remove 'storage' property
 
-    this.init()
+    this.readyPromise = this.init()
   }
 
   private async init() {
@@ -32,6 +34,7 @@ export class GlobalService {
       if (data === null) {continue}
       this[key] = data
     }
+    console.log('async init end')
   }
 
   commit() {

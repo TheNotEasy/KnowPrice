@@ -9,23 +9,39 @@ li {
     width: 100%;
     height: 70px;
 
+    z-index: 3;
+
     text-align: center;
     background-color: var(--ion-color-light);
     transition-duration: 0.3s;
 
     border-bottom: 2px solid var(--ion-color-light-shade);
 
+    z-index: 100;
+
     &:last-of-type {
         border-bottom: none;
     }
-    
-    &>p {
-        flex: 1 1 auto;
-        text-align: left;
-        padding-left: 20px;
-    }
 
     font-size: 30px;
+    
+    &>p {
+        flex: 1 1 100px;
+        text-align: left;
+    }
+
+    @media screen and (max-width: 352px) {
+        justify-content: space-around;
+
+        &>ion-icon {
+            min-width: 30px;
+            width: 30px;
+        }
+
+        .nav-menu__arrow {
+            display: none;
+        }
+    }
 }
 
 .nav-menu__arrow {
@@ -38,10 +54,18 @@ li {
     }
 }
 
-.dropDownMenu {
-    width: 100%;
-    height: fit-content;
-    padding: 20px;
+ion-modal {
+    --width: 90%;
+    --max-width: 600px;
+    --border-radius: 16px;
+}
+  
+ion-modal::part(backdrop) {
+    background: var(--ion-color-light);
+    opacity: 1;
+}
 
-    background-color: var(--ion-color-light-shade);
+ion-modal ion-toolbar {
+    --background: var(--ion-color-light);
+    --color: white;
 }

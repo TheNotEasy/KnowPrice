@@ -1,6 +1,6 @@
 <div class="item" #card>
   <img class="item__image" alt="{{ imageAlt }}" src="{{ image }}">
-  <ion-button class="item__add-button" #cardButton>
+  <ion-button class="item__add-button" (click)="onClick()" #cardButton>
     <ng-container *ngIf="!buttonIcon">
       <ion-icon name="bag-outline" color="dark"></ion-icon>
       <ion-icon name="bag" color="dark" hidden></ion-icon>

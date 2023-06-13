@@ -1,6 +1,9 @@
 <ion-content [fullscreen]="true" #content>
   <div class="account container">
-    <p class="container__title">Аккаунт</p>
+    <p class="container__title" *ngIf="global.apiToken === undefined">{{lang.getString(lang.accountText)}}</p>
+    <div class="account__data" *ngIf="global.apiToken">
+      <p class="container__title">Вы вошли как {{ global.accountData['username'] }}</p>
+    </div>
     <ul class="account__nav-menu">
       <app-button [navItem]="navItem" *ngFor="let navItem of navList"></app-button>
     </ul>
@@ -8,9 +11,34 @@
 </ion-content>
 
 <ng-template #login>
-  <p class="container__title">Войти</p>
   <div class="login">
-    <input type="text" name="username" placeholder="Логин">
-    <input type="password" name="password" placeholder="Пароль">
+    <div class="inputs">
+      <!-- <ion-input type="text" name="username" placeholder="Логин"></ion-input>
+      <ng-container *ngIf="loginView">
+        <p *ngFor="let error of loginView.error.username" style="color: var(--ion-color-danger)">{{ error }}</p>
+      </ng-container> -->
+      
+      <ng-container *ngFor="let name of ['username', 'password']">
+        <ion-input [clearOnEdit]="false" type="{{name}}" name="{{name}}" placeholder="{{ lang.getString(lang[name]) }}"></ion-input>
+        <ng-container *ngIf="loginView">
+          <p *ngFor="let error of loginView.error[name]" style="color: var(--ion-color-danger)">{{ error }}</p>
+        </ng-container>
+      </ng-container>
+
+      <ion-input [clearOnEdit]="false" type="password" name="password" placeholder="Подтвердите пароль" *ngIf="inReg"></ion-input>
+      <ng-container *ngIf="loginView">
+        <p *ngFor="let error of loginView.error.password2" style="color: var(--ion-color-danger)">{{ error }}</p>
+      </ng-container>
+
+      <a (click)="inReg=false" *ngIf="inReg">{{lang.getString(lang.haveAccountText)}}</a>
+      <a (click)="inReg=true" *ngIf="!inReg">{{lang.getString(lang.haventAccountText)}}</a>
+      <ng-container *ngIf="loginView">
+        <p *ngFor="let error of loginView.error.non_field_errors" style="color: var(--ion-color-danger)">{{ error }}</p>
+      </ng-container>
+    </div>
+    <ion-button type="submit" (click)="auth()" disabled="{{!isValid || loginView.authenticating}}">
+      <ng-container *ngIf="!loginView?.authenticating">{{ lang.getString(lang.authenticateText) }}</ng-container>
+      <ng-container *ngIf="loginView?.authenticating"><ion-spinner name="dots"></ion-spinner></ng-container>
+    </ion-button>
   </div>
 </ng-template>

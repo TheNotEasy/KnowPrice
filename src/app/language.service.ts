@@ -21,9 +21,46 @@ export class LanguageService {
     en: "Sign up"
   }
 
-  getString(localization: any) {
+  public signOutText = {
+    ru: "Выйти",
+    en: "Sign out"
+  }
+
+  public authenticateText = {
+    ru: "АВТОРИЗОВАТЬСЯ",
+    en: "AUTHENTICATE"
+  }
+
+  public haveAccountText = {
+    ru: "Уже есть аккаунт?",
+    en: "Already have account?"
+  }
+
+  public haventAccountText = {
+    ru: "Нет аккаунта?",
+    en: "Doesn't have account?"
+  }
+  
+  public accountText = {
+    ru: "Аккаунт",
+    en: "Account",
+  }
+
+  public username = {
+    ru: "Логин",
+    en: "Username",
+  }
+  
+  public password = {
+    ru: "Пароль",
+    en: "Пароль"
+  }
+
+  getString(localization: Record<string, string>): string {
     return localization[this.lang]
   }
 
   constructor() { }
+
+  [key: string]: any
 }

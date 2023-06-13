@@ -21,15 +21,52 @@
 .login {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-top: 40px;
+    gap: 30px;
 
-    &>input {
-        height: 40px;
-        padding: 10px;
+    width: 100%;
+    height: 100%;
 
-        &::placeholder {
-            text-align: center;
+    align-items: center;
+
+    &>p {
+        text-align: center;
+    }
+
+    &>* {
+        width: 100%;
+    }
+
+    &>.inputs>ion-input {
+        background-color: var(--ion-color-light-shade);
+
+        &>input.cloned-input {
+            display: none;
+        }
+
+        & input {
+            height: 50px;
         }
     }
+
+    &>.inputs {
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+
+        flex: 1 1 auto;
+        gap: 20px;
+
+        &>a {
+            margin-top: 10px;
+        }
+    }
+
+    ion-button {
+        align-self: end;
+    }
+}
+
+a {
+    cursor: pointer;
 }
