@@ -56,6 +56,11 @@ export class LanguageService {
     en: "Пароль"
   }
 
+  public settingsText = {
+    ru: "Настройки",
+    en: "Settings"
+  }
+
   getString(localization: Record<string, string>): string {
     return localization[this.lang]
   }

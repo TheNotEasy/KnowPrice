@@ -7,6 +7,10 @@
     <ul class="account__nav-menu">
       <app-button [navItem]="navItem" *ngFor="let navItem of navList"></app-button>
     </ul>
+    <p class="container__title">Другое</p>
+    <ul class="account__nav-menu">
+      <app-button [navItem]="navItem" *ngFor="let navItem of settingsNavList"></app-button>
+    </ul>
   </div>
 </ion-content>
 

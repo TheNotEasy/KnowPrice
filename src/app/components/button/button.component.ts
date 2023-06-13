@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Type, ViewChild } from '@angular/core';
 import { NavListItem, NavListModalItem } from 'src/app/tab3/tab3.page';
 
 @Component({
@@ -14,15 +14,16 @@ export class ButtonComponent implements OnInit {
   @ViewChild('modal') modal!: any
 
   public clicked = false
+  public types = {
+    NavListItem: NavListItem,
+    NavListModalItem: NavListModalItem
+  }
 
   constructor() { }
 
   ngOnInit() {}
 
   onClick() {
-    if (!this.navItem.hasModal) {
-      return
-    }
     if (this.clicked) {
       this.clicked = false
     } else {
@@ -36,13 +37,17 @@ export class ButtonComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if (!this.navItem.hasModal) {
-      return
-    }
-
     this.button.nativeElement.addEventListener('click', () => {
       this.onClick()
     });
-    (this.navItem as NavListModalItem).modal.native = this.modal
+    if (this.navItem.hasModal)
+      (this.navItem as NavListModalItem).modal.native = this.modal
+  }
+
+  getNavItem(): NavListModalItem {
+    if (!this.navItem.hasModal) {
+      throw TypeError("Trying to access navItem without modal window via getNavItem() method")
+    }
+    return (this.navItem as NavListModalItem)
   }
 }

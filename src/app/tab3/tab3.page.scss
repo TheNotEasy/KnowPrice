@@ -39,10 +39,6 @@
     &>.inputs>ion-input {
         background-color: var(--ion-color-light-shade);
 
-        &>input.cloned-input {
-            display: none;
-        }
-
         & input {
             height: 50px;
         }
@@ -69,4 +65,8 @@
 
 a {
     cursor: pointer;
+}
+
+.account {
+    padding: 0;
 }

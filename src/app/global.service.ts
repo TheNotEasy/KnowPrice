@@ -34,7 +34,6 @@ export class GlobalService {
       if (data === null) {continue}
       this[key] = data
     }
-    console.log('async init end')
   }
 
   commit() {

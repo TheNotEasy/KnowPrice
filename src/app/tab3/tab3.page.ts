@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/c
 import { GlobalService } from '../global.service';
 import { LanguageService } from '../language.service';
 import { ApiService } from '../api.service';
-import { IonModal } from '@ionic/angular';
+import { IonInput, IonModal } from '@ionic/angular';
 
 let langInstance: LanguageService;
 
@@ -43,6 +43,7 @@ class ModalInner {
 export class NavListModalItem implements INavListItem {
   public modal: ModalInner
   public hasModal = true
+  public redirectTo = '.'
 
   constructor(
     public icon: string,
@@ -91,6 +92,8 @@ class Errors {
 export class Tab3Page {
   public navList: Array<NavListItem | NavListModalItem> = []
   public _inReg = false
+
+  public settingsNavList: Array<NavListItem | NavListModalItem> = []
 
   get inReg() {
     return this._inReg
@@ -146,9 +149,12 @@ export class Tab3Page {
       ]
     } else {
       this.navList = [
-        new NavListItem('leave', this.lang.signOutText, '.', (state) => {this.global.apiToken = undefined})
+        new NavListItem('exit', this.lang.signOutText, '.', (state) => {this.global.apiToken = undefined; this.updateNavList(); this.global.commit()})
       ]
     }
+    this.settingsNavList = [
+      new NavListItem('settings', this.lang.settingsText, '/settings')
+    ]
   }
 
   async auth() {
@@ -186,7 +192,7 @@ export class Tab3Page {
 
     if (errors === 0) {
       loginNav.modal.native.dismiss()
-      this.navList.splice(0, 1)
+      this.updateNavList()
     }
 
     this.loginView.authenticating = false
@@ -228,6 +234,23 @@ export class Tab3Page {
     }
 
     this.updateLoginView()
+
+    // this.loginView.inputs.forEach((el) => {
+    //   const innerInput = el.querySelector('input')
+    //   IonInput.ɵcmp
+    //   innerInput?.addEventListener('focus', () => {
+    //     setTimeout(() => {
+    //       innerInput.style.transform = ''  // Shit is happening
+    //       el.style.pointerEvents = 'all'
+    //       innerInput.focus()
+    //       el.querySelector('input.cloned-input')?.remove()
+          
+    //       setTimeout(() => {
+    //         el.classList.add('has-focus')
+    //       })
+    //     })
+    //   })
+    // })
 
     this.isValidInterval = setInterval(() => {
       this.isValid = this.loginView.inputs[0].value !== ''

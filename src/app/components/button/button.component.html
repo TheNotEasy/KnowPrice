@@ -1,24 +1,24 @@
 <li [routerLink]="[navItem.redirectTo]" #button>
   <ion-icon name="{{navItem.icon}}" color="dark"></ion-icon> 
   <p>{{navItem.text}}</p>
-  <ion-icon name="chevron-forward" color="dark" class="nav-menu__arrow" #right *ngIf="!navItem.hasDropMenu"></ion-icon>
-  <ion-icon name="open-outline" color="dark" class="nav-menu__arrow" #right *ngIf="navItem.hasDropMenu"></ion-icon>
+  <ion-icon name="chevron-forward" color="dark" class="nav-menu__arrow" #right *ngIf="!navItem.hasModal"></ion-icon>
+  <ion-icon name="open-outline" color="dark" class="nav-menu__arrow" #right *ngIf="navItem.hasModal"></ion-icon>
 </li>
 
-<ng-container *ngIf="navItem.hasDropMenu">
-    <ion-modal #modal [isOpen]="clicked" (willDismiss)="clicked = false; $any(navItem.callback)(false)" class="auto-height" [ngStyle]="{'--height': navItem.dropMenuHeight?.toString() + 'px'}">
-      <ng-template>
-        <ion-header>
-          <ion-toolbar>
-            <ion-title>{{ navItem.dropMenuTitle }}</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="modal.dismiss()">Закрыть</ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-          <ng-container *ngTemplateOutlet="$any(navItem.dropMenu)"></ng-container>
-        </ion-content>
-      </ng-template>
-    </ion-modal>
+<ng-container *ngIf="navItem.hasModal">
+  <ion-modal #modal [isOpen]="clicked" (willDismiss)="clicked = false; $any(navItem.callback)(false)" class="auto-height" [ngStyle]="{'--height': getNavItem().modal.height.toString() + 'px'}">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ getNavItem().modal.title }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal.dismiss()">Закрыть</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ng-container *ngTemplateOutlet="getNavItem().modal.template"></ng-container>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ng-container>
