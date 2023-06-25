@@ -8,7 +8,8 @@ import { ShopsPageRoutingModule } from './shops-routing.module';
 
 import { ShopsPage } from './shops.page';
 import { ItemComponent } from '../components/item/item.component';
-import { SharedModule } from '../shared/shared.module';
+import { ItemComponentSharedModule } from '../shared/item.shared.module';
+import { ErrorComponentSharedModule } from '../shared/error.shared.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     IonicModule,
     ShopsPageRoutingModule,
-    SharedModule
+    ItemComponentSharedModule,
+    ErrorComponentSharedModule,
   ],
   declarations: [
     ShopsPage,

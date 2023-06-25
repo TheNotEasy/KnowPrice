@@ -1,19 +1,8 @@
-<div class="item" #card>
-  <img class="item__image" alt="{{ imageAlt }}" src="{{ image }}">
-  <ion-button class="item__add-button" (click)="onClick()" #cardButton>
-    <ng-container *ngIf="!buttonIcon">
-      <ion-icon name="bag-outline" color="dark"></ion-icon>
-      <ion-icon name="bag" color="dark" hidden></ion-icon>
-    </ng-container>
-    <ng-container *ngIf="buttonIcon">
-      <ion-icon name="{{buttonIcon}}" color="dark"></ion-icon>
-    </ng-container>
-  </ion-button>
-  <div class="item__info">
-    <p class="item__price">{{ price }} руб</p>
-    <p class="item__name">{{ name }}</p>
+<ion-item class="item" #card>
+  <img alt="{{ imageAlt }}" src="{{ image }}" slot="start">
+  <div class="item__info" [routerLink]="['/items', id]">
+    <ion-text>{{ name }}</ion-text>
+    <ion-text>{{ price }} руб</ion-text>
   </div>
-  <ng-container *ngIf="showShop">
-    <p class="item__name"></p>
-  </ng-container>
-</div>
+  <ion-checkbox slot="end" (ionChange)="onClick($any($event))" #checkbox></ion-checkbox>
+</ion-item>

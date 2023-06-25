@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Type, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavListItem, NavListModalItem } from 'src/app/tab3/tab3.page';
 
 @Component({
@@ -19,7 +20,7 @@ export class ButtonComponent implements OnInit {
     NavListModalItem: NavListModalItem
   }
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
 
@@ -30,6 +31,10 @@ export class ButtonComponent implements OnInit {
       this.clicked = true
     }
 
+    if (this.navItem.redirectTo && !this.navItem.hasModal) {
+      this.router.navigate([this.navItem.redirectTo])
+    }
+
     setTimeout(() => {
       if (this.navItem.callback !== null) 
         this.navItem.callback(this.clicked)
@@ -37,9 +42,6 @@ export class ButtonComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.button.nativeElement.addEventListener('click', () => {
-      this.onClick()
-    });
     if (this.navItem.hasModal)
       (this.navItem as NavListModalItem).modal.native = this.modal
   }

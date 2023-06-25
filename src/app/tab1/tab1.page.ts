@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
 import { ApiService, RequestMethod, RequestTarget } from '../api.service';
+import { LanguageService } from '../language.service';
+import { ShopData } from '../target.types';
 
 @Component({
   selector: 'app-tab1',
@@ -8,16 +10,19 @@ import { ApiService, RequestMethod, RequestTarget } from '../api.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  public data!: Array<{id: number, 'name': string, 'ratings': string}>
+  public data!: ShopData[]
 
   public readyPromise!: Promise<[any, number]>
+  public isLoadingFailed = false
 
-  constructor(public api: ApiService) {}
+  constructor(public api: ApiService, public lang: LanguageService) {}
 
   ngOnInit() {
-    this.readyPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP)
+    this.readyPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOPDATA)
     this.readyPromise.then(([data, status]) => {
       this.data = data
+    }, () => {
+      this.isLoadingFailed = true
     })
   }
 }

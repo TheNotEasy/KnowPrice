@@ -1,10 +1,17 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ApiService, RequestMethod, RequestTarget } from 'src/app/api.service';
+import { CheckboxCustomEvent, IonCheckbox, IonItem } from '@ionic/angular';
+import { CartService } from 'src/app/cart.service';
 import { GlobalService } from 'src/app/global.service';
 import { LanguageService } from 'src/app/language.service';
 
-export class Item {
-  constructor(public id: number, public name: string, public image: string, public imageAlt: string, public price: number, public shopId: number) {}
+export class ItemClass {
+  constructor(
+    public id: number,
+    public name: string, 
+    public image: string, 
+    public imageAlt: string,
+    public price: number,
+    public shopId: number) {}
 }
 
 @Component({
@@ -12,7 +19,7 @@ export class Item {
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss'],
 })
-export class ItemComponent implements OnInit {
+export class ItemComponent {
   @Input() id: number = 0;
   @Input() name: string = '';
   @Input() image: string = '';
@@ -22,60 +29,42 @@ export class ItemComponent implements OnInit {
   @Input() category: number = 0;
   @Input() buttonIcon: string = '';
   @Input() showShop: boolean = false;
+  @Input() shopName: string = '';
 
   @ViewChild('card')
-  element!: {"nativeElement": HTMLElement};
+  element!: IonItem & {el: HTMLIonItemElement};
 
   cardButton!: HTMLIonButtonElement | null;
   icons!: NodeListOf<HTMLIonIconElement> | undefined;
 
-  private clicked: boolean = false
-  
-  private originalEl!: {"innerHTML": any, "backgroundColor": any, "transitionDuration": any};
-  
-  constructor(public global: GlobalService, public lang: LanguageService) { }
+  @ViewChild('checkbox')
+  checkbox!: IonCheckbox
 
-  ngOnInit() {
-    this.clicked = this.global.cartList.includes(this.id)
+  inCartAlready!: boolean
+  
+  constructor(public global: GlobalService, public lang: LanguageService, private cart: CartService) { }
+
+  updateView() {
+    this.checkbox.checked = this.global.cartList.includes(this.id)
   }
 
   ngAfterViewInit() {
-    this.cardButton = this.element.nativeElement.querySelector('ion-button')
-
-    this.originalEl = {"innerHTML": this.element.nativeElement.innerHTML,
-                       "backgroundColor": this.element.nativeElement.style.backgroundColor,
-                       "transitionDuration": this.element.nativeElement.style.transitionDuration}
-    
-    this.icons = this.cardButton?.querySelectorAll('ion-icon')
-
-    this.updateView()
-
-    console.log('asd')
+    this.inCartAlready = this.global.cartList.includes(this.id)
   }
 
-  updateView() {
-    if (this.buttonIcon) {
-      if (!this.clicked)
-        this.element.nativeElement.remove()
+  onClick(event: CheckboxCustomEvent) {
+    if (this.inCartAlready) {
+      this.inCartAlready = false
       return
     }
-
-    if (this.icons === undefined) {throw Error("icons list is undefined")}
-    this.icons[0].hidden = this.clicked
-    this.icons[1].hidden = !this.clicked
-  }
-
-  onClick() {
-    if (!this.clicked) {
-      this.global.cartList.push(this.id)
-      this.global.cachedItems[this.id] = new Item(this.id, this.name, this.image, this.imageAlt, this.price, this.shopId)
+    if (event.detail.checked) {
+      this.cart.addItem(
+        new ItemClass(this.id, this.name, this.image, this.imageAlt, this.price, this.shopId)
+      )
     } else {
-      this.global.cartList.splice(this.global.cartList.indexOf(this.id), 1)
+      this.cart.removeItem(this.id)
     }
-
-    this.clicked = !this.clicked
+    
     this.global.commit()
-
-    this.updateView()
   }
 }

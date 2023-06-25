@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="tabs"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -18,15 +18,42 @@
             <p class="goods__category">{{ category }}</p>
           </ng-container>
         </div>
-        <div class="goods__list">
-          <ng-container *ngFor="let item of data?.item_set">
-            <app-item [id]="item.id" [name]="item.name" [price]="item.price" [imageAlt]="item.name" [shopId]="data.id" [category]="item.category"></app-item>
-          </ng-container>
-        </div>
+        <ion-list class="goods__list">
+          <app-item [id]="item.id"
+                    [name]="item.name"
+                    [price]="item.price" 
+                    [imageAlt]="item.name" 
+                    [shopId]="data.id" 
+                    [category]="item.category" 
+                    [shopName]="data.name" 
+                    *ngFor="let item of data?.item_set">
+          </app-item>
+        </ion-list>
       </div>
     </div>
     <ng-template #loading>
-      <p style="margin: 100px auto; text-align: center; width: 70%;" id="loading">Загрузка...</p>
+      <ng-container *ngIf="!isLoadingFailed; else loadingFailed">
+        <style>
+          .wrapper {
+            gap: 0
+          }
+        </style>
+        <div class="container shop">
+          <div class="shop__name loading__layer-1" style="width: 200px; height: 35px;"></div>
+          <div class="shop__address loading__layer-1" style="width: 100px; height: 25px;"></div>
+        </div>
+        <div class="goods container">
+          <div class="goods__list-categories" style="width: 100%">
+            <div class="goods__category loading__layer-1" style="width: 70px; height: 30px;" *ngFor="let _ of [1, 1, 1, 1]"></div>
+          </div>
+          <div class="goods__list" style="outline: 2px solid var(--ion-color-light); height: 200px; border-radius: 10px;">
+            <ion-spinner style="margin: auto;" name="crescent"></ion-spinner>
+          </div>
+        </div>
+      </ng-container>
+    </ng-template>
+    <ng-template #loadingFailed>
+      <app-error></app-error>
     </ng-template>
   </div>
 </ion-content>

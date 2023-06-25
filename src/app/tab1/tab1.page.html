@@ -1,9 +1,9 @@
 <ion-content [fullscreen]="true">
   <div class="wrapper">
     <div class="search container">
-      <ion-searchbar></ion-searchbar>
+      <ion-searchbar placeholder="{{lang.getString(lang.searchText)}}"></ion-searchbar>
     </div>
-    <div *ngIf="readyPromise | async">
+    <div *ngIf="readyPromise | async; else loading">
       <div class="shops container">
         <section class="shops__section">
           <div class="section__title">Магазины поблизости</div>
@@ -17,3 +17,11 @@
     </div>
   </div>
 </ion-content>
+
+<ng-template #loading>
+  <ion-spinner style="margin: 100px auto; text-align: center; width: 70%;" *ngIf="!isLoadingFailed; else loadingFailed"></ion-spinner>
+</ng-template>
+
+<ng-template #loadingFailed>
+  <app-error></app-error>
+</ng-template>

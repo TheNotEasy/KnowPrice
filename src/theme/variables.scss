@@ -75,6 +75,13 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
+  --ion-color-gray: #b0b0b0;
+	--ion-color-gray-rgb: 176,176,176;
+	--ion-color-gray-contrast: #000000;
+	--ion-color-gray-contrast-rgb: 0,0,0;
+	--ion-color-gray-shade: #9b9b9b;
+	--ion-color-gray-tint: #b8b8b8;
+
   --theme-progressbar-color: #d1d1d1;
   --theme-progressbar-fill-color: #bdbdbd;
 }
@@ -151,6 +158,8 @@
 
     --theme-progressbar-color: #777b80;
     --theme-progressbar-fill-color: #4e5153;
+
+    --color: #C9D1D9;
   }
 
   /*

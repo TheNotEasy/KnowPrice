@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container item">
+    <ng-template #loading>
+      <ion-spinner style="margin: 100px auto; text-align: center; width: 70%;" *ngIf="!isLoadingFailed; else loadingFailed"></ion-spinner>
+    </ng-template>
+    <ng-template #loadingFailed>
+      <app-error></app-error>
+    </ng-template>
+    <ng-container *ngIf="readyPromise | async; else loading">
+      <span class="item__link-group">
+        <ion-icon name="storefront-outline"></ion-icon>
+        <a class="item__shop-link" [routerLink]="['/shops/' + data.shop]">Магазин</a>
+      </span>
+      <p class="item__name">{{ data.name }}</p>
+      <img src="{{ data.image }}" alt="{{ data.name }}" class="item__image">
+      <p class="item__price">{{ data.price }} руб</p>
+      <app-markdown *ngIf="data.markdown" [markdown]="data.markdown"></app-markdown>
+      <ion-button class="item__add-btn" (click)="addToCart()">Добавить в корзину</ion-button>
+    </ng-container>
+  </div>
+</ion-content>

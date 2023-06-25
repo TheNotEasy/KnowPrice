@@ -23,6 +23,7 @@ class ResponseRef {
   providedIn: 'root'
 })
 export class ApiService {
+  // private apiHost = 'https://yktinfo.pythonanywhere.com'
   private apiHost = 'http://127.0.0.1:8000'
   private apiUrl = `${this.apiHost}/api/v1`
 
@@ -37,10 +38,22 @@ export class ApiService {
 
   constructor(public global: GlobalService) { }
 
+  private async getSize(body: string | FormData): Promise<number> {
+    if (typeof body === 'object') {
+      const cl = new Response(body).headers.get('content-length')
+      if (cl) {
+        return parseInt(cl)
+      }
+    } else if (typeof body === 'string') {
+      return body.length
+    }
+    throw Error('cannot get size of obj')
+  }
+
   async makeRequest<K extends keyof RequestTargetTypesMap>
                    (type: RequestMethod, target: K | RequestTarget,
                     url: string = '',
-                    body: Record<any, any> = {},
+                    body: string | FormData | null = null,
                     headers: Record<any, any> = {},
                     makeCache = true,
                     responseRef?: ResponseRef): Promise<[RequestTargetTypesMap[K], number]> {
@@ -49,20 +62,18 @@ export class ApiService {
     const cache = this.global.cache[finalUrl]
     if (cache !== undefined) {return cache}
     
-    const finalHeaders: Record<string, string> = structuredClone(this.baseHeaders)
+    const finalHeaders: Record<string, string> = {}
+    Object.assign(finalHeaders, this.baseHeaders, headers)
+
     if (this.global.apiToken)
       finalHeaders['Authorization'] = `Token ${this.global.apiToken}`
     
     if (type === RequestMethod.POST && body)
-      finalHeaders['Content-Length'] = JSON.stringify(body).length.toString()
-    
-    for (const [key, value] of Object.entries(headers)) {
-      finalHeaders[key] = value
-    }
+      finalHeaders['Content-Length'] = (await this.getSize(body)).toString()
 
     const init: Record<string, any> = {method: type, headers: finalHeaders}
-    if (type === RequestMethod.POST)
-      init['body'] = JSON.stringify(body)
+    if (type === RequestMethod.POST && body)
+      init['body'] = body
     
     const resp = await (await fetch(finalUrl, init))
     const result = await resp.json()
@@ -70,9 +81,20 @@ export class ApiService {
       responseRef.response = resp
     }
 
-    if (makeCache)
+    if (makeCache) {
       this.global.cache[finalUrl] = [result, resp.status]
+    }
+    
     return [result, resp.status]
+  }
+  
+  async makeRequestToField<T extends keyof RequestTargetTypesMap,
+                           K extends keyof RequestTargetTypesMap[T]> 
+                          (target: T | RequestTarget,
+                           field: K | string,
+                           id: number): Promise<[RequestTargetTypesMap[T][K], number]> {
+    const [res, status] = await this.makeRequest(RequestMethod.GET, target, `${id}/${field.toString()}`)
+    return [res as RequestTargetTypesMap[T][K], status]
   }
 
   async makeAuthorization(username: string, password: string): Promise<[RequestTargetTypesMap['auth/token/login'], number]> {
@@ -80,7 +102,7 @@ export class ApiService {
       RequestMethod.POST,
       RequestTarget.LOGIN,
       '',
-      {'username': username, 'password': password},
+      JSON.stringify({'username': username, 'password': password}),
       {},
       false
     )
@@ -102,7 +124,7 @@ export class ApiService {
       RequestMethod.POST,
       RequestTarget.REG,
       '',
-      {'username': username, 'password': password},
+      JSON.stringify({'username': username, 'password': password}),
       {},
       false,
       respRef

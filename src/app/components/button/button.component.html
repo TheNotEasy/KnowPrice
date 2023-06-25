@@ -1,9 +1,7 @@
-<li [routerLink]="[navItem.redirectTo]" #button>
-  <ion-icon name="{{navItem.icon}}" color="dark"></ion-icon> 
-  <p>{{navItem.text}}</p>
-  <ion-icon name="chevron-forward" color="dark" class="nav-menu__arrow" #right *ngIf="!navItem.hasModal"></ion-icon>
-  <ion-icon name="open-outline" color="dark" class="nav-menu__arrow" #right *ngIf="navItem.hasModal"></ion-icon>
-</li>
+<ion-item (click)="onClick()" button detail="true" class="item">
+  <ion-icon name="{{ navItem.icon }}" slot="start"></ion-icon>
+  <ion-label>{{ navItem.text }}</ion-label>
+</ion-item>
 
 <ng-container *ngIf="navItem.hasModal">
   <ion-modal #modal [isOpen]="clicked" (willDismiss)="clicked = false; $any(navItem.callback)(false)" class="auto-height" [ngStyle]="{'--height': getNavItem().modal.height.toString() + 'px'}">

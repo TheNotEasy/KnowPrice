@@ -52,18 +52,24 @@
 
 .goods__list {
     display: flex;
+    flex-direction: column;
 
     // border: 2px solid var(--ion-color-light-tint);
     width: 100%;
 
     margin: auto;
     
-    flex-direction: row;
     justify-content: center;
     gap: 20px;
 
     flex-wrap: wrap;
 }
+
+// @media screen and (min-width: 399px) {
+//     .goods__list {
+//         flex-direction: column;
+//     }
+// }
 
 .goods__list-categories {
     display: flex;

@@ -4,7 +4,8 @@ export type Item = {
     image: string
     imageAlt: string
     price: number
-    shopId: number
+    shop: number
+    markdown: string
 }
 
 export type ShopData = {

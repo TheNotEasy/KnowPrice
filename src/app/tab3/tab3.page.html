@@ -4,13 +4,13 @@
     <div class="account__data" *ngIf="global.apiToken">
       <p class="container__title">Вы вошли как {{ global.accountData['username'] }}</p>
     </div>
-    <ul class="account__nav-menu">
+    <ion-list class="account__nav-menu">
       <app-button [navItem]="navItem" *ngFor="let navItem of navList"></app-button>
-    </ul>
+    </ion-list>
     <p class="container__title">Другое</p>
-    <ul class="account__nav-menu">
+    <ion-list class="account__nav-menu">
       <app-button [navItem]="navItem" *ngFor="let navItem of settingsNavList"></app-button>
-    </ul>
+    </ion-list>
   </div>
 </ion-content>
 

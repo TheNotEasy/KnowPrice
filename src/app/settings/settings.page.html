@@ -1,9 +1,18 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>settings</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/tab3"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
+<ion-content fullscreen="true">
+  <ion-list>
+    <ion-item href="/dev-settings">
+      <ion-icon name="warning" slot="start"></ion-icon>
+      <ion-icon name="settings" slot="start"></ion-icon>
+      Настройки для разработчика
 
+    </ion-item>
+  </ion-list>
 </ion-content>

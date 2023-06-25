@@ -2,19 +2,20 @@
   <ion-content [fullscreen]="true">
     <div class="container list">
       <p class="container__title">Список покупок</p>
-      <div class="goods__list">
-        <ng-container *ngFor="let item of items">
-          <app-item 
-            [id]="item.id" 
-            [name]="item.name" 
-            [price]="item.price" 
-            [buttonIcon]="'close'" 
-            [image]="item.image" 
-            [imageAlt]="item.imageAlt"
-            [category]="-1"
-            [showShop]="true"></app-item>
-        </ng-container>
-      </div>
+
+      <ng-container *ngFor="let shop of items | array">
+        <p class="container__title">Список покупок</p>
+        <ion-list class="goods__list">
+          <ion-item *ngFor="let item of shop.value">
+            <div class="start">
+              <ion-checkbox (ionChange)="checkboxClick($any($event), item.id)" [checked]="global.markedCartList.includes(item.id)"></ion-checkbox>
+              <p>{{ item.name }}</p>
+            </div>
+            <p slot="end">{{ item.price }} руб</p>
+          </ion-item>
+        </ion-list>
+      </ng-container>
+      
     </div>
   </ion-content>
 </ng-container>

@@ -10,7 +10,7 @@ let langInstance: LanguageService;
 interface INavListItem {
   icon: string,
   text: string,
-  _text: Record<string, string>,
+  _text: Record<string, string> | string,
   callback: ((state: boolean) => void) | null
 }
 
@@ -20,7 +20,7 @@ export class NavListItem implements INavListItem {
   constructor(
     public icon: string,
     public _text: Record<string, string>,
-    public redirectTo: string = '.',
+    public redirectTo: string | null = '.',
     public callback: ((state: boolean) => void) | null = null) {}
 
   get text() {
@@ -47,7 +47,7 @@ export class NavListModalItem implements INavListItem {
 
   constructor(
     public icon: string,
-    public _text: Record<string, string>,
+    public _text: Record<string, string> | string,
     modalTemplate: TemplateRef<any>,
     modalTitle: string,
     modalHeight: number,
@@ -59,6 +59,9 @@ export class NavListModalItem implements INavListItem {
   }
 
   get text() {
+    if (typeof this._text === 'string') {
+      return this._text
+    }
     return langInstance.getString(this._text)
   }
 }
@@ -104,11 +107,12 @@ export class Tab3Page {
     this.changeDetectorRef.detectChanges()
     setTimeout(() => {
       this.updateLoginView();
-      (this.navList[0] as NavListModalItem).modal.height = value ? 400 : 300
+      (this.navList[0] as NavListModalItem).modal.height = value ? 365 : 300
     })
   }
 
   public isValid = false
+  public isFailed = false
   
   private isValidInterval!: NodeJS.Timeout
 
@@ -149,17 +153,18 @@ export class Tab3Page {
       ]
     } else {
       this.navList = [
-        new NavListItem('exit', this.lang.signOutText, '.', (state) => {this.global.apiToken = undefined; this.updateNavList(); this.global.commit()})
+        new NavListItem('exit', this.lang.signOutText, null, (state) => {this.global.apiToken = undefined; this.updateNavList(); this.global.commit()})
       ]
     }
     this.settingsNavList = [
-      new NavListItem('settings', this.lang.settingsText, '/settings')
+      new NavListItem('settings', this.lang.settingsText, '/settings'),
+      new NavListItem('headset', this.lang.supportText, '/support')
     ]
   }
 
   async auth() {
     const loginNav = this.navList[0] as NavListModalItem
-    loginNav.modal.height = this.inReg ? 400 : 300
+    loginNav.modal.height = this.inReg ? 365 : 300
 
     this.loginView.authenticating = true
     this.loginView.error.clearErrors()
@@ -171,11 +176,19 @@ export class Tab3Page {
     // if we assign method to variable, "this" in method context will be "undefined" :/
     // method.bind(this.api) doesn't work
 
-    if (this.inReg) {
-      [resp, status] = await this.api.createAccount((data.username as string), (data.password as string))
-    }
-    else {
-      [resp, status] = await this.api.makeAuthorization((data.username as string), (data.password as string))
+    try {
+      if (this.inReg) {
+        [resp, status] = await this.api.createAccount((data.username as string), (data.password as string))
+      }
+      else {
+        [resp, status] = await this.api.makeAuthorization((data.username as string), (data.password as string))
+      }
+    } catch (error) {
+      this.loginView.error.non_field_errors.push('Что-то пошло не так, повторите попытку позже')
+      const navItem = (this.navList[0] as NavListModalItem)
+      navItem.modal.height += 50
+      this.loginView.authenticating = false
+      throw error
     }
 
     let errors = 0

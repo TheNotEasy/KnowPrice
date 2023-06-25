@@ -1,8 +1,9 @@
-import { Component, ElementRef, NgIterable, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, NgIterable, OnInit, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ItemComponent } from '../components/item/item.component';
 import { LanguageService } from '../language.service';
 import { ApiService, RequestMethod, RequestTarget } from '../api.service';
+import { QueryList } from '@angular/core';
 
 type Item = {
   "id": number,
@@ -29,6 +30,7 @@ export class ShopsPage implements OnInit {
   public data!: ResponseData
 
   public readyPromise!: Promise<any[]>
+  public isLoadingFailed: boolean = false
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,6 +40,8 @@ export class ShopsPage implements OnInit {
 
   @ViewChild('loading') public loadingEl!: {'nativeElement': HTMLElement}
   @ViewChild('content') public page!: ElementRef<HTMLElement>
+
+  @ViewChildren(ItemComponent) public items!: QueryList<ItemComponent>
 
   ngOnInit() {
     const rawId = this.activatedRoute.snapshot.paramMap.get('id')
@@ -49,7 +53,30 @@ export class ShopsPage implements OnInit {
   }
 
   ngAfterViewInit() {
+    let selected: HTMLElement | null = null
+    let index = 0
+    const categories = document.querySelectorAll('.goods__category')
+    const selectedInterval = setInterval(() => {
+      let el = categories[index]
+
+      if (selected) {
+        selected.classList.remove('selected')
+      }
+      el.classList.add('selected')
+      selected = el as HTMLElement
+
+      if (index === 3) {
+        index = 0
+        return
+      }
+      index++
+    }, 300)
+
     this.readyPromise.then(() => {
+      clearInterval(selectedInterval)
+      categories.forEach((el) => {
+        el.classList.remove('selected')
+      })
       setTimeout(() => {
         const categories = document.querySelectorAll('.goods__category')
         categories[0].classList.add('selected')
@@ -81,9 +108,7 @@ export class ShopsPage implements OnInit {
         this.categoryChanged(0)
       }, 1)
     }, () => {
-      const loadingText = document.getElementById('loading')
-      if (loadingText === null) {return}
-      loadingText.innerText = "Упс... Произошла непредвиденная ошибка! Убедитесь, что вы подключены к интернету и повторите попытку"
+      this.isLoadingFailed = true
     })
   }
 
@@ -94,8 +119,19 @@ export class ShopsPage implements OnInit {
   }
 
   categoryChanged(id: number) {
-    this.page.nativeElement.querySelectorAll('app-item').forEach(el => {
-      el.hidden = el.getAttribute('ng-reflect-category') !== String(id)
+    console.log(id)
+    this.items.forEach(item => {
+      let parent = item.element.el.parentElement
+      if (parent === null) {
+        throw Error("Item component 'card' elementref has no got parent")
+      }
+      parent.hidden = item.category !== id
+    })
+  }
+
+  ionViewWillEnter() {
+    this.items.forEach(item => {
+      item.updateView()
     })
   }
 }

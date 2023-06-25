@@ -38,8 +38,8 @@
     max-width: 800px;
     margin: 0 auto;
 
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 25px;
+    padding-right: 25px;
 
     margin-top: 70px;
 
@@ -64,11 +64,14 @@ p {
     margin: auto;
 }
 
-// .cloned-input {
-//     opacity: 0;
-//     visibility: hidden;
-//     display: none;
-// }
+ion-toolbar {
+    --background: var(--ion-background-color);
+}
+
+ion-header::after {
+    background-image: none;
+    display: none;
+}
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -112,4 +115,53 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+
+.loading__layer-1 {
+    background-color: var(--ion-color-light);
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 10px;
+}
+
+.loading__layer-1::after {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 200px;
+    margin-left: 50px;
+    background: rgba(var(--ion-color-gray-rgb), 0.1);
+    backdrop-filter: blur(20px);
+    // background: linear-gradient(
+    //     to bottom,
+    //     var(--ion-color-light-shade) 0%,
+    //     var(--ion-color-light-tint) 50%,
+    //     var(--ion-color-light-shade) 100%
+    // );
+    left: -40px;
+    top: -100px;
+    z-index: 2;
+    transform: rotate(45deg);
+    position: absolute;
+    animation: movingFlare 3s ease-in-out 0.05s infinite;
+  }
+   
+  @keyframes movingFlare {
+    0% {
+      left: -30px;
+      margin-left: 0px;
+    }
+    30% {
+      left: 110%;
+      margin-left: 80px;
+    }
+    100% {
+      left: 110%;
+      margin-left: 80px;
+    }
+  }
+
+.no-ripple {
+  --ripple-color: transparent;
 }
