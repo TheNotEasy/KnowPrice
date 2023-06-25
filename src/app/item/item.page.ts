@@ -41,7 +41,7 @@ export class ItemPage implements OnInit {
   addToCart() {
     if (!this.inCart) {
       this.global.cartList.push(this.data.id)
-      this.global.cachedItems[this.data.id] = new ItemClass(this.data.id, this.data.name, this.data.image, this.data.imageAlt, this.data.price, this.data.shop)
+      this.global.cachedItems[this.data.id] = new ItemClass(this.data.id, this.data.name, this.data.image, this.data.imageAlt, this.data.price, this.data.shopId)
     }
     if (this.inCart) {
       this.global.cartList.splice(this.global.cartList.indexOf(this.data.id), 1)

@@ -3,17 +3,26 @@
     <div class="container list">
       <p class="container__title">Список покупок</p>
 
-      <ng-container *ngFor="let shop of items | array">
-        <p class="container__title">Список покупок</p>
-        <ion-list class="goods__list">
-          <ion-item *ngFor="let item of shop.value">
-            <div class="start">
-              <ion-checkbox (ionChange)="checkboxClick($any($event), item.id)" [checked]="global.markedCartList.includes(item.id)"></ion-checkbox>
-              <p>{{ item.name }}</p>
-            </div>
-            <p slot="end">{{ item.price }} руб</p>
-          </ion-item>
-        </ion-list>
+      <ng-template #loading>
+        <ion-spinner style="margin: 100px auto; text-align: center; width: 70%;" *ngIf="!isLoadingFailed; else loadingFailed"></ion-spinner>
+      </ng-template>
+      <ng-template #loadingFailed>
+        <app-error></app-error>
+      </ng-template>
+
+      <ng-container *ngIf="readyPromise | async; else loading">
+        <ng-container *ngFor="let shop of items | array">
+          <p class="container__title shop__name">{{ shops[shop.key] }}</p>
+          <ion-list class="goods__list">
+            <ion-item *ngFor="let item of shop.value">
+              <div class="start">
+                <ion-checkbox (ionChange)="checkboxClick($any($event), item.id)" [checked]="global.markedCartList.includes(item.id)"></ion-checkbox>
+                <p>{{ item.name }}</p>
+              </div>
+              <p slot="end">{{ item.price }} руб</p>
+            </ion-item>
+          </ion-list>
+        </ng-container>
       </ng-container>
       
     </div>

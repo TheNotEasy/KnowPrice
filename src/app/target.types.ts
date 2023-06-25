@@ -4,7 +4,7 @@ export type Item = {
     image: string
     imageAlt: string
     price: number
-    shop: number
+    shopId: number
     markdown: string
 }
 
@@ -27,4 +27,5 @@ export interface RequestTargetTypesMap {
     'shop-data': ShopData,
     'auth/token/login': {auth_token: string, username?: Array<string>, password?: Array<string>, non_field_errors?: Array<string>},
     'auth/users': {auth_token: string, username?: Array<string>, password?: Array<string>, non_field_errors?: Array<string>},
+    'field': {result: string, error?: string}
 }

@@ -92,9 +92,9 @@ export class ApiService {
                            K extends keyof RequestTargetTypesMap[T]> 
                           (target: T | RequestTarget,
                            field: K | string,
-                           id: number): Promise<[RequestTargetTypesMap[T][K], number]> {
+                           id: number): Promise<[{result: RequestTargetTypesMap[T][K]}, number]> {
     const [res, status] = await this.makeRequest(RequestMethod.GET, target, `${id}/${field.toString()}`)
-    return [res as RequestTargetTypesMap[T][K], status]
+    return [res as {result: RequestTargetTypesMap[T][K]}, status]
   }
 
   async makeAuthorization(username: string, password: string): Promise<[RequestTargetTypesMap['auth/token/login'], number]> {

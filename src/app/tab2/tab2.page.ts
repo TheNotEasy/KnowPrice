@@ -17,7 +17,8 @@ export class Tab2Page {
   promises: Promise<any>[] = []
   readyPromise!: Promise<any>
 
-  changed: boolean = true
+  changed = true
+  isLoadingFailed = false
 
   constructor(
     public global: GlobalService,
@@ -37,12 +38,12 @@ export class Tab2Page {
     return this.items[shop]
   }
 
-  private async loadShopName(item: number) {
+  private loadShopName(item: number) {
     const promise = this.api.makeRequestToField(
       RequestTarget.SHOP, 'name', item
     )
     promise.then(([res, status]) => {
-      this.shops[item] = res
+      this.shops[item] = res.result
     })
     this.promises.push(promise)
   }
@@ -51,30 +52,47 @@ export class Tab2Page {
     if (!this.changed) {
       return
     }
+    console.log("Passed changed check")
     this.changed = false
 
     this.items = {}
+
+    console.log("Going to parse next cart list...")
+    console.log(this.global.cartList)
+
+    if (this.global.cartList.length === 0) {
+      debugger
+    }
     for (let key of this.global.cartList) {
       let value = this.global.cachedItems[key];
+      let shop = [];
       if (value === undefined) {
-        this.api.makeRequest(
+        const request = this.api.makeRequest(
           RequestMethod.GET, RequestTarget.ITEM, key.toString()
-        ).then(([resp, status]) => {
-          const shop = this.getShopGroup(resp.shop)
-          shop.push(resp)
-          this.loadShopName(key)
+        )
+        request.then(([resp, status]) => {
+          shop = this.getShopGroup(resp.shopId)
           this.global.cachedItems[key] = new ItemClass(
-            resp.id, resp.name, resp.image, resp.imageAlt, resp.price, resp.shop
+            resp.id, resp.name, resp.image, resp.imageAlt, resp.price, resp.shopId
           )
+          value = resp
+        })
+        request.catch(() => {
+          this.isLoadingFailed = true
         })
       } else {
-        const shop = this.getShopGroup(value.shopId)
-        shop.push(value)
+        shop = this.getShopGroup(value.shopId)
       }
+      shop.push(value)
+      this.loadShopName(key)
+      console.log("Parsed item with id: " + key)
     }
+    console.log("Parsed! Final look of items:")
+    console.log(this.items)
     this.readyPromise = Promise.all(this.promises)
-
-    
+    this.readyPromise.catch(() => {
+      this.isLoadingFailed = true
+    })
   }
 
   ionViewWillEnter() {

@@ -8,16 +8,18 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 import { Tab2PageRoutingModule } from './tab2-routing.module';
 import { ItemComponentSharedModule } from '../shared/item.shared.module';
 import { ArrayPipe } from '../array.pipe';
+import { ErrorComponentSharedModule } from "../shared/error.shared.module";
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ExploreContainerComponentModule,
-    Tab2PageRoutingModule,
-    ItemComponentSharedModule,
-  ],
-  declarations: [Tab2Page, ArrayPipe]
+    declarations: [Tab2Page, ArrayPipe],
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        ExploreContainerComponentModule,
+        Tab2PageRoutingModule,
+        ItemComponentSharedModule,
+        ErrorComponentSharedModule
+    ]
 })
 export class Tab2PageModule {}

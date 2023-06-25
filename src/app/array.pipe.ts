@@ -13,7 +13,7 @@ export class ArrayPipe implements PipeTransform {
     const keyValues = []
     for (const [key, data] of Object.entries(value)) {
       keyValues.push(
-        new KeyValue(key, value)
+        new KeyValue(key, data)
       )
     }
     return keyValues

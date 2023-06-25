@@ -17,7 +17,7 @@
     <ng-container *ngIf="readyPromise | async; else loading">
       <span class="item__link-group">
         <ion-icon name="storefront-outline"></ion-icon>
-        <a class="item__shop-link" [routerLink]="['/shops/' + data.shop]">Магазин</a>
+        <a class="item__shop-link" [routerLink]="['/shops/' + data.shopId]">Магазин</a>
       </span>
       <p class="item__name">{{ data.name }}</p>
       <img src="{{ data.image }}" alt="{{ data.name }}" class="item__image">
