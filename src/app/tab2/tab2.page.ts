@@ -60,9 +60,6 @@ export class Tab2Page {
     console.log("Going to parse next cart list...")
     console.log(this.global.cartList)
 
-    if (this.global.cartList.length === 0) {
-      debugger
-    }
     for (let key of this.global.cartList) {
       let value = this.global.cachedItems[key];
       let shop = [];

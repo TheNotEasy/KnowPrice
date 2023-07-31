@@ -30,6 +30,8 @@ export class ItemComponent {
   @Input() buttonIcon: string = '';
   @Input() showShop: boolean = false;
   @Input() shopName: string = '';
+  @Input() sale: number = 0;
+  @Input() inStock: boolean = true;
 
   @ViewChild('card')
   element!: IonItem & {el: HTMLIonItemElement};

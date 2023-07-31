@@ -25,6 +25,9 @@ export class LanguageService {
 
   public searchText = {ru: "Искать", en: "Search"}
 
+  public shopsText = {ru: "Магазин", en: "Shop"}
+  public itemsText = {ru: "Товар", en: "Good"}
+
   getString(localization: Record<string, string>): string {
     return localization[this.lang]
   }

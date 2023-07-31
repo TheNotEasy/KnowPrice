@@ -16,9 +16,20 @@
 
     margin: auto;
     width: 80vw;
+
+    &>ion-button {
+      margin: auto;
+      margin-top: 100px;
+      max-width: 500px;
+      width: 100%;
+    }
   }
 </style>
 <div class="error-wrapper">
   <ion-icon name="close-circle-outline" class="icon"></ion-icon>
   <p class="error">Произошла ошибке при загрузке</p>
+  <ion-button (click)="callback()" *ngIf="callback !== null">
+    <ion-icon name="refresh" slot="start"></ion-icon>
+    <ion-label slot="end">Обновить</ion-label>
+  </ion-button>
 </div>

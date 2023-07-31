@@ -8,7 +8,7 @@
 <ion-content>
 <ion-content fullscreen="true">
   <ion-list>
-    <ion-item href="/dev-settings">
+    <ion-item (click)="redirect('/dev-settings')" button>
       <ion-icon name="warning" slot="start"></ion-icon>
       <ion-icon name="settings" slot="start"></ion-icon>
       Настройки для разработчика

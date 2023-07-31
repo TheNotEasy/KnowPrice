@@ -1,11 +1,32 @@
 {
     "configurations": [
         {
-            "name": "Launch Chrome",
+            "name": "Python: Django",
+            "type": "python",
             "request": "launch",
+            "program": "${workspaceFolder}/../YktInfoDjango/manage.py",
+            "args": [
+                "runserver",
+                "0.0.0.0:8000"
+            ],
+            "django": true,
+            "python": "${command:python.interpreterPath}",
+        },
+        {
+            "command": "ionic serve --external",
+            "name": "Run ionic server",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
             "type": "chrome",
-            "url": "http://localhost:8100",
-            "webRoot": "${workspaceFolder}",
+            "request": "attach",
+            "name": "Attach to Android WebView",
+            "webRoot": "${workspaceFolder}/www",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+              "webpack:/*": "${workspaceFolder}/*"
+            }
         }
     ]
 }

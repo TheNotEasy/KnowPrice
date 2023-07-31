@@ -15,7 +15,7 @@ export enum RequestTarget {
   REG = 'auth/users'
 }
 
-class ResponseRef {
+export class ResponseRef {
   constructor(public response: Response | null = null) {}
 }
 
@@ -24,7 +24,7 @@ class ResponseRef {
 })
 export class ApiService {
   // private apiHost = 'https://yktinfo.pythonanywhere.com'
-  private apiHost = 'http://127.0.0.1:8000'
+  public apiHost = 'http://127.0.0.1:8000'
   private apiUrl = `${this.apiHost}/api/v1`
 
   private baseHeaders = {
@@ -36,7 +36,18 @@ export class ApiService {
     'Connection': 'keep-alive',
   }
 
-  constructor(public global: GlobalService) { }
+  constructor(public global: GlobalService) {
+    this.global.readyPromise.then(() => {
+      this.apiHost = global.apiHost
+    })
+  }
+
+  updateApiUrls() {
+    this.apiUrl = `${this.apiHost}/api/v1`;
+    this.global.apiHost = this.apiHost;
+    this.global.commit()
+    console.log(this.apiUrl)
+  }
 
   private async getSize(body: string | FormData): Promise<number> {
     if (typeof body === 'object') {
@@ -47,6 +58,7 @@ export class ApiService {
     } else if (typeof body === 'string') {
       return body.length
     }
+    console.error(body)
     throw Error('cannot get size of obj')
   }
 
@@ -57,7 +69,10 @@ export class ApiService {
                     headers: Record<any, any> = {},
                     makeCache = true,
                     responseRef?: ResponseRef): Promise<[RequestTargetTypesMap[K], number]> {
+    await this.global.readyPromise;
+    
     let finalUrl = `${this.apiUrl}/${target}/${url}`
+    console.log(finalUrl)
     
     const cache = this.global.cache[finalUrl]
     if (cache !== undefined) {return cache}

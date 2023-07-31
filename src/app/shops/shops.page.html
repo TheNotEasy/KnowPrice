@@ -26,6 +26,8 @@
                     [shopId]="data.id" 
                     [category]="item.category" 
                     [shopName]="data.name" 
+                    [sale]="item.sale"
+                    [inStock]="item.in_stock"
                     *ngFor="let item of data?.item_set">
           </app-item>
         </ion-list>

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { ApiService, RequestMethod, RequestTarget } from '../api.service';
+import { ApiService } from '../api.service';
 import { LanguageService } from '../language.service';
 import { ShopData } from '../target.types';
+import { IonInput, IonModal } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -15,14 +16,42 @@ export class Tab1Page {
   public readyPromise!: Promise<[any, number]>
   public isLoadingFailed = false
 
-  constructor(public api: ApiService, public lang: LanguageService) {}
+  public findChoices: string[];
+  public findChoicesIcons: string[];
+  currentChoice: number = 0;
+
+  public searchCallback: () => any = () => {this.search()}
+
+  public tagsList: string[] = [];
+
+  public Range = (x: number) => {return Array.from(Array(x).keys())};
+
+  @ViewChild("tagInput")
+  tagInput!: IonInput;
+
+  constructor(public api: ApiService, public lang: LanguageService) {
+    this.findChoices = [
+      lang.getString(lang.itemsText),
+      lang.getString(lang.shopsText),
+    ]
+
+    this.findChoicesIcons = [
+      'cart',
+      'storefront',
+    ]
+  }
 
   ngOnInit() {
-    this.readyPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOPDATA)
-    this.readyPromise.then(([data, status]) => {
-      this.data = data
-    }, () => {
-      this.isLoadingFailed = true
-    })
+    
+  }
+
+  addTag() {
+    this.tagsList.push(this.tagInput.value as any);
+    this.tagInput.value = '';
+  }
+
+  search() {
+    this.isLoadingFailed = false;
+    
   }
 }

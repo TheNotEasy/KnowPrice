@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { ShopsPageRoutingModule } from './shops-routing.module';
 
 import { ShopsPage } from './shops.page';
-import { ItemComponent } from '../components/item/item.component';
 import { ItemComponentSharedModule } from '../shared/item.shared.module';
 import { ErrorComponentSharedModule } from '../shared/error.shared.module';
 

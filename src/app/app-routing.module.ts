@@ -30,6 +30,10 @@ const routes: Routes = [
     path: 'items/:id',
     loadChildren: () => import('./item/item.module').then( m => m.ItemPageModule)
   },
+  {
+    path: 'dev-settings',
+    loadChildren: () => import('./dev-settings/dev-settings.module').then( m => m.DevSettingsPageModule)
+  },
 ];
 @NgModule({
   imports: [

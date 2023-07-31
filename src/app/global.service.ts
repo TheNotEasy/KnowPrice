@@ -31,14 +31,16 @@ class CartList extends Array {
   providedIn: 'root'
 })
 export class GlobalService {
-  public markedCartList: Array<number> = []
+  public markedCartList: number[] = []
   public cartList: number[] = []
+  public cachedShops: Record<number, string> = {}
 
   public cachedItems: Record<number, ItemClass> = {}
   public cache: Record<any, any> = {}
 
   public apiToken: string | undefined = undefined;
   public accountData: Record<string, string | null> = {'username': null}
+  public apiHost: string = 'http://127.0.0.1:8000';
 
   private keysList: Array<string>
   public readyPromise: Promise<void>

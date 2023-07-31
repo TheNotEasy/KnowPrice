@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-error',
@@ -6,9 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./error.component.scss'],
 })
 export class ErrorComponent implements OnInit {
+  @Input() callback: (() => void) | null = null;
 
   constructor() { }
 
-  ngOnInit() {}
-
+  ngOnInit() {
+    if (!this.callback) {
+      this.callback = () => {}
+    }
+  }
 }

@@ -4,6 +4,7 @@ import { ItemComponent } from '../components/item/item.component';
 import { LanguageService } from '../language.service';
 import { ApiService, RequestMethod, RequestTarget } from '../api.service';
 import { QueryList } from '@angular/core';
+import { ItemData, Shop } from '../target.types';
 
 type Item = {
   "id": number,
@@ -27,7 +28,7 @@ type ResponseData = {
 })
 
 export class ShopsPage implements OnInit {
-  public data!: ResponseData
+  public data!: Shop
 
   public readyPromise!: Promise<any[]>
   public isLoadingFailed: boolean = false
