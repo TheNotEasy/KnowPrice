@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { ApiService } from '../api.service';
+import { ApiService, RequestMethod, RequestTarget } from '../api.service';
 import { LanguageService } from '../language.service';
-import { ShopData } from '../target.types';
+import { Item, ShopData } from '../target.types';
 import { IonInput, IonModal } from '@ionic/angular';
 
 @Component({
@@ -13,12 +13,13 @@ import { IonInput, IonModal } from '@ionic/angular';
 export class Tab1Page {
   public data!: ShopData[]
 
-  public readyPromise!: Promise<[any, number]>
+  public readyPromise!: Promise<any>
   public isLoadingFailed = false
 
   public findChoices: string[];
   public findChoicesIcons: string[];
   currentChoice: number = 0;
+  public searchResults: Item[][] = [];
 
   public searchCallback: () => any = () => {this.search()}
 
@@ -45,13 +46,34 @@ export class Tab1Page {
     
   }
 
-  addTag() {
+  addTag(input: IonInput) {
+    if (input.value === '') {
+      return
+    }
+
     this.tagsList.push(this.tagInput.value as any);
     this.tagInput.value = '';
   }
 
-  search() {
+  async search() {
     this.isLoadingFailed = false;
-    
+    this.searchResults = [];
+
+    const promises: Promise<any>[] = [];
+    for (const tagIndex of this.Range(this.tagsList.length)) {
+      let promise = this.api.makeRequest(RequestMethod.POST, RequestTarget.SEARCH, {
+        extraUrl: `${['item', 'shop'][this.currentChoice]}`,
+        doRaise: true,
+        body: {"tag": this.tagsList[tagIndex]}
+      });
+      promises.push(promise)
+      promise.then((response) => {
+        this.searchResults.push(response.data as Item[])
+      })
+    }
+    this.readyPromise = Promise.all(promises)
+    this.readyPromise.then(() => {
+      console.log(this.searchResults)
+    })
   }
 }

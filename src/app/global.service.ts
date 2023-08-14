@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ItemClass } from './components/item/item.component';
 import { Storage } from '@ionic/storage-angular';
+import { ApiResponse } from './target.types';
 
 
 class CartList extends Array {
@@ -36,7 +37,7 @@ export class GlobalService {
   public cachedShops: Record<number, string> = {}
 
   public cachedItems: Record<number, ItemClass> = {}
-  public cache: Record<any, any> = {}
+  public cache: Record<string, any> = {}
 
   public apiToken: string | undefined = undefined;
   public accountData: Record<string, string | null> = {'username': null}
@@ -65,9 +66,11 @@ export class GlobalService {
     }
   }
 
-  commit() {
+  async commit() {
     for (const key of this.keysList) {
-      this.storage.set(key, this[key])
+      if (key == 'cache') continue;
+
+      await this.storage.set(key, this[key])
     }
   }
 

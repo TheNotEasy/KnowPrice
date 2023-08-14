@@ -126,8 +126,11 @@ ion-header::after {
 }
 
 .gradient {
-  --border-radius: 10px;
   --background: var(--theme-gradient);
+}
+
+.border-r-10 {
+  --border-radius: 10px;
 }
 
 ion-modal.fullscreen {

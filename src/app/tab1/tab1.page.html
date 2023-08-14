@@ -1,6 +1,6 @@
-<ion-content [fullscreen]="true" appLoadable="readyPromise">
+<ion-content [fullscreen]="true">
   <div class="wrapper">
-    <div class="container search">
+    <div class="container tags">
       <p class="container__title">Теги <ion-icon name="help" class="help-icon" (click)="helpModal.present()"></ion-icon></p>
       <ion-list>
         <ion-item *ngFor="let tagIndex of Range(tagsList.length)">
@@ -10,8 +10,8 @@
           </ion-button>
         </ion-item>
         <ion-item>
-          <ion-input placeholder="Напиши тег" enterkeyhint="go" (keyup.enter)="addTag()" #tagInput></ion-input>
-          <ion-button fill="outline" class="tag-button" (click)="addTag()" [disabled]="tagInput.value == ''">
+          <ion-input placeholder="Напиши тег" enterkeyhint="go" (keyup.enter)="addTag(tagInput)" [pattern]="'[a-zA-Z]'" #tagInput></ion-input>
+          <ion-button fill="outline" class="tag-button" (click)="addTag(tagInput)" [disabled]="tagInput.value == ''">
             <ion-icon name="add"></ion-icon>
           </ion-button>
         </ion-item>
@@ -27,7 +27,7 @@
         </ion-item>
       </ion-radio-group>
     </div>
-    <ion-button class="submit-button gradient" id="search-event" (click)="search()" [disabled]="tagsList.length === 0">
+    <ion-button class="submit-button gradient border-r-10" id="search-event" (click)="search()" [disabled]="tagsList.length === 0">
       Найти
     </ion-button>
   </div>
@@ -45,7 +45,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ng-container *ngTemplateOutlet="searchResults"></ng-container>
+      <ng-container [appLoadable]="searchResultsTemplate" [promise]="readyPromise" [callback]="searchCallback" [modal]="modal"></ng-container>
     </ion-content>
   </ng-template>
 </ion-modal>
@@ -58,12 +58,14 @@
   <app-error [callback]="searchCallback"></app-error>
 </ng-template>
 
-<ng-template #searchResults>
+<ng-template #searchResultsTemplate>
   <div class="container search-results">
     <p class="container__title search-results__title">Результаты поиска</p>
-    <details *ngFor="let tag of tagsList">
-      <summary [innerText]="tag"></summary>
-      
+    <details *ngFor="let tagIndex of Range(tagsList.length)" class="search-results__details">
+      <summary [innerText]="tagsList[tagIndex]"></summary>
+      <ion-list>
+        <app-item [name]="item.name" [price]="item.price" [inStock]="item.in_stock" [sale]="item.sale" [id]="item.id" *ngFor="let item of searchResults[tagIndex]"></app-item>
+      </ion-list>
     </details>
   </div>
 </ng-template>

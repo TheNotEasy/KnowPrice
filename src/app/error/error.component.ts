@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./error.component.scss'],
 })
 export class ErrorComponent implements OnInit {
-  @Input() callback: (() => void) | null = null;
+  @Input() callback: (() => any) | null = null;
 
   constructor() { }
 

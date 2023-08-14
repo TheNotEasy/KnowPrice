@@ -42,7 +42,7 @@
         <p *ngFor="let error of loginView.error.non_field_errors" style="color: var(--ion-color-danger)">{{ error }}</p>
       </ng-container>
     </div>
-    <ion-button type="submit" (click)="auth()" disabled="{{!isValid || loginView.authenticating}}">
+    <ion-button type="submit" (click)="auth()" disabled="{{!isValid || loginView.authenticating}}" class="gradient">
       <ng-container *ngIf="!loginView?.authenticating">{{ lang.getString(lang.authenticateText) }}</ng-container>
       <ng-container *ngIf="loginView?.authenticating"><ion-spinner name="dots"></ion-spinner></ng-container>
     </ion-button>

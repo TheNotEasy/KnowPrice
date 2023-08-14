@@ -1,6 +1,5 @@
 .item {
     width: 100%;
-    max-width: 400px;
 
     margin: auto;
 
@@ -27,4 +26,8 @@ img {
     margin: auto;
 
     text-align: center;
+}
+
+ion-item::part(native) {
+    background: transparent;
 }

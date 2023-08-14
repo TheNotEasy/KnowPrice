@@ -10,20 +10,20 @@
         <app-error></app-error>
       </ng-template>
 
-      <ng-container *ngIf="readyPromise | async; else loading">
-        <ng-container *ngFor="let shop of items | array">
-          <p class="container__title shop__name">{{ shops[shop.key] }}</p>
-          <ion-list class="goods__list">
-            <ion-item *ngFor="let item of shop.value">
-              <div class="start">
-                <ion-checkbox (ionChange)="checkboxClick($any($event), item.id)" [checked]="global.markedCartList.includes(item.id)"></ion-checkbox>
-                <p>{{ item.name }}</p>
-              </div>
-              <p slot="end">{{ item.price }} руб</p>
-            </ion-item>
-          </ion-list>
+      <div class="shop container">
+        <ng-container *ngIf="readyPromise | async; else loading">
+          <ng-container *ngFor="let shop of items | array">
+            <p class="container__title shop__name">{{ shops[shop.key] }}</p>
+            <ion-list class="goods__list">
+              <ion-item *ngFor="let item of shop.value" (mousedown)="itemMouseDown($any(ionItem), item.id)" (mouseup)="itemMouseUp($any(ionItem), item.id)" (mouseleave)="itemMouseUp(ionItem, item.id)" [button]="true" #ionItem>
+                <p slot="start">{{ item.name }}</p>
+                <p slot="end">{{ item.price }} руб</p>
+              </ion-item>
+            </ion-list>
+          </ng-container>
         </ng-container>
-      </ng-container>
+      </div>
+      
       
     </div>
   </ion-content>

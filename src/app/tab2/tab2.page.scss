@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
 
-    gap: 40px;
+    gap: 20px;
 }
 
 // .goods__list {
@@ -27,7 +27,8 @@
 // }
 
 .shop__name {
-    font-size: 25ox;
+    font-size: 35px;
+    margin-bottom: 0;
 }
 
 .start {
@@ -35,4 +36,32 @@
 
     align-items: center;
     gap: 20px;
+}
+
+.shop {
+    margin-top: 0;
+    gap: 20px;
+}
+
+.hovered-item {
+    z-index: 1;
+
+    &::before {
+        display: block;
+        content: '';
+        animation: 1.5s linear deleting;
+        z-index: 2;
+
+        width: 0;
+        height: 100%;
+    }
+}
+
+@keyframes deleting {
+    0% {
+        background: linear-gradient(to right, var(--ion-color-danger) 0px, darkgreen 100%);
+    }
+    100% {
+        background: linear-gradient(to right, var(--ion-color-danger-shade) 100%, darkgreen 0px);
+    }
 }

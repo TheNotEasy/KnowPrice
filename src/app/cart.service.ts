@@ -13,7 +13,7 @@ interface Events {
   providedIn: 'root'
 })
 export class CartService {
-  private cartList: number[]
+  public cartList: number[]
   private markedCartList: number[]
 
   private onAddEventListeners: ((item: ItemClass) => void)[] = []
@@ -41,26 +41,32 @@ export class CartService {
     })
   }
 
-  addItem(item: ItemClass) {
+  // async functions, cuz serving listeners take some time
+
+  async addItem(item: ItemClass) {
     if (!this.cartList.includes(item.id))
       this.cartList.push(item.id)
     this.global.cachedItems[item.id] = item
 
-    this.global.commit()
+    await this.global.commit()
 
     this.serveEventListeners(this.onAddEventListeners, item)
     this.serveEventListeners(this.onChangeEventListeners, item)
   }
 
-  removeItem(item: number) {
+  async removeItem(item: number) {
     this.cartList.splice(this.cartList.indexOf(item), 1)
     delete this.global.cachedItems[item]
 
     if (this.markedCartList.includes(item)) this.markedCartList.splice(this.markedCartList.indexOf(item), 1)
-  
-    this.global.commit()
+    
+    await this.global.commit()
 
     this.serveEventListeners(this.onRemoveEventListeners, item)
     this.serveEventListeners(this.onChangeEventListeners, item)
+  }
+
+  includes(id: number) {
+    return this.global.cartList.includes(id)
   }
 }

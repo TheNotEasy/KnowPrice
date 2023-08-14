@@ -8,6 +8,8 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { ShopComponent } from '../components/shop/shop.component';
 import { ErrorComponentSharedModule } from '../shared/error.shared.module';
+import { LoadableDirectiveSharedModule } from '../shared/loadable.shared.module';
+import { ItemComponentSharedModule } from '../shared/item.shared.module';
 
 @NgModule({
   imports: [
@@ -17,6 +19,8 @@ import { ErrorComponentSharedModule } from '../shared/error.shared.module';
     ExploreContainerComponentModule,
     Tab1PageRoutingModule,
     ErrorComponentSharedModule,
+    LoadableDirectiveSharedModule,
+    ItemComponentSharedModule,
   ],
   declarations: [
     Tab1Page,

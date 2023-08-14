@@ -1,29 +1,40 @@
 import { Injectable } from '@angular/core';
 import { GlobalService } from './global.service';
-import { RequestTargetTypesMap } from './target.types';
+import { ApiResponse, Auth, RequestTargetTypesMap } from './target.types';
+import * as hash from 'object-hash';
 
 export enum RequestMethod {
   GET = 'get',
   POST = 'post',
 }
-export enum RequestTarget { 
+export enum RequestTarget {
   ITEM = 'item',
   SHOP = 'shop',
   SHOPDATA = 'shop-data',
   USER = 'user',
   LOGIN = 'auth/token/login',
-  REG = 'auth/users'
+  REG = 'auth/users',
+  SEARCH = 'find'
+}
+
+export type RequestSettings<S = boolean> = {
+  extraUrl?: string;
+  body?: Record<any, any>;
+  form?: FormData;
+  headers?: Record<any, any>;
+  makeCache?: boolean;
+  doRaise?: boolean | S;
 }
 
 export class ResponseRef {
-  constructor(public response: Response | null = null) {}
+  constructor(public response: Response | null = null) { }
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  // private apiHost = 'https://yktinfo.pythonanywhere.com'
+  // public apiHost = 'https://yktinfodjango-1-t8836855.deta.app'
   public apiHost = 'http://127.0.0.1:8000'
   private apiUrl = `${this.apiHost}/api/v1`
 
@@ -31,7 +42,7 @@ export class ApiService {
     'Content-Type': 'application/json',
     'Host': this.apiHost,
     'User-Agent': 'KnowPrice-app',
-    'Accept': '*/*',
+    'Accept': 'application/json',
     'Accept-Encoding': 'gzip, deflate, br',
     'Connection': 'keep-alive',
   }
@@ -62,93 +73,120 @@ export class ApiService {
     throw Error('cannot get size of obj')
   }
 
-  async makeRequest<K extends keyof RequestTargetTypesMap>
-                   (type: RequestMethod, target: K | RequestTarget,
-                    url: string = '',
-                    body: string | FormData | null = null,
-                    headers: Record<any, any> = {},
-                    makeCache = true,
-                    responseRef?: ResponseRef): Promise<[RequestTargetTypesMap[K], number]> {
-    await this.global.readyPromise;
-    
-    let finalUrl = `${this.apiUrl}/${target}/${url}`
-    console.log(finalUrl)
-    
-    const cache = this.global.cache[finalUrl]
-    if (cache !== undefined) {return cache}
-    
-    const finalHeaders: Record<string, string> = {}
-    Object.assign(finalHeaders, this.baseHeaders, headers)
+  private async constructHeaders(headers: Record<any, any>, type: RequestMethod, body?: string | FormData) {
+    const finalHeaders: Record<string, string> = Object.assign({}, this.baseHeaders, headers)
 
     if (this.global.apiToken)
       finalHeaders['Authorization'] = `Token ${this.global.apiToken}`
     
     if (type === RequestMethod.POST && body)
       finalHeaders['Content-Length'] = (await this.getSize(body)).toString()
-
-    const init: Record<string, any> = {method: type, headers: finalHeaders}
-    if (type === RequestMethod.POST && body)
-      init['body'] = body
     
-    const resp = await (await fetch(finalUrl, init))
-    const result = await resp.json()
-    if (responseRef) {
-      responseRef.response = resp
-    }
-
-    if (makeCache) {
-      this.global.cache[finalUrl] = [result, resp.status]
-    }
-    
-    return [result, resp.status]
+    return finalHeaders;
   }
-  
+
+  private normalizeBody(body: Record<any, any>, form?: FormData): FormData | string {
+    let normBody: FormData | string;
+
+    if (body && form) throw TypeError("Body and form are passed to request")
+    else if (form) normBody = form
+    else normBody = JSON.stringify(body)
+
+    return normBody
+  }
+
+  async makeRequest<K extends keyof RequestTargetTypesMap, S = boolean>
+    (method: RequestMethod, target: K | RequestTarget,
+      {
+        extraUrl = '', body = {}, form, headers = {}, makeCache = true, doRaise = false
+      }: RequestSettings<S> = {}): Promise<ApiResponse<RequestTargetTypesMap[K], S>> {
+
+    let normBody = undefined
+    if (method != RequestMethod.GET) {
+      normBody = this.normalizeBody(body, form)
+    }
+
+    await this.global.readyPromise
+
+    const url = `${this.apiUrl}/${target}/${extraUrl}/`
+
+    const cacheKey = `${url}${normBody ? hash(normBody) : ''}`
+    const cache = this.global.cache[cacheKey]
+    if (cache !== undefined) { return cache }
+
+    const finalHeaders: Record<string, string> = await this.constructHeaders(headers, method, normBody);
+
+    const requestOptions: Record<string, any> = { method: method, headers: finalHeaders }
+    if (body)
+      requestOptions['body'] = normBody
+
+    const response = await (await fetch(url, requestOptions))
+    const json = response.status < 500 ? await response.json() : undefined
+
+    if (doRaise && !response.ok) {
+      throw Error('Got error from server')
+    }
+
+    const parsedResponse: Record<any, any> | ApiResponse = {
+      success: response.ok,
+      data: json,
+      code: response.status,
+      response: response
+    }
+
+    if (makeCache && response.ok) 
+      this.global.cache[cacheKey] = parsedResponse
+
+    return parsedResponse as ApiResponse<RequestTargetTypesMap[K], S>
+  }
+
   async makeRequestToField<T extends keyof RequestTargetTypesMap,
-                           K extends keyof RequestTargetTypesMap[T]> 
-                          (target: T | RequestTarget,
-                           field: K | string,
-                           id: number): Promise<[{result: RequestTargetTypesMap[T][K]}, number]> {
-    const [res, status] = await this.makeRequest(RequestMethod.GET, target, `${id}/${field.toString()}`)
-    return [res as {result: RequestTargetTypesMap[T][K]}, status]
+    K extends keyof RequestTargetTypesMap[T]>
+    (target: T | RequestTarget,
+      field: K | string,
+      id: number): Promise<ApiResponse<{result: RequestTargetTypesMap[T][K]}>> {
+    const response = await this.makeRequest(RequestMethod.GET, target, { extraUrl: `${id}/${field.toString()}` });
+    return response as ApiResponse<{result: RequestTargetTypesMap[T][K]}>
   }
 
-  async makeAuthorization(username: string, password: string): Promise<[RequestTargetTypesMap['auth/token/login'], number]> {
-    const [resp, code] = await this.makeRequest(
+  async makeAuthorization(username: string, password: string): Promise<ApiResponse<Auth>> {
+    const response = await this.makeRequest(
       RequestMethod.POST,
       RequestTarget.LOGIN,
-      '',
-      JSON.stringify({'username': username, 'password': password}),
-      {},
-      false
+      {
+        body: { 'username': username, 'password': password },
+        makeCache: false,
+      }
     )
 
-    const token = resp.auth_token
+    if (!response.success) {
+      return response
+    }
+
+    const token = response.data.auth_token
     this.global.apiToken = token
     this.global.accountData['username'] = username
 
     this.global.commit()
 
-    console.log(this.global.apiToken)
-    return [resp, code]
+    return response
   }
 
-  async createAccount(username: string, password: string, makeAuthorization = true): Promise<[RequestTargetTypesMap['auth/users'], number]> {
-    const respRef = new ResponseRef()
-
-    const [resp, code] = await this.makeRequest(
+  async createAccount(username: string, password: string, makeAuthorization = true): Promise<ApiResponse> {
+    const response = await this.makeRequest(
       RequestMethod.POST,
       RequestTarget.REG,
-      '',
-      JSON.stringify({'username': username, 'password': password}),
-      {},
-      false,
-      respRef
+      {
+        body: { 'username': username, 'password': password },
+        makeCache: false,
+      }
     )
 
-    if (makeAuthorization && respRef.response?.ok) {
+    if (makeAuthorization && response.success) {
+      console.log(response.data)
       this.makeAuthorization(username, password)
     }
 
-    return [resp, code]
+    return response
   }
 }

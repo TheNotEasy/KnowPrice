@@ -3,6 +3,7 @@ import { GlobalService } from '../global.service';
 import { LanguageService } from '../language.service';
 import { ApiService } from '../api.service';
 import { IonInput, IonModal } from '@ionic/angular';
+import { ApiResponse, Auth } from '../target.types';
 
 let langInstance: LanguageService;
 
@@ -170,18 +171,17 @@ export class Tab3Page {
     this.loginView.error.clearErrors()
 
     const data = {'username': this.loginView.inputs[0].value, 'password': this.loginView.inputs[1].value}
-    let resp
-    let status
+    let response: ApiResponse<Auth>
 
     // if we assign method to variable, "this" in method context will be "undefined" :/
     // method.bind(this.api) doesn't work
 
     try {
       if (this.inReg) {
-        [resp, status] = await this.api.createAccount((data.username as string), (data.password as string))
+        response = await this.api.createAccount((data.username as string), (data.password as string))
       }
       else {
-        [resp, status] = await this.api.makeAuthorization((data.username as string), (data.password as string))
+        response = await this.api.makeAuthorization((data.username as string), (data.password as string))
       }
     } catch (error) {
       this.loginView.error.non_field_errors.push('Что-то пошло не так, повторите попытку позже')
@@ -193,14 +193,16 @@ export class Tab3Page {
 
     let errors = 0
 
-    for (const [key, error] of Object.entries(resp)) {
-      if (!Object.keys(new Errors()).includes(key)) continue
-      if (typeof error === 'string') continue
-      this.loginView.error[key] = error
-      errors += error.length
+    if (!response.success && !response.isFetchError) {
+      for (const [key, error] of Object.entries(response.data as Auth)) {
+        if (!Object.keys(new Errors()).includes(key)) continue
+        if (typeof error === 'string') continue
+        this.loginView.error[key] = error
+        errors += error.length
 
-      if (loginNav.modal)
-        loginNav.modal.height += 50 * error.length
+        if (loginNav.modal)
+          loginNav.modal.height += 50 * error.length
+      }
     }
 
     if (errors === 0) {

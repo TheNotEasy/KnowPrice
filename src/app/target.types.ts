@@ -28,11 +28,37 @@ export type Shop = ShopData & {
     categories: string[]
 }
 
+export type Auth = {
+    auth_token?: string
+    username?: string[],
+    password?: string[],
+    non_field_errors?: string[],
+}
+
 export interface RequestTargetTypesMap {
     'item': Item
     'shop': Shop
     'shop-data': ShopData,
-    'auth/token/login': {auth_token: string, username?: Array<string>, password?: Array<string>, non_field_errors?: Array<string>},
-    'auth/users': {auth_token: string, username?: Array<string>, password?: Array<string>, non_field_errors?: Array<string>},
-    'field': {result: string, error?: string}
+    'auth/token/login': Auth,
+    'auth/users': Auth,
+    'find': Item[] | Shop[]
+}
+
+export type ApiResponse<T = any, S = boolean> = {
+    success: true
+    data: T
+    code: number
+    rawResponse: Response
+} | ({
+    success: false
+} & ({
+    isFetchError: false
+    data: T
+    code: number
+    rawResponse: Response
+} | {
+    isFetchError: true
+    error: Error
+})) & {
+    success: S
 }

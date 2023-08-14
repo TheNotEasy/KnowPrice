@@ -10,10 +10,9 @@ import { GlobalService } from './global.service';
 import { LanguageService } from './language.service';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { ApiService } from './api.service';
-import { LoadableDirective } from './directives/loadable.directive';
 
 @NgModule({
-  declarations: [AppComponent, LoadableDirective],
+  declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot()],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, GlobalService, LanguageService, ApiService],
   bootstrap: [AppComponent],

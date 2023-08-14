@@ -52,6 +52,7 @@ export class ItemComponent {
 
   ngAfterViewInit() {
     this.inCartAlready = this.global.cartList.includes(this.id)
+    console.log(this)
   }
 
   onClick(event: CheckboxCustomEvent) {

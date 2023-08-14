@@ -30,7 +30,7 @@ type ResponseData = {
 export class ShopsPage implements OnInit {
   public data!: Shop
 
-  public readyPromise!: Promise<any[]>
+  public readyPromise!: Promise<any>
   public isLoadingFailed: boolean = false
 
   constructor(
@@ -47,9 +47,9 @@ export class ShopsPage implements OnInit {
   ngOnInit() {
     const rawId = this.activatedRoute.snapshot.paramMap.get('id')
     if (rawId === null) {throw Error("got null on rawId")}
-    this.readyPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP, rawId)
-    this.readyPromise.then(([data, status]) => {
-      this.data = data
+    this.readyPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP, {extraUrl: rawId})
+    this.readyPromise.then((response) => {
+      this.data = response.data
     })
   }
 
@@ -116,7 +116,7 @@ export class ShopsPage implements OnInit {
   async fetchShopData(id: string) {
     // let data = fetch("")
     console.log('asd')
-    return await this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP, id)
+    return await this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP, {extraUrl: id})
   }
 
   categoryChanged(id: number) {

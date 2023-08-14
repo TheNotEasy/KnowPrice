@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { GlobalService } from '../global.service';
 import { ApiService, RequestMethod, RequestTarget } from '../api.service';
-import { CheckboxCustomEvent } from '@ionic/angular';
+import { CheckboxCustomEvent, IonItem } from '@ionic/angular';
 import { ItemClass } from '../components/item/item.component';
 import { CartService } from '../cart.service';
+import { Item } from '../target.types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -11,7 +13,7 @@ import { CartService } from '../cart.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-  items: Record<number, any[]> = {}
+  items: Record<number, Item[]> = {}
   shops: Record<number, string> = {}
 
   promises: Promise<any>[] = []
@@ -20,10 +22,13 @@ export class Tab2Page {
   changed = true
   isLoadingFailed = false
 
+  timeoutHandler: NodeJS.Timeout | null = null
+
   constructor(
     public global: GlobalService,
     public api: ApiService,
-    cart: CartService) {
+    public router: Router,
+    public cart: CartService) {
     cart.addEventListener('changed', () => {this.onCartChange()})
   }
 
@@ -42,8 +47,9 @@ export class Tab2Page {
     const promise = this.api.makeRequestToField(
       RequestTarget.SHOP, 'name', item
     )
-    promise.then(([res, status]) => {
-      this.shops[item] = res.result
+    promise.then((resp) => {
+      if (!resp.success) {return}
+      this.shops[item] = resp.data.result
     })
     this.promises.push(promise)
   }
@@ -65,14 +71,16 @@ export class Tab2Page {
       let shop = [];
       if (value === undefined) {
         const request = this.api.makeRequest(
-          RequestMethod.GET, RequestTarget.ITEM, key.toString()
+          RequestMethod.GET, RequestTarget.ITEM, {extraUrl: key.toString()}
         )
-        request.then(([resp, status]) => {
-          shop = this.getShopGroup(resp.shopId)
+        request.then((resp) => {
+          if (!resp.success) {return}
+          shop = this.getShopGroup(resp.data.shopId)
           this.global.cachedItems[key] = new ItemClass(
-            resp.id, resp.name, resp.image, resp.imageAlt, resp.price, resp.shopId
+            resp.data.id, resp.data.name, resp.data.image, resp.data.imageAlt, resp.data.price, resp.data.shopId
           )
-          value = resp
+          value = resp.data
+          this.loadShopName(resp.data.shopId)
         })
         request.catch(() => {
           this.isLoadingFailed = true
@@ -81,7 +89,6 @@ export class Tab2Page {
         shop = this.getShopGroup(value.shopId)
       }
       shop.push(value)
-      this.loadShopName(key)
       console.log("Parsed item with id: " + key)
     }
     console.log("Parsed! Final look of items:")
@@ -96,13 +103,36 @@ export class Tab2Page {
     this.updateItems()
   }
 
-  checkboxClick(e: CheckboxCustomEvent, id: number) {
-    if (e.detail.checked)
-      this.global.markedCartList.push(id)
-    else
-      this.global.markedCartList.splice(
-        this.global.markedCartList.indexOf(id), 1
-      )
-    this.global.commit()
+  itemMouseUp(ionItem: IonItem, itemId: number) {
+    console.log('asdup')
+
+    console.log(ionItem)
+    if (this.timeoutHandler) {
+      clearTimeout(this.timeoutHandler);
+      this.timeoutHandler = null;
+      this.router.navigate(['items', itemId])
+    }
+  }
+
+  itemMouseLeave(ionItem: {el: HTMLIonItemElement}, itemId: number) {
+    ionItem.el.classList.remove('hovered-item')
+
+    if (this.timeoutHandler) {
+      clearTimeout(this.timeoutHandler);
+      this.timeoutHandler = null;
+      this.router.navigate(['items', itemId])
+    }
+  }
+
+  itemMouseDown(ionItem: {el: HTMLIonItemElement}, itemId: number) {
+    console.log('asddown')
+
+    ionItem.el.classList.add('hovered-item')
+    this.timeoutHandler = setTimeout(() => {
+      this.cart.removeItem(itemId)
+      this.timeoutHandler = null
+      this.changed = true
+      this.updateItems()
+    }, 1500);
   }
 }

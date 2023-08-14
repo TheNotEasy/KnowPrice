@@ -16,13 +16,4 @@ ion-modal {
     --width: 90%;
     --max-width: 450px;
     --border-radius: 16px;
-    --box-shadow: 0px 0px 10px 10px var(--ion-color-light-shade);
-}
-  
-ion-modal::part(backdrop) {
-    background: var(--ion-color-light-shade);
-}
-
-ion-modal ion-toolbar {
-    --background: var(--ion-color-light);
 }
