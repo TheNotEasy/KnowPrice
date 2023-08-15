@@ -42,10 +42,6 @@ export class Tab1Page {
     ]
   }
 
-  ngOnInit() {
-    
-  }
-
   addTag(input: IonInput) {
     if (input.value === '') {
       return

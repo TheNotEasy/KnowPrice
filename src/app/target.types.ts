@@ -10,7 +10,10 @@ export type ItemData = {
 }
 
 export type Item = ItemData & {
-    shopId: number
+    shop: {
+        id: number,
+        name: string,
+    }
     markdown: string
 }
 

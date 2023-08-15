@@ -11,7 +11,10 @@ export class ItemClass {
     public image: string, 
     public imageAlt: string,
     public price: number,
-    public shopId: number) {}
+    public shop: {
+      id: number,
+      name: string
+    }) {}
 }
 
 @Component({
@@ -25,11 +28,9 @@ export class ItemComponent {
   @Input() image: string = '';
   @Input() imageAlt: string = '';
   @Input() price: number = 0;
-  @Input() shopId: number = 0;
   @Input() category: number = 0;
   @Input() buttonIcon: string = '';
-  @Input() showShop: boolean = false;
-  @Input() shopName: string = '';
+  @Input() shop: {id: number, name: string} = {id: 0, name: ''};
   @Input() sale: number = 0;
   @Input() inStock: boolean = true;
 
@@ -62,7 +63,7 @@ export class ItemComponent {
     }
     if (event.detail.checked) {
       this.cart.addItem(
-        new ItemClass(this.id, this.name, this.image, this.imageAlt, this.price, this.shopId)
+        new ItemClass(this.id, this.name, this.image, this.imageAlt, this.price, this.shop)
       )
     } else {
       this.cart.removeItem(this.id)

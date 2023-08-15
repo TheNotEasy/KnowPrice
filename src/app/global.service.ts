@@ -38,6 +38,7 @@ export class GlobalService {
 
   public cachedItems: Record<number, ItemClass> = {}
   public cache: Record<string, any> = {}
+  public cachedShopsName: Record<number, string> = {}
 
   public apiToken: string | undefined = undefined;
   public accountData: Record<string, string | null> = {'username': null}

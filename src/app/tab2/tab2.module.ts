@@ -19,7 +19,7 @@ import { ErrorComponentSharedModule } from "../shared/error.shared.module";
         ExploreContainerComponentModule,
         Tab2PageRoutingModule,
         ItemComponentSharedModule,
-        ErrorComponentSharedModule
+        ErrorComponentSharedModule,
     ]
 })
 export class Tab2PageModule {}

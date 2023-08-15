@@ -42,7 +42,7 @@ export class ItemPage implements OnInit {
 
   addToCart() {
     if (!this.inCart) {
-      this.cart.addItem(new ItemClass(this.data.id, this.data.name, this.data.image, this.data.imageAlt, this.data.price, this.data.shopId))
+      this.cart.addItem(new ItemClass(this.data.id, this.data.name, this.data.image, this.data.imageAlt, this.data.price, this.data.shop))
     }
     if (this.inCart) {
       this.cart.removeItem(this.cart.cartList.indexOf(this.data.id))

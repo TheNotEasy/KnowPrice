@@ -65,3 +65,16 @@
         background: linear-gradient(to right, var(--ion-color-danger-shade) 100%, darkgreen 0px);
     }
 }
+
+// .close-icon {
+//     font-size: 30px;
+// }
+
+.nested-ion-item {
+    width: 100%;
+    margin-right: 0;
+}
+
+.buttons {
+    gap: 20px;
+}

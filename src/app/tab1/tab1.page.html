@@ -61,12 +61,24 @@
 <ng-template #searchResultsTemplate>
   <div class="container search-results">
     <p class="container__title search-results__title">Результаты поиска</p>
-    <details *ngFor="let tagIndex of Range(tagsList.length)" class="search-results__details">
-      <summary [innerText]="tagsList[tagIndex]"></summary>
-      <ion-list>
-        <app-item [name]="item.name" [price]="item.price" [inStock]="item.in_stock" [sale]="item.sale" [id]="item.id" *ngFor="let item of searchResults[tagIndex]"></app-item>
-      </ion-list>
-    </details>
+    <li class="search-results__list">
+      <ul *ngFor="let tagIndex of Range(tagsList.length)">
+        <details class="search-results__details">
+          <summary [innerText]="tagsList[tagIndex]" class="search-results__summary"></summary>
+          <div class="tag__details">
+            <ng-container *ngIf="searchResults[tagIndex].length === 0; else showResults">
+              <p class="search-results__text">Ничего не найдено...</p>
+            </ng-container>
+            <ng-template #showResults>
+              <ion-list class="search-results__tag-list">
+                <app-item [name]="item.name" [price]="item.price" [inStock]="item.in_stock" [sale]="item.sale" [id]="item.id" [shop]="item.shop" *ngFor="let item of searchResults[tagIndex]"></app-item>
+              </ion-list>
+            </ng-template>
+          </div>          
+        </details>
+      </ul>
+    </li>
+    
   </div>
 </ng-template>
 
@@ -92,7 +104,7 @@
         </p>
       </div>
 
-      <ion-button class="gradient help-modal__button" (click)="helpModal.dismiss()">Я понял</ion-button>
+      <ion-button class="gradient help-modal__button" (click)="helpModal.dismiss()">Понял</ion-button>
     </ion-content>
   </ng-template>
 </ion-modal>

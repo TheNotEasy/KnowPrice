@@ -13,22 +13,33 @@
       <div class="shop container">
         <ng-container *ngIf="readyPromise | async; else loading">
           <ng-container *ngFor="let shop of items | array">
-            <p class="container__title shop__name">{{ shops[shop.key] }}</p>
+            <p class="container__title shop__name">{{ shop.key }}</p>
             <ion-list class="goods__list">
-              <ion-item *ngFor="let item of shop.value" #ionItem
-                        (mousedown)="itemMouseDown($any(ionItem).el, item.id)"
-                        (mouseup)="itemMouseUp($any(ionItem).el, item.id)"
-                        (mouseleave)="itemMouseLeave($any(ionItem).el, item.id)"> <!-- I don't know how to get IonItem element otherwise -->
-                <p slot="start">{{ item.name }}</p>
-                <p slot="end">{{ item.price }} руб</p>
+              <ion-item *ngFor="let item of shop.value" #ionItem>
+                <ion-item class="nested-ion-item" lines="none">
+                  <ion-checkbox slot="start"></ion-checkbox>
+                  <p slot="start">{{ item.name }}</p>
+                  <p slot="end">{{ item.price }} руб</p>
+                </ion-item>
+                <ion-buttons slot="end" class="buttons">
+                  <ion-button slot="start">
+                    <ion-icon name="share-outline"></ion-icon>
+                  </ion-button>
+                  <ion-button slot="end">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
               </ion-item>
             </ion-list>
           </ng-container>
         </ng-container>
       </div>
-      
-      
     </div>
   </ion-content>
+  <ion-footer>
+    <div class="container">
+      <p class="container__title">Итого: {{ getItemPriceSum() }} руб</p>
+    </div>
+  </ion-footer>
 </ng-container>
 

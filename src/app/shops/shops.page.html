@@ -22,10 +22,9 @@
           <app-item [id]="item.id"
                     [name]="item.name"
                     [price]="item.price" 
-                    [imageAlt]="item.name" 
-                    [shopId]="data.id" 
+                    [imageAlt]="item.name"
                     [category]="item.category" 
-                    [shopName]="data.name" 
+                    [shop]="data" 
                     [sale]="item.sale"
                     [inStock]="item.in_stock"
                     *ngFor="let item of data?.item_set">

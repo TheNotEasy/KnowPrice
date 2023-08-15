@@ -140,6 +140,30 @@ ul {
     transform: translate(-50%, -50%);
 }
 
-.search-results__details ion-list {
-    margin-top: 20px;
+.search-results__list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+.search-results__tag-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+.tag__details {
+    margin-top: 10px;
+}
+
+.search-results__text {
+    text-align: center;
+}
+
+.search-results__summary {
+    padding: 10px 15px;
+    background-color: var(--ion-background-color-shade);
+    border-radius: 10px;
 }
