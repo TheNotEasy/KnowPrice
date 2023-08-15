@@ -15,7 +15,10 @@
           <ng-container *ngFor="let shop of items | array">
             <p class="container__title shop__name">{{ shops[shop.key] }}</p>
             <ion-list class="goods__list">
-              <ion-item *ngFor="let item of shop.value" (mousedown)="itemMouseDown($any(ionItem), item.id)" (mouseup)="itemMouseUp($any(ionItem), item.id)" (mouseleave)="itemMouseUp(ionItem, item.id)" [button]="true" #ionItem>
+              <ion-item *ngFor="let item of shop.value" #ionItem
+                        (mousedown)="itemMouseDown($any(ionItem).el, item.id)"
+                        (mouseup)="itemMouseUp($any(ionItem).el, item.id)"
+                        (mouseleave)="itemMouseLeave($any(ionItem).el, item.id)"> <!-- I don't know how to get IonItem element otherwise -->
                 <p slot="start">{{ item.name }}</p>
                 <p slot="end">{{ item.price }} руб</p>
               </ion-item>

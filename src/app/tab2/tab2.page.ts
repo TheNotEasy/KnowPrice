@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChildren } from '@angular/core';
 import { GlobalService } from '../global.service';
 import { ApiService, RequestMethod, RequestTarget } from '../api.service';
 import { CheckboxCustomEvent, IonItem } from '@ionic/angular';
@@ -24,11 +24,14 @@ export class Tab2Page {
 
   timeoutHandler: NodeJS.Timeout | null = null
 
+  @ViewChildren("item", { read: ElementRef }) nativeItems!: ElementRef<HTMLIonItemElement>;
+
   constructor(
     public global: GlobalService,
     public api: ApiService,
     public router: Router,
-    public cart: CartService) {
+    public cart: CartService,
+    private renderer: Renderer2) {
     cart.addEventListener('changed', () => {this.onCartChange()})
   }
 
@@ -99,23 +102,13 @@ export class Tab2Page {
     })
   }
 
+
   ionViewWillEnter() {
     this.updateItems()
   }
 
-  itemMouseUp(ionItem: IonItem, itemId: number) {
-    console.log('asdup')
-
-    console.log(ionItem)
-    if (this.timeoutHandler) {
-      clearTimeout(this.timeoutHandler);
-      this.timeoutHandler = null;
-      this.router.navigate(['items', itemId])
-    }
-  }
-
-  itemMouseLeave(ionItem: {el: HTMLIonItemElement}, itemId: number) {
-    ionItem.el.classList.remove('hovered-item')
+  itemMouseUp(ionItem: HTMLIonItemElement, itemId: number) {
+    this.renderer.removeClass(ionItem, "hovered-item")
 
     if (this.timeoutHandler) {
       clearTimeout(this.timeoutHandler);
@@ -124,10 +117,18 @@ export class Tab2Page {
     }
   }
 
-  itemMouseDown(ionItem: {el: HTMLIonItemElement}, itemId: number) {
-    console.log('asddown')
+  itemMouseLeave(ionItem: HTMLIonItemElement, itemId: number) {
+    this.renderer.removeClass(ionItem, "hovered-item")
 
-    ionItem.el.classList.add('hovered-item')
+    if (this.timeoutHandler) {
+      clearTimeout(this.timeoutHandler);
+      this.timeoutHandler = null;
+    }
+  }
+
+  itemMouseDown(ionItem: HTMLIonItemElement, itemId: number) {
+    this.renderer.addClass(ionItem, "hovered-item")
+    
     this.timeoutHandler = setTimeout(() => {
       this.cart.removeItem(itemId)
       this.timeoutHandler = null
