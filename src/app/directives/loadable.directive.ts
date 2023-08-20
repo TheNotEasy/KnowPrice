@@ -7,7 +7,7 @@ import { IonModal, LoadingController } from '@ionic/angular';
 })
 export class LoadableDirective {
   @Input() appLoadable!: TemplateRef<any>;
-  @Input('promise') readyPromise!: Promise<any>;
+  @Input('promise') readyPromise: Promise<any> | undefined;
   @Input('callback') callback!: (() => void) | null;
   @Input() modal: IonModal | null = null;
 
@@ -17,9 +17,10 @@ export class LoadableDirective {
               private loadingController: LoadingController) {}
 
   async ngOnChanges(changes: SimpleChanges) {
-    
-
     let promise: Promise<any> = changes['readyPromise'].currentValue;
+    console.log("Changed!")
+    if (!promise) return;
+
     this.viewContainerRef.clear();
     // let spinnerComponent = this.viewContainerRef.createComponent(IonLoad);
     // let spinnerElementStyle: CSSStyleDeclaration = spinnerComponent.location.nativeElement.style;

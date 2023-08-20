@@ -4,5 +4,5 @@
     <ion-text>{{ name }}</ion-text>
     <ion-text>{{ price }} руб</ion-text>
   </div>
-  <ion-checkbox slot="end" (ionChange)="onClick($any($event))" #checkbox></ion-checkbox>
+  <ion-checkbox slot="end" (ionChange)="onClick($any($event))" [checked]="cart.includes(id)" #checkbox></ion-checkbox>
 </ion-item>

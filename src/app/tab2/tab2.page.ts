@@ -4,6 +4,7 @@ import { ApiService, RequestMethod, RequestTarget } from '../api.service';
 import { CartService } from '../cart.service';
 import { Item } from '../target.types';
 import { Router } from '@angular/router';
+import { CheckboxCustomEvent, GestureController, IonCheckbox } from '@ionic/angular';
 
 
 @Component({
@@ -14,29 +15,51 @@ import { Router } from '@angular/router';
 export class Tab2Page {
   items: Record<string, Item[]> = {}
 
-  readyPromise!: Promise<any>
+  readyPromise: Promise<any> | undefined
   isLoadingFailed = false
 
-  @ViewChildren("item", { read: ElementRef }) nativeItems!: ElementRef<HTMLIonItemElement>;
+  _deleteModeTriggered = false
+
+  get deleteModeTriggered() {
+    return this._deleteModeTriggered
+  }
+
+  set deleteModeTriggered(value) {
+    this._deleteModeTriggered = value
+    if (!value)
+      this.deleteCheckboxSelected = []
+  }
+
+  timeoutHandler: NodeJS.Timeout | null = null
+
+  deleteCheckboxSelected: number[] = []
+
+  updateItemsCallback = () => {this.updateItems()}
+
+  @ViewChildren("item", { read: ElementRef }) nativeItems!: ElementRef<HTMLIonItemElement>[];
+  @ViewChildren("deleteCheckbox", { read: ElementRef }) deleteCheckboxes!: ElementRef<HTMLIonCheckboxElement>[];
 
   constructor(
     public global: GlobalService,
     public api: ApiService,
     public router: Router,
-    public cart: CartService) {
-    cart.addEventListener('changed', () => {this.updateItems()})
+    public cart: CartService,
+    private gesture: GestureController) {
+    cart.addEventListener('changed', this.updateItemsCallback)
   }
 
   getItemGroup(shop: string) {
     const group = this.items[shop]
     if (group === undefined) {
       this.items[shop] = []
-      return []
+      return this.items[shop]
     }
     return group
   }
 
-  async updateItems() {
+  private async _updateItems() {
+    await this.global.readyPromise
+
     for (const key of this.cart.cartList) {
       const cache = this.global.cachedItems[key]
       let value: Item;
@@ -48,10 +71,12 @@ export class Tab2Page {
       }
       this.getItemGroup(value.shop.name).push(value)
     }
+
+    return true
   }
 
-  ionViewWillEnter() {
-    this.updateItems()
+  updateItems() {
+    this.readyPromise = this._updateItems()
   }
 
   getItemPriceSum() {
@@ -60,6 +85,53 @@ export class Tab2Page {
       for (const item of items) {
         sum += item.price
       }
+    }
+    
+    return sum;
+  }
+
+  ngOnInit() {
+    this.updateItems()
+  }
+
+  onMark(id: number, event: CheckboxCustomEvent) {
+    if (event.detail.checked) 
+      this.global.markedCartList.push(id)
+    else 
+      this.global.markedCartList.splice(
+        this.global.markedCartList.indexOf(id),
+        1
+      )
+    this.global.commit()
+  }
+
+  holdCount(){
+    console.log("asd")
+    this.timeoutHandler = setTimeout(() => {
+      console.log("Holded")
+      this.deleteModeTriggered = true
+      this.timeoutHandler = null
+    }, 1000);
+  }
+
+  endCount(id: number){
+    if (this.timeoutHandler) {
+      clearTimeout(this.timeoutHandler);
+      this.timeoutHandler = null;
+
+      this.router.navigate(['items', id])
+    }
+  }
+
+  onTap(id: number) {
+    if (!this.deleteModeTriggered)
+      this.router.navigate(['items', id])
+    else {
+      const index = this.deleteCheckboxSelected.indexOf(id)
+      if (index)
+        this.deleteCheckboxSelected.splice(index, 1)
+      else
+        this.deleteCheckboxSelected.push(id)
     }
   }
 }

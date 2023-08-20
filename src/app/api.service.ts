@@ -108,7 +108,7 @@ export class ApiService {
 
     await this.global.readyPromise
 
-    const url = `${this.apiUrl}/${target}/${extraUrl}/`
+    const url = `${this.apiUrl}/${target}/${extraUrl ? extraUrl + '/' : ''}`
 
     const cacheKey = `${url}${normBody ? hash(normBody) : ''}`
     const cache = this.global.cache[cacheKey]

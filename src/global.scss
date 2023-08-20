@@ -43,7 +43,7 @@
     padding-left: 25px;
     padding-right: 25px;
 
-    margin-top: 70px;
+    margin-top: 30px;
 
     position: relative;
 }
@@ -67,13 +67,12 @@ p {
     margin-bottom: 50px;
 }
 
-ion-toolbar {
-    --background: var(--ion-background-color);
+ion-header {
+    --height: 80px;
 }
 
-ion-header::after {
-    background-image: none;
-    display: none;
+ion-toolbar {
+    --background: var(--ion-background-color);
 }
 
 .loading__layer-1 {

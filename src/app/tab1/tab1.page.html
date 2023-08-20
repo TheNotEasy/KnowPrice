@@ -1,3 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-side-menu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Поиск
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content [fullscreen]="true">
   <div class="wrapper">
     <div class="container tags">
@@ -74,11 +84,10 @@
                 <app-item [name]="item.name" [price]="item.price" [inStock]="item.in_stock" [sale]="item.sale" [id]="item.id" [shop]="item.shop" *ngFor="let item of searchResults[tagIndex]"></app-item>
               </ion-list>
             </ng-template>
-          </div>          
+          </div>
         </details>
       </ul>
     </li>
-    
   </div>
 </ng-template>
 

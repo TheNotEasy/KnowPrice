@@ -9,6 +9,8 @@ import { Tab2PageRoutingModule } from './tab2-routing.module';
 import { ItemComponentSharedModule } from '../shared/item.shared.module';
 import { ArrayPipe } from '../array.pipe';
 import { ErrorComponentSharedModule } from "../shared/error.shared.module";
+import { LoadableDirectiveSharedModule } from '../shared/loadable.shared.module';
+import { LongPressDirectiveSharedModule } from '../shared/long-press.shared.module';
 
 @NgModule({
     declarations: [Tab2Page, ArrayPipe],
@@ -20,6 +22,8 @@ import { ErrorComponentSharedModule } from "../shared/error.shared.module";
         Tab2PageRoutingModule,
         ItemComponentSharedModule,
         ErrorComponentSharedModule,
+        LoadableDirectiveSharedModule,
+        LongPressDirectiveSharedModule,
     ]
 })
 export class Tab2PageModule {}

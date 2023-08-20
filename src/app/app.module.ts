@@ -10,9 +10,10 @@ import { GlobalService } from './global.service';
 import { LanguageService } from './language.service';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { ApiService } from './api.service';
+import { AccountBannerComponent } from './components/account-banner/account-banner.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AccountBannerComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot()],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, GlobalService, LanguageService, ApiService],
   bootstrap: [AppComponent],

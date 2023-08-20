@@ -129,10 +129,4 @@ export class ShopsPage implements OnInit {
       parent.hidden = item.category !== id
     })
   }
-
-  ionViewWillEnter() {
-    this.items.forEach(item => {
-      item.updateView()
-    })
-  }
 }

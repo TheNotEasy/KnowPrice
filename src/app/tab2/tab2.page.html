@@ -1,45 +1,55 @@
 <ng-container>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button menu="main-side-menu"></ion-menu-button>
+      </ion-buttons>
+      <ion-title [innerText]="deleteModeTriggered ? 'Удалить элементы' : 'Список'">
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="deleteModeTriggered = !deleteModeTriggered">
+          <ion-icon [name]="deleteModeTriggered ? 'close' : 'pencil'"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
   <ion-content [fullscreen]="true">
     <div class="container list">
-      <p class="container__title">Список покупок</p>
-
-      <ng-template #loading>
-        <ion-spinner style="margin: 100px auto; text-align: center; width: 70%;" *ngIf="!isLoadingFailed; else loadingFailed"></ion-spinner>
-      </ng-template>
-      <ng-template #loadingFailed>
-        <app-error></app-error>
-      </ng-template>
-
       <div class="shop container">
-        <ng-container *ngIf="readyPromise | async; else loading">
-          <ng-container *ngFor="let shop of items | array">
-            <p class="container__title shop__name">{{ shop.key }}</p>
-            <ion-list class="goods__list">
-              <ion-item *ngFor="let item of shop.value" #ionItem>
-                <ion-item class="nested-ion-item" lines="none">
-                  <ion-checkbox slot="start"></ion-checkbox>
-                  <p slot="start">{{ item.name }}</p>
-                  <p slot="end">{{ item.price }} руб</p>
+        <ng-container [appLoadable]="onLoaded" [promise]="readyPromise" [callback]="updateItemsCallback">
+          <ng-template #onLoaded>
+            <ng-container *ngFor="let shop of items | array">
+              <p class="container__title shop__name">{{ shop.key }}</p>
+              <ion-list class="goods__list">
+                <ion-item *ngFor="let item of shop.value" class="list__item"
+                          #ionItem
+                          lines="none" 
+                          [button]="true" 
+                          long-press
+                          (tap)="onTap(item.id)"
+                          (press)="deleteModeTriggered = true"
+                          [delay]="500">
+                  <ion-checkbox slot="start" (ionChange)="onMark(item.id, $any($event))"
+                                             [checked]="global.markedCartList.includes(item.id)" 
+                                             *ngIf="!deleteModeTriggered"
+                                             #checkbox></ion-checkbox>
+                  <div class="item__clickable">
+                    <p [classList]="[global.markedCartList.includes(item.id) && !deleteModeTriggered ? 'cross' : '']">{{ item.name }}</p>
+                    <p slot="end">{{ item.price }} руб</p>
+                  </div>
+                  <ion-checkbox slot="end" *ngIf="deleteModeTriggered" [id]="item.id" [checked]="deleteCheckboxSelected.includes(item.id)"></ion-checkbox>
+                  <ion-button *ngIf="!deleteModeTriggered" hidden></ion-button>  <!-- Hacky way to make ion-item not clickable -->
                 </ion-item>
-                <ion-buttons slot="end" class="buttons">
-                  <ion-button slot="start">
-                    <ion-icon name="share-outline"></ion-icon>
-                  </ion-button>
-                  <ion-button slot="end">
-                    <ion-icon name="trash-outline"></ion-icon>
-                  </ion-button>
-                </ion-buttons>
-              </ion-item>
-            </ion-list>
-          </ng-container>
+              </ion-list>
+            </ng-container>
+          </ng-template>
         </ng-container>
       </div>
     </div>
   </ion-content>
-  <ion-footer>
-    <div class="container">
+  <ion-footer *ngIf="readyPromise | async">
+    <div class="container" *ngIf="!deleteModeTriggered">
       <p class="container__title">Итого: {{ getItemPriceSum() }} руб</p>
     </div>
   </ion-footer>
 </ng-container>
-

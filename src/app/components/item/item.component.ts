@@ -45,11 +45,7 @@ export class ItemComponent {
 
   inCartAlready!: boolean
   
-  constructor(public global: GlobalService, public lang: LanguageService, private cart: CartService) { }
-
-  updateView() {
-    this.checkbox.checked = this.global.cartList.includes(this.id)
-  }
+  constructor(public global: GlobalService, public lang: LanguageService, public cart: CartService) { }
 
   ngAfterViewInit() {
     this.inCartAlready = this.global.cartList.includes(this.id)
@@ -57,10 +53,6 @@ export class ItemComponent {
   }
 
   onClick(event: CheckboxCustomEvent) {
-    if (this.inCartAlready) {
-      this.inCartAlready = false
-      return
-    }
     if (event.detail.checked) {
       this.cart.addItem(
         new ItemClass(this.id, this.name, this.image, this.imageAlt, this.price, this.shop)

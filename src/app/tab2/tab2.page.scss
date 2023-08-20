@@ -41,6 +41,7 @@
 .shop {
     margin-top: 0;
     gap: 20px;
+    padding: 0;
 }
 
 .hovered-item {
@@ -71,10 +72,39 @@
 // }
 
 .nested-ion-item {
-    width: 100%;
-    margin-right: 0;
+    ion-item {
+        width: 100%;
+    }
+    ion-icon {
+        font-size: 20px;
+    }
+
+    &::part(native) {
+        padding: 0;
+    }
 }
 
-.buttons {
-    gap: 20px;
+.details-button {
+    height: 100%;
+    aspect-ratio: 1;
+    margin-left: 10px;
+    margin-right: -5px;
+}
+
+.item__clickable {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cross {
+    color: var(--theme-secondary-color);
+    text-decoration: line-through;
+}
+
+.list__item {
+    --min-height: 20px;
 }
