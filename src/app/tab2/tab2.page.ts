@@ -4,7 +4,7 @@ import { ApiService, RequestMethod, RequestTarget } from '../api.service';
 import { CartService } from '../cart.service';
 import { Item } from '../target.types';
 import { Router } from '@angular/router';
-import { CheckboxCustomEvent, GestureController, IonCheckbox } from '@ionic/angular';
+import { CheckboxCustomEvent, GestureController, IonCheckbox, IonLabel } from '@ionic/angular';
 
 
 @Component({
@@ -43,8 +43,7 @@ export class Tab2Page {
     public global: GlobalService,
     public api: ApiService,
     public router: Router,
-    public cart: CartService,
-    private gesture: GestureController) {
+    public cart: CartService) {
     cart.addEventListener('changed', this.updateItemsCallback)
   }
 
@@ -65,7 +64,9 @@ export class Tab2Page {
       let value: Item;
       if (cache === undefined) {
         value = (await this.api.makeRequest(
-          RequestMethod.GET, RequestTarget.ITEM, {doRaise: true})).data
+          RequestMethod.GET, RequestTarget.ITEM, {doRaise: true, extraUrl: key.toString()})).data
+        this.global.cachedItems[key] = value
+        this.global.commit()
       } else {
         value = cache as Item
       }
@@ -94,19 +95,23 @@ export class Tab2Page {
     this.updateItems()
   }
 
-  onMark(id: number, event: CheckboxCustomEvent) {
-    if (event.detail.checked) 
+  onMark(id: number, event: CheckboxCustomEvent, label: HTMLIonLabelElement) {
+    if (event.detail.checked) {
       this.global.markedCartList.push(id)
-    else 
+      label.classList.add('cross')
+    }     
+    else {
       this.global.markedCartList.splice(
         this.global.markedCartList.indexOf(id),
         1
       )
+      label.classList.remove('cross')
+    }
+      
     this.global.commit()
   }
 
   holdCount(){
-    console.log("asd")
     this.timeoutHandler = setTimeout(() => {
       console.log("Holded")
       this.deleteModeTriggered = true
@@ -124,11 +129,12 @@ export class Tab2Page {
   }
 
   onTap(id: number) {
+    console.log("ASD1")
     if (!this.deleteModeTriggered)
       this.router.navigate(['items', id])
     else {
       const index = this.deleteCheckboxSelected.indexOf(id)
-      if (index)
+      if (index !== -1)
         this.deleteCheckboxSelected.splice(index, 1)
       else
         this.deleteCheckboxSelected.push(id)

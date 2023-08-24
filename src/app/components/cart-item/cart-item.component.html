@@ -1,0 +1,21 @@
+<ion-item-sliding (ionDrag)="test($event)">
+  <ion-item>
+    <ion-checkbox slot="start" (ionChange)="onMark(item.id, $any($event))"
+                               [checked]="global.markedCartList.includes(item.id)"
+                               #checkbox></ion-checkbox>
+
+    <ion-label [class.cross]="checkbox.checked">{{ item.name }}</ion-label>
+    <p slot="end">{{ item.price }} руб</p>
+  </ion-item>
+
+  <ion-item-options side="end">
+    <ion-item-option color="light" expandable>
+      Подробнее
+    </ion-item-option>
+  </ion-item-options>
+  <ion-item-options side="start">
+    <ion-item-option color="danger" expandable>
+      Удалить
+    </ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>

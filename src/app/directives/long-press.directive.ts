@@ -62,11 +62,28 @@ export class LongPressDirective implements AfterViewInit {
       },
       onEnd: ev => {
         this.longPressActive = false;
-        this.zone.run(() => {this.tap.emit()})
-        clearInterval(this.action)
+        this.zone.run(() => {
+          this.emit()
+        });
       }
     });
     gesture.enable(true);
+  }
+
+
+  private emit() {
+    const xDistance = Math.abs(this.positions.start.x - this.positions.current.x);
+    const yDistance = Math.abs(this.positions.start.y - this.positions.current.y);
+    if (xDistance > 15 || yDistance > 15)
+      // User dragged finger
+      return;
+
+    if (this.longPressActive === true) {
+      this.longPressActive = false;
+      this.press.emit();
+    } else {
+      this.tap.emit();
+    }
   }
 
   private longPressAction() {
@@ -75,19 +92,7 @@ export class LongPressDirective implements AfterViewInit {
     }
     this.action = setTimeout(() => {
       this.zone.run(() => {
-        // Check distance
-        const xDistance = Math.abs(this.positions.start.x - this.positions.current.x);
-        const yDistance = Math.abs(this.positions.start.y - this.positions.current.y);
-        if (xDistance > 15 || yDistance > 15)
-          // User dragged finger
-          return;
-
-        if (this.longPressActive === true) {
-          this.longPressActive = false;
-          this.press.emit();
-        } else {
-          this.tap.emit();
-        }
+        this.emit()
       });
     }, this.delay);
   }

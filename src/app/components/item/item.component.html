@@ -1,8 +1,8 @@
 <ion-item class="item" #card>
   <img alt="{{ imageAlt }}" src="{{ image }}" slot="start">
   <div class="item__info" [routerLink]="['/items', id]">
-    <ion-text>{{ name }}</ion-text>
-    <ion-text>{{ price }} руб</ion-text>
+    <ion-label>{{ name }}</ion-label>
+    <ion-label>{{ price }} руб</ion-label>
   </div>
-  <ion-checkbox slot="end" (ionChange)="onClick($any($event))" [checked]="cart.includes(id)" #checkbox></ion-checkbox>
+  <ion-checkbox slot="end" (ionChange)="onClick($any($event))" [checked]="checked === undefined ? cart.includes(id) : checked" #checkbox></ion-checkbox>
 </ion-item>

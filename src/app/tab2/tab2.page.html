@@ -21,25 +21,11 @@
             <ng-container *ngFor="let shop of items | array">
               <p class="container__title shop__name">{{ shop.key }}</p>
               <ion-list class="goods__list">
-                <ion-item *ngFor="let item of shop.value" class="list__item"
-                          #ionItem
-                          lines="none" 
-                          [button]="true" 
-                          long-press
-                          (tap)="onTap(item.id)"
-                          (press)="deleteModeTriggered = true"
-                          [delay]="500">
-                  <ion-checkbox slot="start" (ionChange)="onMark(item.id, $any($event))"
-                                             [checked]="global.markedCartList.includes(item.id)" 
-                                             *ngIf="!deleteModeTriggered"
-                                             #checkbox></ion-checkbox>
-                  <div class="item__clickable">
-                    <p [classList]="[global.markedCartList.includes(item.id) && !deleteModeTriggered ? 'cross' : '']">{{ item.name }}</p>
-                    <p slot="end">{{ item.price }} руб</p>
-                  </div>
-                  <ion-checkbox slot="end" *ngIf="deleteModeTriggered" [id]="item.id" [checked]="deleteCheckboxSelected.includes(item.id)"></ion-checkbox>
-                  <ion-button *ngIf="!deleteModeTriggered" hidden></ion-button>  <!-- Hacky way to make ion-item not clickable -->
-                </ion-item>
+                <app-cart-item [item]="item" *ngFor="let item of shop.value"></app-cart-item>
+<!-- 
+                <app-item [name]="item.name" [price]="item.price" *ngFor="let item of shop.value" (onChange)="onMark(item.id, $any($event))" [checked]="global.markedCartList.includes(item.id)">
+
+                </app-item> -->
               </ion-list>
             </ng-container>
           </ng-template>

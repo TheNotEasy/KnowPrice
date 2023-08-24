@@ -11,9 +11,10 @@ import { ArrayPipe } from '../array.pipe';
 import { ErrorComponentSharedModule } from "../shared/error.shared.module";
 import { LoadableDirectiveSharedModule } from '../shared/loadable.shared.module';
 import { LongPressDirectiveSharedModule } from '../shared/long-press.shared.module';
+import { CartItemComponent } from '../components/cart-item/cart-item.component';
 
 @NgModule({
-    declarations: [Tab2Page, ArrayPipe],
+    declarations: [Tab2Page, ArrayPipe, CartItemComponent],
     imports: [
         IonicModule,
         CommonModule,

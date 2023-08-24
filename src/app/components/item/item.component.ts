@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild, EventEmitter, SimpleChanges } from '@angular/core';
 import { CheckboxCustomEvent, IonCheckbox, IonItem } from '@ionic/angular';
 import { CartService } from 'src/app/cart.service';
 import { GlobalService } from 'src/app/global.service';
@@ -24,7 +24,7 @@ export class ItemClass {
 })
 export class ItemComponent {
   @Input() id: number = 0;
-  @Input() name: string = '';
+  @Input() name!: string;
   @Input() image: string = '';
   @Input() imageAlt: string = '';
   @Input() price: number = 0;
@@ -33,6 +33,8 @@ export class ItemComponent {
   @Input() shop: {id: number, name: string} = {id: 0, name: ''};
   @Input() sale: number = 0;
   @Input() inStock: boolean = true;
+  @Input() checked!: boolean;
+  @Output() onChange = new EventEmitter();
 
   @ViewChild('card')
   element!: IonItem & {el: HTMLIonItemElement};
@@ -42,17 +44,14 @@ export class ItemComponent {
 
   @ViewChild('checkbox')
   checkbox!: IonCheckbox
-
-  inCartAlready!: boolean
   
   constructor(public global: GlobalService, public lang: LanguageService, public cart: CartService) { }
 
-  ngAfterViewInit() {
-    this.inCartAlready = this.global.cartList.includes(this.id)
-    console.log(this)
-  }
-
   onClick(event: CheckboxCustomEvent) {
+    if (this.onChange.observed) {
+      this.onChange.emit(event)
+      return
+    }
     if (event.detail.checked) {
       this.cart.addItem(
         new ItemClass(this.id, this.name, this.image, this.imageAlt, this.price, this.shop)
