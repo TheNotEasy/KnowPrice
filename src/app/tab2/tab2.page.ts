@@ -43,7 +43,8 @@ export class Tab2Page {
     public global: GlobalService,
     public api: ApiService,
     public router: Router,
-    public cart: CartService) {
+    public cart: CartService
+  ) {
     cart.addEventListener('changed', this.updateItemsCallback)
   }
 
@@ -57,7 +58,10 @@ export class Tab2Page {
   }
 
   private async _updateItems() {
+    console.log("Updating cart view")
     await this.global.readyPromise
+
+    this.items = {}
 
     for (const key of this.cart.cartList) {
       const cache = this.global.cachedItems[key]
@@ -95,20 +99,14 @@ export class Tab2Page {
     this.updateItems()
   }
 
-  onMark(id: number, event: CheckboxCustomEvent, label: HTMLIonLabelElement) {
-    if (event.detail.checked) {
-      this.global.markedCartList.push(id)
-      label.classList.add('cross')
-    }     
-    else {
-      this.global.markedCartList.splice(
-        this.global.markedCartList.indexOf(id),
-        1
-      )
-      label.classList.remove('cross')
+  onMark(id: number) {
+    if (!this.deleteModeTriggered) return
+    let index = this.deleteCheckboxSelected.indexOf(id)
+    if (index === -1) {
+      this.deleteCheckboxSelected.push(id)
+    } else {
+      this.deleteCheckboxSelected.splice(id, 1)
     }
-      
-    this.global.commit()
   }
 
   holdCount(){

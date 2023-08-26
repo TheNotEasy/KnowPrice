@@ -21,7 +21,7 @@
             <ng-container *ngFor="let shop of items | array">
               <p class="container__title shop__name">{{ shop.key }}</p>
               <ion-list class="goods__list">
-                <app-cart-item [item]="item" *ngFor="let item of shop.value"></app-cart-item>
+                <app-cart-item [item]="item" [deleteModeTriggered]="deleteModeTriggered" [checkedInDeleteMode]="deleteCheckboxSelected.includes(item.id)" (onChange)="onMark(item.id)" *ngFor="let item of shop.value"></app-cart-item>
 <!-- 
                 <app-item [name]="item.name" [price]="item.price" *ngFor="let item of shop.value" (onChange)="onMark(item.id, $any($event))" [checked]="global.markedCartList.includes(item.id)">
 
