@@ -7,6 +7,12 @@
       <ion-title [innerText]="deleteModeTriggered ? 'Удалить элементы' : 'Список'">
       </ion-title>
       <ion-buttons slot="end">
+        <ion-button id="help">
+          <ion-icon name="help"></ion-icon>
+        </ion-button>
+        <ion-button (click)="deleteAll()">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
         <ion-button (click)="deleteModeTriggered = !deleteModeTriggered">
           <ion-icon [name]="deleteModeTriggered ? 'close' : 'pencil'"></ion-icon>
         </ion-button>
@@ -34,8 +40,38 @@
     </div>
   </ion-content>
   <ion-footer *ngIf="readyPromise | async">
-    <div class="container" *ngIf="!deleteModeTriggered">
-      <p class="container__title">Итого: {{ getItemPriceSum() }} руб</p>
+    <div class="container">
+      <ng-container *ngIf="!deleteModeTriggered">
+        <p class="container__title">Итого: {{ getItemPriceSum() }} руб</p>
+      </ng-container>
+      <ng-container *ngIf="deleteModeTriggered">
+        <ion-button color="danger" (click)="deleteSelected()">Удалить выделенные товары</ion-button>
+      </ng-container>
     </div>
   </ion-footer>
 </ng-container>
+
+<ion-modal trigger="help" #helpModal>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button (click)="helpModal.dismiss()" defaultHref='/tabs/tab2'></ion-back-button>
+        </ion-buttons>
+        
+        <ion-title slot="start">Помощь</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <div class="help__wrapper">
+        <p class="help__explain">
+          Чтобы посмотреть подробности товара, смахните его влево, а чтобы удалить, смахните вправо
+        </p>
+        <div class="help__example">
+          <p class="help__example-text">Пример смахивания:</p>
+          <div class="help__animation"></div>
+        </div>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -111,3 +111,33 @@
 .item__price {
     width: 50px;
 }
+
+.help__animation {
+    background-image: url('/assets/animations/tab2.swipe-animation.gif');
+    background-size: 100%;
+    width: 80%;
+    aspect-ratio: 1;
+
+    margin: auto;
+    filter: invert(93.5%);
+    margin-top: 30px;
+}
+
+.help__wrapper {
+    text-align: center;
+
+    margin-top: 50px;
+
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+}
+
+.help__example {
+    margin: auto;
+}
+
+.help__explain, .help__example-text {
+    font-size: 20px;
+}

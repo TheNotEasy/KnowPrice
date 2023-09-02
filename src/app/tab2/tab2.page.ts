@@ -4,7 +4,7 @@ import { ApiService, RequestMethod, RequestTarget } from '../api.service';
 import { CartService } from '../cart.service';
 import { Item } from '../target.types';
 import { Router } from '@angular/router';
-import { CheckboxCustomEvent, GestureController, IonCheckbox, IonLabel } from '@ionic/angular';
+import { AlertController, CheckboxCustomEvent, GestureController, IonCheckbox, IonLabel } from '@ionic/angular';
 
 
 @Component({
@@ -43,7 +43,8 @@ export class Tab2Page {
     public global: GlobalService,
     public api: ApiService,
     public router: Router,
-    public cart: CartService
+    public cart: CartService,
+    private alertController: AlertController
   ) {
     cart.addEventListener('changed', this.updateItemsCallback)
   }
@@ -137,5 +138,49 @@ export class Tab2Page {
       else
         this.deleteCheckboxSelected.push(id)
     }
+  }
+
+  async delete(items: Item[] | number[], onDismiss?: () => any) {
+    const alert = await this.alertController.create({
+      header: 'Вы уверены?',
+      message: `Вы точно хотите удалить (${items.length}) товары`,
+      buttons: [
+        {
+          text: 'Нет',
+          role: 'cancel',
+        },
+        {
+          text: 'Да',
+          role: 'destructive',
+          handler: () => {
+            items.forEach((item) => {
+              if (typeof item === 'number')
+                this.cart.removeItem(item)
+              else
+                this.cart.removeItem(item.id)
+            })
+          }
+        }
+      ],
+      
+    });
+    
+    await alert.present()
+    if (onDismiss) {
+      await alert.onWillDismiss()
+      onDismiss()
+    } 
+  }
+
+  async deleteAll() {
+    let items: Item[] = []
+    for (const value of Object.values(this.items)) {
+      items = [...items, ...value]
+    }
+    await this.delete(items)
+  }
+
+  async deleteSelected() {
+    await this.delete(this.deleteCheckboxSelected, () => {this.deleteModeTriggered = false})
   }
 }
