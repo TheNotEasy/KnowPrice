@@ -1,31 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ItemClass } from './components/item/item.component';
 import { Storage } from '@ionic/storage-angular';
-import { ApiResponse } from './target.types';
-
-
-class CartList extends Array {
-  markedCartList: number[]
-
-  constructor(markedCartList: number[], array?: number[]) {
-    super();
-    this.markedCartList = markedCartList
-    if (array) {
-      this.concat(this, array)
-    }
-  }
-
-  override splice(start: number, deleteCount?: number | undefined): any[];
-  override splice(start: number, deleteCount: number, ...items: any[]): any[] {
-    const id = this[start];
-    const result = super.splice(start, deleteCount, deleteCount, ...items);
-    this.markedCartList.splice(
-      this.markedCartList.indexOf(id), 1
-    )
-    console.log(this.markedCartList)
-    return result
-  }
-}
 
 
 @Injectable({
@@ -44,12 +19,17 @@ export class GlobalService {
   public accountData: Record<string, string | null> = {'username': null}
   public apiHost: string = 'http://127.0.0.1:8000';
 
+  public tab2Visited: boolean = false;
+
   private keysList: Array<string>
   public readyPromise: Promise<void>
+  private changedProperties: string[]
 
   constructor(private storage: Storage) {
     this.keysList = Object.getOwnPropertyNames(this)
     this.keysList.splice(0, 1);  // remove 'storage' property
+
+    this.changedProperties = []
 
     this.readyPromise = this.init()
   }
@@ -67,8 +47,11 @@ export class GlobalService {
     }
   }
 
-  async commit() {
-    for (const key of this.keysList) {
+  async commit(keys?: string[]) {
+    if (!keys) {
+      keys = this.keysList
+    }
+    for (const key of keys) {
       if (key == 'cache') continue;
 
       await this.storage.set(key, this[key])

@@ -6,114 +6,17 @@
     <ion-title>
       Поиск
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/search">
+        <ion-icon name="search" />
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
   <div class="wrapper">
-    <div class="container tags">
-      <p class="container__title">Теги <ion-icon name="help" class="help-icon" (click)="helpModal.present()"></ion-icon></p>
-      <ion-list>
-        <ion-item *ngFor="let tagIndex of Range(tagsList.length)">
-          {{tagsList[tagIndex]}}
-          <ion-button fill="outline" class="tag-button" slot="end" (click)="tagsList.splice(tagIndex, 1)">
-            <ion-icon name="remove"></ion-icon>
-          </ion-button>
-        </ion-item>
-        <ion-item>
-          <ion-input placeholder="Напиши тег" enterkeyhint="go" (keyup.enter)="addTag(tagInput)" [pattern]="'[a-zA-Z]'" #tagInput></ion-input>
-          <ion-button fill="outline" class="tag-button" (click)="addTag(tagInput)" [disabled]="tagInput.value == ''">
-            <ion-icon name="add"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </ion-list>
+    <div class="container">
+      <ion-infinite-scroll></ion-infinite-scroll>
     </div>
-    <div class="container find">
-      <p class="container__title">Что нужно найти?</p>
-      <ion-radio-group value="0">
-        <ion-item *ngFor="let choice of [0, 1]" class="choice">
-          <ion-icon name="{{findChoicesIcons[choice]}}" slot="start"></ion-icon>
-          <ion-label>{{findChoices[choice]}}</ion-label>
-          <ion-radio (click)="currentChoice = choice" value="{{choice}}"></ion-radio>
-        </ion-item>
-      </ion-radio-group>
-    </div>
-    <ion-button class="submit-button gradient border-r-10" id="search-event" (click)="search()" [disabled]="tagsList.length === 0">
-      Найти
-    </ion-button>
   </div>
 </ion-content>
-
-<ion-modal #modal trigger="search-event">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="end">
-          <ion-button (click)="modal.dismiss()">
-            <ion-icon name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ng-container [appLoadable]="searchResultsTemplate" [promise]="readyPromise" [callback]="searchCallback" [modal]="modal"></ng-container>
-    </ion-content>
-  </ng-template>
-</ion-modal>
-
-<ng-template #loading>
-  <ion-spinner style="margin: 100px auto; text-align: center; width: 70%;" *ngIf="!isLoadingFailed; else loadingFailed"></ion-spinner>
-</ng-template>
-
-<ng-template #loadingFailed>
-  <app-error [callback]="searchCallback"></app-error>
-</ng-template>
-
-<ng-template #searchResultsTemplate>
-  <div class="container search-results">
-    <p class="container__title search-results__title">Результаты поиска</p>
-    <li class="search-results__list">
-      <ul *ngFor="let tagIndex of Range(tagsList.length)">
-        <details class="search-results__details">
-          <summary [innerText]="tagsList[tagIndex]" class="search-results__summary"></summary>
-          <div class="tag__details">
-            <ng-container *ngIf="searchResults[tagIndex].length === 0; else showResults">
-              <p class="search-results__text">Ничего не найдено...</p>
-            </ng-container>
-            <ng-template #showResults>
-              <ion-list class="search-results__tag-list">
-                <app-item [name]="item.name" [price]="item.price" [inStock]="item.in_stock" [sale]="item.sale" [id]="item.id" [shop]="item.shop" *ngFor="let item of searchResults[tagIndex]"></app-item>
-              </ion-list>
-            </ng-template>
-          </div>
-        </details>
-      </ul>
-    </li>
-  </div>
-</ng-template>
-
-<ion-modal #helpModal class="help-modal">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title slot="start">Что такое теги?</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="helpModal.dismiss()"><ion-icon name="close"></ion-icon></ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <div class="help-modal__content">
-        <p class="search__description">В тегах нужно писать ключевые слова по типу:<br />
-          <span class="example-tags">колбаса</span>
-          <span class="example-tags">хлеб</span>
-          <span class="example-tags">сок</span>
-        </p>
-        <p class="search__description">
-          Для каждого тега будет производиться отдельный поиск
-        </p>
-      </div>
-
-      <ion-button class="gradient help-modal__button" (click)="helpModal.dismiss()">Понял</ion-button>
-    </ion-content>
-  </ng-template>
-</ion-modal>

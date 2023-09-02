@@ -2,3 +2,7 @@
     color: var(--theme-secondary-color);
     text-decoration: line-through;
 }
+
+.item__delete-checkbox {
+    --border-color: var(--ion-color-danger-tint);
+}

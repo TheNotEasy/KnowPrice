@@ -159,7 +159,7 @@ export class Tab3Page {
     }
     this.settingsNavList = [
       new NavListItem('settings', this.lang.settingsText, '/settings'),
-      new NavListItem('headset', this.lang.supportText, '/support')
+      new NavListItem('bug', this.lang.bugReportText, '/support')
     ]
   }
 

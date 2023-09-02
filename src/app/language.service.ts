@@ -22,6 +22,7 @@ export class LanguageService {
 
   public settingsText = {ru: "Настройки", en: "Settings"}
   public supportText = {ru: "Поддержка", en: "Support"}
+  public bugReportText = {ru: "Сообщить об ошибке", en: "Report bug"}
 
   public searchText = {ru: "Искать", en: "Search"}
 

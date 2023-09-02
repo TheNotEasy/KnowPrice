@@ -1,7 +1,7 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { CheckboxCustomEvent, IonCheckbox, IonItemSliding, ModalController } from '@ionic/angular';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { CheckboxCustomEvent, IonCheckbox, IonItemSliding } from '@ionic/angular';
+import { BehaviorSubject } from 'rxjs';
 import { CartService } from 'src/app/cart.service';
 import { GlobalService } from 'src/app/global.service';
 import { ItemData } from 'src/app/target.types';
@@ -13,54 +13,40 @@ import { ItemData } from 'src/app/target.types';
 })
 export class CartItemComponent {
   @Input() item!: ItemData
-
-  private _deleteModeTriggered!: boolean
-
-  get deleteModeTriggered() {
-    return this._deleteModeTriggered
-  }
-  @Input() set deleteModeTriggered(val) {
-    this._deleteModeTriggered = val
-    this.updateCheckbox(val)
-  }
+  @Input() deleteModeTriggered!: boolean
   @Input() checkedInDeleteMode!: boolean
 
   @Output() onChange = new EventEmitter()
 
-  @ViewChild('itemSliding') itemSliding!: IonItemSliding
-  @ViewChild(IonCheckbox) checkbox!: IonCheckbox
+  public mainCheckboxChecked = new BehaviorSubject(false)
 
-  onTouchEndAction: (() => void) | undefined
-
-  public checked = new BehaviorSubject<boolean>(false)
+  @ViewChild(IonItemSliding) itemSliding!: IonItemSliding
+  @ViewChild('checkbox') mainCheckbox: IonCheckbox | undefined
 
   constructor(
-    public global: GlobalService,
-    private router: Router,
     public cart: CartService,
-    public modalController: ModalController
+    private global: GlobalService,
+    private router: Router,
   ) {}
 
-  onMark(id: number, event: CheckboxCustomEvent) {
-    this.onChange.emit()
+  ngOnInit() {
+    this.updateMainChecked()
+  }
 
-    event.stopPropagation()
-    event.preventDefault()
+  onMark(event: CheckboxCustomEvent) {
+    this.onChange.emit(event)
+    this.mainCheckboxChecked.next(event.detail.checked)
 
     if (this.deleteModeTriggered) return
-
+    const index = this.global.markedCartList.indexOf(this.item.id)
     if (event.detail.checked) {
-      if (this.global.markedCartList.includes(this.item.id)) return
-      this.global.markedCartList.push(id)
+      if (index !== -1) return
+      this.global.markedCartList.push(this.item.id)
+    } else {
+      this.global.markedCartList.splice(index, 1)
     }
-    else {
-      this.global.markedCartList.splice(
-        this.global.markedCartList.indexOf(id),
-        1
-      )
-    }
-    
-    this.global.commit()
+
+    this.global.commit(["markedCartList"])
   }
 
   async onTouchEnd() {
@@ -72,11 +58,7 @@ export class CartItemComponent {
     }
   }
 
-  updateCheckbox(deleteModeTriggered = this.deleteModeTriggered) {
-    this.checked.next((
-      this.global.markedCartList.includes(this.item.id) && !deleteModeTriggered
-    ) || (
-      this.checkedInDeleteMode && deleteModeTriggered
-    ))
+  updateMainChecked() {
+    this.mainCheckboxChecked.next(this.global.markedCartList.includes(this.item.id))
   }
 }

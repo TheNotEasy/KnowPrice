@@ -34,6 +34,10 @@ const routes: Routes = [
     path: 'dev-settings',
     loadChildren: () => import('./dev-settings/dev-settings.module').then( m => m.DevSettingsPageModule)
   },
+  {
+    path: 'search',
+    loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
+  },
 ];
 @NgModule({
   imports: [

@@ -1,4 +1,5 @@
 {
     "svg.preview.background": "transparent",
     "zenMode.hideTabs": false,
+    "editor.suggest.showWords": false,
 }

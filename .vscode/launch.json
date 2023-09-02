@@ -6,7 +6,7 @@
             "type": "chrome",
             "url": "http://localhost:8100",
             "webRoot": "${workspaceFolder}",
-            "userDataDir": false,
+            "userDataDir": "Default",
             "urlFilter": "http://localhost:8100/*",
         },
         {
@@ -27,5 +27,12 @@
             "request": "launch",
             "type": "node-terminal"
         },
+    ],
+    "compounds": [
+        {
+            "name": "Run all",
+            "configurations": ["Run ionic server", "Python: Django"],
+            "stopAll": true,
+        }
     ]
 }
