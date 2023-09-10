@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CheckboxCustomEvent, IonCheckbox, IonItemSliding } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
@@ -27,6 +27,7 @@ export class CartItemComponent {
     public cart: CartService,
     private global: GlobalService,
     private router: Router,
+    private elementRef: ElementRef<HTMLElement>
   ) {}
 
   ngOnInit() {
@@ -60,5 +61,9 @@ export class CartItemComponent {
 
   updateMainChecked() {
     this.mainCheckboxChecked.next(this.global.markedCartList.includes(this.item.id))
+  }
+
+  onItemDelete() {
+    this.cart.removeItem(this.item.id)
   }
 }

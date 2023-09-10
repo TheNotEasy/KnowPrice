@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { SearchPageRoutingModule } from './search-routing.module';
 
 import { SearchPage } from './search.page';
+import { ItemComponentSharedModule } from '../shared/item.shared.module';
+import { LoadableDirectiveSharedModule } from '../shared/loadable.shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SearchPageRoutingModule
+    SearchPageRoutingModule,
+    ItemComponentSharedModule,
+    LoadableDirectiveSharedModule,
   ],
   declarations: [SearchPage]
 })

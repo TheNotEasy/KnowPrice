@@ -5,8 +5,11 @@
                                *ngIf="!deleteModeTriggered"
                                #checkbox></ion-checkbox>
 
-    <ion-label [class.cross]="(mainCheckboxChecked | async) && !deleteModeTriggered">{{ item.name }}</ion-label>
-    <p slot="end">{{ item.price }} руб</p>
+    <ion-label>
+      <ion-label [class.cross]="(mainCheckboxChecked | async) && !deleteModeTriggered" class="ion-text-wrap">{{ item.name }}</ion-label>
+      <p slot="end">{{ item.price }} руб</p>
+    </ion-label>
+    
 
     <ion-checkbox slot="start" *ngIf="deleteModeTriggered" (ionChange)="onMark($any($event))" color="danger" class="item__delete-checkbox"></ion-checkbox>
   </ion-item>
@@ -17,7 +20,7 @@
     </ion-item-option>
   </ion-item-options>
   <ion-item-options side="start" *ngIf="!deleteModeTriggered">
-    <ion-item-option color="danger" expandable (click)="cart.removeItem(item.id)">
+    <ion-item-option color="danger" expandable (click)="onItemDelete()">
       Удалить
     </ion-item-option>
   </ion-item-options>

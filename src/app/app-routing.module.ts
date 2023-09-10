@@ -38,6 +38,10 @@ const routes: Routes = [
     path: 'search',
     loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
   },
+  {
+    path: 'finish-reg',
+    loadChildren: () => import('./finish-reg/finish-reg.module').then( m => m.FinishRegPageModule)
+  },
 ];
 @NgModule({
   imports: [

@@ -4,7 +4,7 @@
       <ion-menu-button menu="main-side-menu"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Поиск
+      Лента
     </ion-title>
     <ion-buttons slot="end">
       <ion-button routerLink="/search">
@@ -14,9 +14,18 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <div class="wrapper">
-    <div class="container">
-      <ion-infinite-scroll></ion-infinite-scroll>
+  <div class="ion-padding list">
+    <ion-label class="list__title">Твой город</ion-label>
+    <div class="list__main">
+      <ion-card class="list__card" [button]="true">
+        <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" class="card__img" />
+        <ion-card-header>
+          <ion-card-title>Манчаары</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label><ion-icon name="star" /> 4.3</ion-label>
+        </ion-card-content>
+      </ion-card>
     </div>
   </div>
 </ion-content>

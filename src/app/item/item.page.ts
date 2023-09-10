@@ -40,12 +40,12 @@ export class ItemPage implements OnInit {
     this.data.markdown = marked.parse(this.data.markdown)
   }
 
-  addToCart() {
+  cartAction() {
     if (!this.inCart) {
       this.cart.addItem(new ItemClass(this.data.id, this.data.name, this.data.image, this.data.imageAlt, this.data.price, this.data.shop))
-    }
-    if (this.inCart) {
+    } else {
       this.cart.removeItem(this.cart.cartList.indexOf(this.data.id))
     }
+    this.inCart = !this.inCart
   }
 }

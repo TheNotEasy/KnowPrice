@@ -7,13 +7,13 @@ export type ItemData = {
     sale: number
     in_stock: boolean
     category: number
-}
-
-export type Item = ItemData & {
     shop: {
         id: number,
         name: string,
     }
+}
+
+export type Item = ItemData & {
     markdown: string
 }
 
@@ -44,7 +44,8 @@ export interface RequestTargetTypesMap {
     'shop-data': ShopData,
     'auth/token/login': Auth,
     'auth/users': Auth,
-    'find': Item[] | Shop[]
+    'find/item': ItemData[],
+    'find/shop': ShopData[],
 }
 
 export type ApiResponse<T = any, S = boolean> = {

@@ -3,6 +3,11 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="tabs"></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end" *ngIf="readyPromise | async">
+      <ion-button (click)="cartAction()">
+        <ion-icon [name]="'cart' + (inCart ? '' : '-outline')" class="no-ripple"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -23,7 +28,6 @@
       <img src="{{ data.image }}" alt="{{ data.name }}" class="item__image">
       <p class="item__price">{{ data.price }} руб</p>
       <app-markdown *ngIf="data.markdown" [markdown]="data.markdown"></app-markdown>
-      <ion-button class="item__add-btn" (click)="addToCart()">Добавить в корзину</ion-button>
     </ng-container>
   </div>
 </ion-content>

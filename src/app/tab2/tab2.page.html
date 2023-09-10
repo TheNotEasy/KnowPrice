@@ -4,8 +4,6 @@
       <ion-buttons slot="start">
         <ion-menu-button menu="main-side-menu"></ion-menu-button>
       </ion-buttons>
-      <ion-title [innerText]="deleteModeTriggered ? 'Удалить элементы' : 'Список'">
-      </ion-title>
       <ion-buttons slot="end">
         <ion-button id="help">
           <ion-icon name="help"></ion-icon>
@@ -22,7 +20,7 @@
   <ion-content [fullscreen]="true">
     <div class="container list">
       <div class="shop container">
-        <ng-container [appLoadable]="onLoaded" [promise]="readyPromise" [callback]="updateItemsCallback">
+        <ng-container [appLoadable]="onLoaded" [promise]="readyPromise" (callback)="updateItems()">
           <ng-template #onLoaded>
             <ng-container *ngFor="let shop of items | array">
               <p class="container__title shop__name">{{ shop.key }}</p>
@@ -63,7 +61,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <div class="help__wrapper">
+      <div class="help__wrapper ion-padding">
         <p class="help__explain">
           Чтобы посмотреть подробности товара, смахните его влево, а чтобы удалить, смахните вправо
         </p>

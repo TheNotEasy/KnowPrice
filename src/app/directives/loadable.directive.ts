@@ -1,4 +1,4 @@
-import { ComponentRef, Directive, Input, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ComponentRef, Directive, EventEmitter, Input, Output, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ErrorComponent } from '../error/error.component';
 import { IonModal, LoadingController } from '@ionic/angular';
 
@@ -8,7 +8,7 @@ import { IonModal, LoadingController } from '@ionic/angular';
 export class LoadableDirective {
   @Input() appLoadable!: TemplateRef<any>;
   @Input('promise') readyPromise: Promise<any> | undefined;
-  @Input('callback') callback!: (() => void) | null;
+  @Output('callback') callback = new EventEmitter();
   @Input() modal: IonModal | null = null;
 
   errorComponentRef: ComponentRef<ErrorComponent> | null = null;

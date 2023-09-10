@@ -57,7 +57,7 @@ export class Tab1Page {
 
     const promises: Promise<any>[] = [];
     for (const tagIndex of this.Range(this.tagsList.length)) {
-      let promise = this.api.makeRequest(RequestMethod.POST, RequestTarget.SEARCH, {
+      let promise = this.api.makeRequest(RequestMethod.POST, RequestTarget.SEARCH_ITEM, {
         extraUrl: `${['item', 'shop'][this.currentChoice]}`,
         doRaise: true,
         body: {"tag": this.tagsList[tagIndex]}

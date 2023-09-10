@@ -1,18 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-error',
   templateUrl: './error.component.html',
   styleUrls: ['./error.component.scss'],
 })
-export class ErrorComponent implements OnInit {
-  @Input() callback: (() => any) | null = null;
+export class ErrorComponent {
+  @Output('callback') callback = new EventEmitter();
 
   constructor() { }
-
-  ngOnInit() {
-    if (!this.callback) {
-      this.callback = () => {}
-    }
-  }
 }

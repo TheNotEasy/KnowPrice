@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { InputCustomEvent, IonInput } from '@ionic/angular';
+import { ApiService, RequestMethod, RequestTarget } from '../api.service';
+import { BehaviorSubject } from 'rxjs';
+import { ItemData } from '../target.types';
 
 @Component({
   selector: 'app-search',
@@ -6,10 +10,42 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPage implements OnInit {
+  @ViewChild("searchbar") searchbar!: IonInput
 
-  constructor() { }
+  public inSearch = new BehaviorSubject(false);
+  public searchPromise!: Promise<any>
+  public searchResults!: ItemData[]
+  public searchQuery!: string
+
+  constructor(
+    private api: ApiService
+  ) { }
 
   ngOnInit() {
   }
 
+  async search(query?: string) {
+    if (!query) {
+      query = this.searchbar.value?.toString() as string
+    } else {
+      this.searchbar.value = query
+    }
+    if (query === '') return
+
+    this.searchQuery = query
+
+    this.inSearch.next(true)
+
+    const searchPromise = this.api.makeRequest(RequestMethod.POST, RequestTarget.SEARCH_ITEM, {
+      body: {
+        'tag': query
+      },
+      doRaise: true,
+    })
+
+    this.searchPromise = searchPromise
+
+    const resp = await searchPromise
+    this.searchResults = resp.data
+  }
 }

@@ -4,6 +4,7 @@ import { LanguageService } from '../language.service';
 import { ApiService } from '../api.service';
 import { IonInput, IonModal } from '@ionic/angular';
 import { ApiResponse, Auth } from '../target.types';
+import { Router } from '@angular/router';
 
 let langInstance: LanguageService;
 
@@ -137,6 +138,7 @@ export class Tab3Page {
     public lang: LanguageService,
     private changeDetectorRef: ChangeDetectorRef,
     private api: ApiService,
+    private router: Router
   ) { langInstance = lang }
 
   ngOnInit() {}
@@ -208,6 +210,10 @@ export class Tab3Page {
     if (errors === 0) {
       loginNav.modal.native.dismiss()
       this.updateNavList()
+
+      if (this.inReg) {
+        this.router.navigate(['finish-reg'])
+      }
     }
 
     this.loginView.authenticating = false

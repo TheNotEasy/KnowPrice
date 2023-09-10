@@ -82,7 +82,10 @@ export class Tab2Page {
   }
 
   updateItems() {
-    this.readyPromise = this._updateItems()
+    const readyPromise = this._updateItems()
+    if (!this.readyPromise) {
+      this.readyPromise = readyPromise
+    }
   }
 
   getItemPriceSum() {

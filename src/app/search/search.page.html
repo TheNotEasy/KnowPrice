@@ -3,18 +3,36 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
     </ion-buttons>
-    <ion-input placeholder="Поиск" class="search-bar" clearInput />
+    <ion-input placeholder="Поиск" class="search-bar" clearInput #searchbar enterkeyhint="search" (keyup.enter)="search()" />
+    <ion-buttons slot="end">
+      <ion-button class="search-button" [disabled]="searchbar.value === ''" (click)="search()">
+        <ion-icon name="search" />
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-list *ngIf="!(inSearch | async)">
     <ion-list-header>
       <ion-label>Популярное</ion-label>
     </ion-list-header>
-    <ion-item [button]="true">
+    <ion-item [button]="true" (click)="search('asd')">
       <ion-icon name="search" slot="start" />
       asd
     </ion-item>
   </ion-list>
+  <ng-container [appLoadable]="main" [promise]="searchPromise" (callback)="search(searchQuery)"></ng-container>
+  <ng-template #main>
+    <ion-list class="ion-padding" *ngIf="inSearch | async">
+      <ion-list-header class="ion-no-padding">
+        <ion-label>Результаты</ion-label>
+      </ion-list-header>
+      <app-item *ngFor="let item of searchResults" [name]="item.name" [price]="item.price" [inStock]="item.in_stock" [sale]="item.sale" [id]="item.id" [shop]="item.shop" />
+      <ion-item *ngIf="searchResults.length === 0">
+        <ion-icon name="sad-outline" slot="start"></ion-icon>
+        <ion-label class="ion-text-wrap">Ничего не найдено, похоже в запросе есть опечатки, если они присутствуют, исправьте их</ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
 </ion-content>

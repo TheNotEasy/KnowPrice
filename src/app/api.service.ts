@@ -14,7 +14,8 @@ export enum RequestTarget {
   USER = 'user',
   LOGIN = 'auth/token/login',
   REG = 'auth/users',
-  SEARCH = 'find'
+  SEARCH_ITEM = 'find/item',
+  SEARCH_SHOP = 'find/shop',
 }
 
 export type RequestSettings<S = boolean> = {

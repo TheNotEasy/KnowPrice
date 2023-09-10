@@ -1,11 +1,6 @@
 .item {
-    width: 100%;
-
-    margin: auto;
-
-    &::part(native) {
-        padding-left: 0;
-    }
+    --padding-start: 0;
+    text-align: center;
 }
 
 img {
@@ -16,18 +11,20 @@ img {
 }
 
 .item__info {
+    text-align: center;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 10px;
+    
     display: flex;
     flex-direction: column;
-
     justify-content: space-around;
+}
 
-    height: 100%;
-    width: 100%;
-
-    margin: auto;
-    padding: 0 10px;
-
-    text-align: center;
+.item__name {
+    height: 40%;
 }
 
 ion-item::part(native) {
