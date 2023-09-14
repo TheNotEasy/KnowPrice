@@ -193,16 +193,29 @@ ul {
     flex-direction: column;
 }
 
-.list__title {
+.list__header {
+    display: flex;
+
     background-color: var(--ion-color-light);
     width: 100%;
 
     padding: 20px;
     padding-top: 25px;
-    font-size: 30px;
 
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    justify-content: space-between;
+}
+
+.list__title {
+    font-size: 20px;
+}
+
+.list__city {
+    cursor: pointer;
+
+    font-size: 15px;
+    --color: var(--ion-color-light);
 }
 
 .list__main {

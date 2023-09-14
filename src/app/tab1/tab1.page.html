@@ -15,7 +15,13 @@
 </ion-header>
 <ion-content [fullscreen]="true">
   <div class="ion-padding list">
-    <ion-label class="list__title">Твой город</ion-label>
+    <div class="list__header">
+      <ion-label class="list__title">Город</ion-label>
+      <ion-label class="list__city ion-text-wrap" color="primary" id="asd">
+        {{ global.selectedCity ? global.selectedCity : 'Выбрать город' }}
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-label>
+    </div>
     <div class="list__main">
       <ion-card class="list__card" [button]="true">
         <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" class="card__img" />
@@ -29,3 +35,20 @@
     </div>
   </div>
 </ion-content>
+
+<ion-modal trigger="asd" #modal>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button defaultHref="" (click)="modal.dismiss()"></ion-back-button>
+        </ion-buttons>
+
+        <ion-input placeholder="Поиск" class="search-bar" clearInput #searchbar enterkeyhint="search" (keyup.enter)="search()" />
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+
+    </ion-content>
+  </ng-template>
+</ion-modal>

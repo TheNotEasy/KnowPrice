@@ -9,6 +9,7 @@ import { SearchPageRoutingModule } from './search-routing.module';
 import { SearchPage } from './search.page';
 import { ItemComponentSharedModule } from '../shared/item.shared.module';
 import { LoadableDirectiveSharedModule } from '../shared/loadable.shared.module';
+import { SearchbarComponentSharedModule } from '../shared/searchbar.shared.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { LoadableDirectiveSharedModule } from '../shared/loadable.shared.module'
     SearchPageRoutingModule,
     ItemComponentSharedModule,
     LoadableDirectiveSharedModule,
+    SearchbarComponentSharedModule,
   ],
   declarations: [SearchPage]
 })

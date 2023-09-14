@@ -3,12 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
     </ion-buttons>
-    <ion-input placeholder="Поиск" class="search-bar" clearInput #searchbar enterkeyhint="search" (keyup.enter)="search()" />
-    <ion-buttons slot="end">
-      <ion-button class="search-button" [disabled]="searchbar.value === ''" (click)="search()">
-        <ion-icon name="search" />
-      </ion-button>
-    </ion-buttons>
+    <app-searchbar (onEnter)="search()"></app-searchbar>
   </ion-toolbar>
 </ion-header>
 

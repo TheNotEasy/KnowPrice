@@ -6,3 +6,19 @@
 .item__delete-checkbox {
     --border-color: var(--ion-color-danger-tint);
 }
+
+.delete-button {
+    height: 40%;
+    aspect-ratio: 1;
+
+    &::part(native) {
+        padding: 5px;
+    }
+}
+
+.buttons {
+    gap: 10px;
+
+    margin-top: 20px;
+    float: right;
+}

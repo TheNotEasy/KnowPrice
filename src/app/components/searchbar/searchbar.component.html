@@ -1,0 +1,7 @@
+<ion-input #searchbar
+           placeholder="Поиск" class="search-bar" clearInput enterkeyhint="search" (keyup.enter)="onEnter.emit($event)" />
+<ion-buttons slot="end">
+  <ion-button class="search-button" [disabled]="searchbar.value === ''" (click)="onEnter.emit($event)">
+    <ion-icon name="search" />
+  </ion-button>
+</ion-buttons>

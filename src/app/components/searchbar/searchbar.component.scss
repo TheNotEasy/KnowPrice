@@ -1,0 +1,19 @@
+.search-bar {
+    --background: var(--ion-color-light);
+
+    border-radius: 20px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+
+    --padding-start: 13px;
+}
+
+.search-button {
+    background-color: var(--ion-color-light);
+    border-radius: 20px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
+    height: 38px;
+    aspect-ratio: 1.2;
+}

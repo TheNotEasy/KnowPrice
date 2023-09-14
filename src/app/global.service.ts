@@ -19,7 +19,7 @@ export class GlobalService {
   public accountData: Record<string, string | null> = {'username': null}
   public apiHost: string = 'http://127.0.0.1:8000';
 
-  public tab2Visited: boolean = false;
+  public selectedCity: string | null = null
 
   private keysList: Array<string>
   public readyPromise: Promise<void>

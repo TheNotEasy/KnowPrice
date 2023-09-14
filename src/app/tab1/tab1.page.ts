@@ -4,6 +4,7 @@ import { ApiService, RequestMethod, RequestTarget } from '../api.service';
 import { LanguageService } from '../language.service';
 import { Item, ShopData } from '../target.types';
 import { IonInput, IonModal } from '@ionic/angular';
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-tab1',
@@ -30,7 +31,7 @@ export class Tab1Page {
   @ViewChild("tagInput")
   tagInput!: IonInput;
 
-  constructor(public api: ApiService, public lang: LanguageService) {
+  constructor(public api: ApiService, public lang: LanguageService, public global: GlobalService) {
     this.findChoices = [
       lang.getString(lang.itemsText),
       lang.getString(lang.shopsText),
