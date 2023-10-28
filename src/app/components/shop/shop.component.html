@@ -1,9 +1,9 @@
-<div class="shops__list-item" [routerLink]="['/shops/' + id]" #main>
-  <p class="shop__title">{{name}}</p>
-  <div class="shop__rating">
-    <p class="shop__rating-text">{{rating}}</p>
-    <div class="shop__rating-bar">
-      <div class="shop__rating-bar-fill"></div>
-    </div>
-  </div>
-</div>
+<ion-card class="list__card" [button]="true">
+  <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" class="card__img" />
+  <ion-card-header>
+    <ion-card-title>{{ name }}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-label><ion-icon name="star" /> {{ rating }}</ion-label>
+  </ion-card-content>
+</ion-card>

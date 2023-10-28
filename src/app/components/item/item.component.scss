@@ -4,8 +4,8 @@
 }
 
 img {
-    width: 100px;
-    height: 100px;
+    width: min(120px, 30vw);
+    height: min(120px, 30vw);
 
     background-color: var(--ion-color-light-tint);
 }
@@ -25,6 +25,11 @@ img {
 
 .item__name {
     height: 40%;
+    font-size: min(7vw, 40px);
+}
+
+.item__price {
+    font-size: min(6vw, 25px);
 }
 
 ion-item::part(native) {

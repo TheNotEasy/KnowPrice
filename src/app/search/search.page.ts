@@ -3,6 +3,7 @@ import { InputCustomEvent, IonInput } from '@ionic/angular';
 import { ApiService, RequestMethod, RequestTarget } from '../api.service';
 import { BehaviorSubject } from 'rxjs';
 import { ItemData } from '../target.types';
+import { SearchbarComponent } from '../components/searchbar/searchbar.component';
 
 @Component({
   selector: 'app-search',
@@ -10,7 +11,7 @@ import { ItemData } from '../target.types';
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPage implements OnInit {
-  @ViewChild("searchbar") searchbar!: IonInput
+  @ViewChild(SearchbarComponent) searchbar!: SearchbarComponent
 
   public inSearch = new BehaviorSubject(false);
   public searchPromise!: Promise<any>

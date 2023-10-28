@@ -20,7 +20,6 @@ export type Item = ItemData & {
 export type ShopData = {
     id: number
     name: string
-    address: string
     ratings: string
 }
 
@@ -38,6 +37,10 @@ export type Auth = {
     non_field_errors?: string[],
 }
 
+export type City = {
+    name: string
+}
+
 export interface RequestTargetTypesMap {
     'item': Item
     'shop': Shop
@@ -46,6 +49,8 @@ export interface RequestTargetTypesMap {
     'auth/users': Auth,
     'find/item': ItemData[],
     'find/shop': ShopData[],
+    'city/shops': ShopData[],
+    'city/list': City[],
 }
 
 export type ApiResponse<T = any, S = boolean> = {

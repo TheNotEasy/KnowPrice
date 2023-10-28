@@ -1,0 +1,22 @@
+<div class="ion-padding list">
+  <div class="list__header">
+    <ion-label class="list__title">{{ title }}</ion-label>
+    <ng-content></ng-content>
+  </div>
+  <div class="list__main">
+    <ng-container [appLoadable]="onLoad" [useLoadingModal]="false" [promise]="readyPromise" (callback)="callback.emit($event)">
+      <ng-template #onLoad>
+        <ng-container *ngIf="type === 0 && global.selectedCity === null; else shopsList">
+          <div class="list__select-city">
+            <ion-label>Укажите город в котором вы проживаете для показа магазинов</ion-label>
+            <ion-button routerLink="/city-picker">Выбрать город</ion-button>
+          </div>
+        </ng-container>
+        <ng-template #shopsList>
+          <app-shop *ngFor="let shop of shops" [id]="shop.id" [name]="shop.name" [rating]="shop.ratings" />
+        </ng-template>
+      </ng-template>
+    </ng-container>
+    
+  </div>
+</div>

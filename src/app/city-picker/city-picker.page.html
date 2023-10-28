@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+      <ion-title>Выбрать город</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="change($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="global.selectedCity">
+    <ion-list-header>
+      <ion-label>Выбрано</ion-label>
+    </ion-list-header>
+    <ion-item>
+      {{ global.selectedCity }}
+
+      <ion-button fill="clear" slot="end" color="danger" id="unpick-alert"><ion-icon name="close"></ion-icon></ion-button>
+    </ion-item>
+  </ion-list>
+  <ng-container [appLoadable]="onLoaded" [promise]="readyPromise" (callback)="search($any(searchbar.value))" [useLoadingModal]="false">
+    <ng-template #onLoaded>
+      <ion-list>
+        <ion-list-header>
+          Поиск
+        </ion-list-header>
+        <ng-container *ngFor="let city of suggestions">
+          <ion-item *ngIf="city.name !== global.selectedCity" (click)="apply(city.name)" [button]="true">
+            {{ city.name }}
+          </ion-item>
+        </ng-container>
+      </ion-list>
+    </ng-template>
+  </ng-container>
+</ion-content>
+
+<ion-alert
+  trigger="unpick-alert"
+  header="Внимание"
+  message="Вы точно хотите удалить выбранный город?"
+  [buttons]="unpickAlertButtons"
+  (didDismiss)="unpick($event)"
+></ion-alert>

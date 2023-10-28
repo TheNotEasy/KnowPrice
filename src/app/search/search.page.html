@@ -23,10 +23,10 @@
       <ion-list-header class="ion-no-padding">
         <ion-label>Результаты</ion-label>
       </ion-list-header>
-      <app-item *ngFor="let item of searchResults" [name]="item.name" [price]="item.price" [inStock]="item.in_stock" [sale]="item.sale" [id]="item.id" [shop]="item.shop" />
+      <app-item *ngFor="let item of searchResults" [name]="item.name" [price]="item.price" [inStock]="item.in_stock" [sale]="item.sale" [id]="item.id" [shop]="item.shop" [image]="item.image" />
       <ion-item *ngIf="searchResults.length === 0">
         <ion-icon name="sad-outline" slot="start"></ion-icon>
-        <ion-label class="ion-text-wrap">Ничего не найдено, похоже в запросе есть опечатки, если они присутствуют, исправьте их</ion-label>
+        <ion-label class="ion-text-wrap">Ничего не найдено</ion-label>
       </ion-item>
     </ion-list>
   </ng-template>

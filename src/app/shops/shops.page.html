@@ -10,7 +10,6 @@
     <div *ngIf="readyPromise | async; else loading">
       <div class="container shop">
         <p class="shop__name">{{ data.name }}</p>
-        <p class="shop__address">Адрес: {{ data.address }}</p>
       </div>
       <div class="goods container">
         <div class="goods__list-categories">
@@ -23,6 +22,7 @@
                     [name]="item.name"
                     [price]="item.price" 
                     [imageAlt]="item.name"
+                    [image]="item.image"
                     [category]="item.category" 
                     [shop]="data" 
                     [sale]="item.sale"

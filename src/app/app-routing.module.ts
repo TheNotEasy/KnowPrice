@@ -42,6 +42,10 @@ const routes: Routes = [
     path: 'finish-reg',
     loadChildren: () => import('./finish-reg/finish-reg.module').then( m => m.FinishRegPageModule)
   },
+  {
+    path: 'city-picker',
+    loadChildren: () => import('./city-picker/city-picker.module').then( m => m.CityPickerPageModule)
+  },
 ];
 @NgModule({
   imports: [

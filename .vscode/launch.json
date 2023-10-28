@@ -1,38 +1,18 @@
 {
     "configurations": [
         {
-            "name": "Launch Chrome",
+            "name": "Launch localhost",
+            "type": "firefox",
             "request": "launch",
-            "type": "chrome",
-            "url": "http://localhost:8100",
-            "webRoot": "${workspaceFolder}",
-            "userDataDir": "Default",
-            "urlFilter": "http://localhost:8100/*",
+            "reAttach": true,
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}"
         },
         {
-            "name": "Python: Django",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/../YktInfoDjango/manage.py",
-            "args": [
-                "runserver",
-                "0.0.0.0:8000"
-            ],
-            "django": true,
-            "python": "${command:python.interpreterPath}",
-        },
-        {
-            "command": "ionic serve --external",
+            "command": "bun run start",
             "name": "Run ionic server",
             "request": "launch",
             "type": "node-terminal"
         },
     ],
-    "compounds": [
-        {
-            "name": "Run all",
-            "configurations": ["Run ionic server", "Python: Django"],
-            "stopAll": true,
-        }
-    ]
 }

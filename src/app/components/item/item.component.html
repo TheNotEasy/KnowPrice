@@ -1,7 +1,7 @@
 <ion-item #card [routerLink]="['/items', id]">
   <img alt="{{ imageAlt }}" src="{{ image }}" slot="start">
   <div class="item__info">
-    <ion-label>{{ name }}</ion-label>
-    <p>{{ price }} руб</p>
+    <ion-label class="item__name">{{ name }}</ion-label>
+    <p class="item__price">{{ price }} руб</p>
   </div>
 </ion-item>

@@ -16,6 +16,8 @@ export enum RequestTarget {
   REG = 'auth/users',
   SEARCH_ITEM = 'find/item',
   SEARCH_SHOP = 'find/shop',
+  CITY = 'city/shops',
+  CITY_LIST = 'city/list'
 }
 
 export type RequestSettings<S = boolean> = {
@@ -109,7 +111,7 @@ export class ApiService {
 
     await this.global.readyPromise
 
-    const url = `${this.apiUrl}/${target}/${extraUrl ? extraUrl + '/' : ''}`
+    const url = `${this.apiUrl}/${target}/${extraUrl ? extraUrl : ''}`
 
     const cacheKey = `${url}${normBody ? hash(normBody) : ''}`
     const cache = this.global.cache[cacheKey]

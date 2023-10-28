@@ -3,6 +3,7 @@ import { CheckboxCustomEvent, IonCheckbox, IonItem } from '@ionic/angular';
 import { CartService } from 'src/app/cart.service';
 import { GlobalService } from 'src/app/global.service';
 import { LanguageService } from 'src/app/language.service';
+import { Item } from 'src/app/target.types';
 
 export class ItemClass {
   constructor(
@@ -34,6 +35,9 @@ export class ItemComponent {
   @Input() sale: number = 0;
   @Input() inStock: boolean = true;
   @Input() checked!: boolean;
+
+  @Input() data!: Item;
+
   @Output() onChange = new EventEmitter();
 
   @ViewChild('card')
@@ -45,8 +49,12 @@ export class ItemComponent {
   @ViewChild('checkbox')
   checkbox!: IonCheckbox
   
-  constructor(public global: GlobalService, public lang: LanguageService, public cart: CartService) { }
-
+  constructor(public global: GlobalService, public lang: LanguageService, public cart: CartService) { 
+    if (this.data) {
+      Object.assign(this, this.data);  // FIXME: maybe XSS?
+    }
+  }
+  
   onClick(event: CheckboxCustomEvent) {
     if (this.onChange.observed) {
       this.onChange.emit(event)

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { IonInput } from '@ionic/angular';
 
 @Component({
   selector: 'app-searchbar',
@@ -7,6 +8,17 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class SearchbarComponent implements OnInit {
   @Output() onEnter = new EventEmitter();
+  @Output() onChange = new EventEmitter();
+
+  @ViewChild('searchbar') searchbar!: IonInput
+
+  get value() {
+    return this.searchbar.value as string
+  }
+
+  set value(val: string) {
+    this.searchbar.value = val;
+  }
 
   constructor() { }
 

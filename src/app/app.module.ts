@@ -11,10 +11,12 @@ import { LanguageService } from './language.service';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { ApiService } from './api.service';
 import { AccountBannerComponent } from './components/account-banner/account-banner.component';
+import { SearchbarComponentSharedModule } from './shared/searchbar.shared.module';
+import { SharedModalDirective } from './directives/sharedmodal.directive';
 
 @NgModule({
   declarations: [AppComponent, AccountBannerComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot()],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot(), SearchbarComponentSharedModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, GlobalService, LanguageService, ApiService],
   bootstrap: [AppComponent],
 })

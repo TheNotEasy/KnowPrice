@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { App } from '@capacitor/app';
 import { BackgroundTask } from '@capawesome/capacitor-background-task';
 import { GlobalService } from './global.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',

@@ -22,9 +22,9 @@ export class Tab1Page {
   currentChoice: number = 0;
   public searchResults: Item[][] = [];
 
-  public searchCallback: () => any = () => {this.search()}
-
   public tagsList: string[] = [];
+
+  public cityLentaShops: ShopData[] = [];
 
   public Range = (x: number) => {return Array.from(Array(x).keys())};
 
@@ -43,6 +43,25 @@ export class Tab1Page {
     ]
   }
 
+  async load() {
+    await this.global.readyPromise
+
+    this.cityLentaShops = []
+
+    if (!this.global.selectedCity) return
+
+    const resp = await this.api.makeRequest(RequestMethod.GET, RequestTarget.CITY, {
+      extraUrl: `?search=${this.global.selectedCity}`,
+      doRaise: true
+    })
+    
+    this.cityLentaShops = resp.data
+  }
+
+  ngOnInit() {
+    this.readyPromise = this.load()
+  }
+
   addTag(input: IonInput) {
     if (input.value === '') {
       return
@@ -50,27 +69,5 @@ export class Tab1Page {
 
     this.tagsList.push(this.tagInput.value as any);
     this.tagInput.value = '';
-  }
-
-  async search() {
-    this.isLoadingFailed = false;
-    this.searchResults = [];
-
-    const promises: Promise<any>[] = [];
-    for (const tagIndex of this.Range(this.tagsList.length)) {
-      let promise = this.api.makeRequest(RequestMethod.POST, RequestTarget.SEARCH_ITEM, {
-        extraUrl: `${['item', 'shop'][this.currentChoice]}`,
-        doRaise: true,
-        body: {"tag": this.tagsList[tagIndex]}
-      });
-      promises.push(promise)
-      promise.then((response) => {
-        this.searchResults.push(response.data as Item[])
-      })
-    }
-    this.readyPromise = Promise.all(promises)
-    this.readyPromise.then(() => {
-      console.log(this.searchResults)
-    })
   }
 }
