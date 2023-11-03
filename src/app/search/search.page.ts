@@ -25,22 +25,15 @@ export class SearchPage implements OnInit {
   ngOnInit() {
   }
 
-  async search(query?: string) {
-    if (!query) {
-      query = this.searchbar.value?.toString() as string
-    } else {
-      this.searchbar.value = query
-    }
+  async search(query: string) {
     if (query === '') return
 
     this.searchQuery = query
 
     this.inSearch.next(true)
 
-    const searchPromise = this.api.makeRequest(RequestMethod.POST, RequestTarget.SEARCH_ITEM, {
-      body: {
-        'tag': query
-      },
+    const searchPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SEARCH_ITEM, {
+      extraUrl: `?search=${query}`,
       doRaise: true,
     })
 

@@ -9,6 +9,7 @@ import { ShopsPageRoutingModule } from './shops-routing.module';
 import { ShopsPage } from './shops.page';
 import { ItemComponentSharedModule } from '../shared/item.shared.module';
 import { ErrorComponentSharedModule } from '../shared/error.shared.module';
+import { LoadableDirectiveSharedModule } from '../shared/loadable.shared.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ErrorComponentSharedModule } from '../shared/error.shared.module';
     ShopsPageRoutingModule,
     ItemComponentSharedModule,
     ErrorComponentSharedModule,
+    LoadableDirectiveSharedModule,
   ],
   declarations: [
     ShopsPage,

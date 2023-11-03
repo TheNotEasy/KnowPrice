@@ -29,9 +29,14 @@ type ResponseData = {
 
 export class ShopsPage implements OnInit {
   public data!: Shop
+  public id!: string
+  public loaded = false
+
+  public type = "category"
+
+  public title: string = ""
 
   public readyPromise!: Promise<any>
-  public isLoadingFailed: boolean = false
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -45,88 +50,23 @@ export class ShopsPage implements OnInit {
   @ViewChildren(ItemComponent) public items!: QueryList<ItemComponent>
 
   ngOnInit() {
-    const rawId = this.activatedRoute.snapshot.paramMap.get('id')
-    if (rawId === null) {throw Error("got null on rawId")}
-    this.readyPromise = this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP, {extraUrl: rawId})
-    this.readyPromise.then((response) => {
-      this.data = response.data
-    })
+    this.id = this.activatedRoute.snapshot.paramMap.get('id') as string
+    this.load()
   }
 
-  ngAfterViewInit() {
-    let selected: HTMLElement | null = null
-    let index = 0
-    const categories = document.querySelectorAll('.goods__category')
-    const selectedInterval = setInterval(() => {
-      let el = categories[index]
-
-      if (selected) {
-        selected.classList.remove('selected')
-      }
-      el.classList.add('selected')
-      selected = el as HTMLElement
-
-      if (index === 3) {
-        index = 0
-        return
-      }
-      index++
-    }, 300)
-
-    this.readyPromise.then(() => {
-      clearInterval(selectedInterval)
-      categories.forEach((el) => {
-        el.classList.remove('selected')
-      })
-      setTimeout(() => {
-        const categories = document.querySelectorAll('.goods__category')
-        categories[0].classList.add('selected')
-        let selectedCategory = document.getElementsByClassName('selected')[0]
-
-        categories.forEach(el => {
-          el.addEventListener('click', () => {
-            if (el === selectedCategory) {
-              return
-            }
-
-            selectedCategory.classList.remove('selected')
-            el.classList.add('selected')
-            selectedCategory = el
-
-            const category = el.textContent
-            if (category === null) {return}
-
-            const id = this.data?.categories.indexOf(category)
-            if (id === undefined) {return}
-
-            this.categoryChanged(id)
-          })
-        })
-
-        const itemsGroups = document.querySelectorAll('.goods__list')
-        itemsGroups[0].classList.add('selected')
-
-        this.categoryChanged(0)
-      }, 1)
-    }, () => {
-      this.isLoadingFailed = true
-    })
+  load() {
+    this.readyPromise = this._load()
   }
 
-  async fetchShopData(id: string) {
-    // let data = fetch("")
-    console.log('asd')
-    return await this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP, {extraUrl: id})
-  }
+  private async _load() {
+    const resp = await this.api.makeRequest(RequestMethod.GET, RequestTarget.SHOP, {
+      extraUrl: this.id,
+      doRaise: true,
+    });
+    this.data = resp.data;
+    this.title = this.data.name;
 
-  categoryChanged(id: number) {
-    console.log(id)
-    this.items.forEach(item => {
-      let parent = item.element.el.parentElement
-      if (parent === null) {
-        throw Error("Item component 'card' elementref has no got parent")
-      }
-      parent.hidden = item.category !== id
-    })
+    this.loaded = true;
+    return true;
   }
 }

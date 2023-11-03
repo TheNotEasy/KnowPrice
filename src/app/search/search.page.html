@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
     </ion-buttons>
-    <app-searchbar (onEnter)="search()"></app-searchbar>
+    <ion-searchbar (ionChange)="search($any($event.detail.value))"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 

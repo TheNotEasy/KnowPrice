@@ -1,24 +1,28 @@
-.cross {
-    color: var(--theme-secondary-color);
-    text-decoration: line-through;
-}
+// .cross {
+//     color: var(--theme-secondary-color);
+//     text-decoration: line-through;
+// }
 
-.item__delete-checkbox {
-    --border-color: var(--ion-color-danger-tint);
-}
+// .item__delete-checkbox {
+//     --border-color: var(--ion-color-danger-tint);
+// }
 
-.delete-button {
-    height: 40%;
-    aspect-ratio: 1;
+// .delete-button {
+//     height: 40%;
+//     aspect-ratio: 1;
 
-    &::part(native) {
-        padding: 5px;
-    }
-}
+//     &::part(native) {
+//         padding: 5px;
+//     }
+// }
 
-.buttons {
-    gap: 10px;
+// .buttons {
+//     gap: 10px;
 
-    margin-top: 20px;
-    float: right;
+//     margin-top: 20px;
+//     float: right;
+// }
+
+.item__price {
+    font-size: 15px;
 }

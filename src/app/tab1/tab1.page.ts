@@ -43,7 +43,7 @@ export class Tab1Page {
     ]
   }
 
-  async load() {
+  private async _load() {
     await this.global.readyPromise
 
     this.cityLentaShops = []
@@ -58,8 +58,12 @@ export class Tab1Page {
     this.cityLentaShops = resp.data
   }
 
+  load() {
+    this.readyPromise = this._load();
+  }
+
   ngOnInit() {
-    this.readyPromise = this.load()
+    this.load();
   }
 
   addTag(input: IonInput) {

@@ -43,6 +43,7 @@ export type City = {
 
 export interface RequestTargetTypesMap {
     'item': Item
+    'item-data': ItemData
     'shop': Shop
     'shop-data': ShopData,
     'auth/token/login': Auth,

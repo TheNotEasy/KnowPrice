@@ -3,58 +3,27 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
     </ion-buttons>
+    <ion-title [innerText]="title" />
+  </ion-toolbar>
+  <ion-toolbar *ngIf="loaded">
+    <ion-segment scrollable [(ngModel)]="type" [value]="data.categories[0]">
+      <ion-segment-button [value]="category" *ngFor="let category of data.categories">
+        <ion-label [innerText]="category"></ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div class="wrapper" #content>
-    <div *ngIf="readyPromise | async; else loading">
-      <div class="container shop">
-        <p class="shop__name">{{ data.name }}</p>
-      </div>
-      <div class="goods container">
-        <div class="goods__list-categories">
-          <ng-container *ngFor="let category of data?.categories">
-            <p class="goods__category">{{ category }}</p>
-          </ng-container>
-        </div>
-        <ion-list class="goods__list">
-          <app-item [id]="item.id"
-                    [name]="item.name"
-                    [price]="item.price" 
-                    [imageAlt]="item.name"
-                    [image]="item.image"
-                    [category]="item.category" 
-                    [shop]="data" 
-                    [sale]="item.sale"
-                    [inStock]="item.in_stock"
-                    *ngFor="let item of data?.item_set">
-          </app-item>
-        </ion-list>
-      </div>
+  <ng-container [appLoadable]="main" [promise]="readyPromise" (callback)="load()"></ng-container>
+  <ng-template #main>
+    <div [ngSwitch]="type" class="wrapper">
+      <ion-row class="item__row">
+        <ng-container *ngFor="let item of data.item_set">
+          <ion-item>
+            <app-item [data]="item" *ngSwitchCase="data.categories[item.category]" [shop]="data"></app-item>
+          </ion-item>
+        </ng-container>
+      </ion-row>
     </div>
-    <ng-template #loading>
-      <ng-container *ngIf="!isLoadingFailed; else loadingFailed">
-        <style>
-          .wrapper {
-            gap: 0
-          }
-        </style>
-        <div class="container shop">
-          <div class="shop__name loading__layer-1" style="width: 200px; height: 35px;"></div>
-          <div class="shop__address loading__layer-1" style="width: 100px; height: 25px;"></div>
-        </div>
-        <div class="goods container">
-          <div class="goods__list-categories" style="width: 100%">
-            <div class="goods__category loading__layer-1" style="width: 70px; height: 30px;" *ngFor="let _ of [1, 1, 1, 1]"></div>
-          </div>
-          <div class="goods__list" style="outline: 2px solid var(--ion-color-light); height: 200px; border-radius: 10px;">
-            <ion-spinner style="margin: auto;" name="crescent"></ion-spinner>
-          </div>
-        </div>
-      </ng-container>
-    </ng-template>
-    <ng-template #loadingFailed>
-      <app-error></app-error>
-    </ng-template>
-  </div>
+  </ng-template>
 </ion-content>

@@ -6,9 +6,13 @@ import * as hash from 'object-hash';
 export enum RequestMethod {
   GET = 'get',
   POST = 'post',
+  PUT = 'put',
+  DELETE = 'delete',
+  PATCH = 'patch',
 }
 export enum RequestTarget {
   ITEM = 'item',
+  ITEMDATA = 'item-data',
   SHOP = 'shop',
   SHOPDATA = 'shop-data',
   USER = 'user',
@@ -27,6 +31,7 @@ export type RequestSettings<S = boolean> = {
   headers?: Record<any, any>;
   makeCache?: boolean;
   doRaise?: boolean | S;
+  query?: Record<any, any>;
 }
 
 export class ResponseRef {
@@ -97,11 +102,24 @@ export class ApiService {
 
     return normBody
   }
+  
+  private parseQuery(query: Record<any, any>): string {
+    if (Object.keys(query).length === 0) {
+      return ''
+    }
+
+    const queryStr = Object.keys(query)
+      .map(key => `${key}=${query[key]}`)
+      .join('&')
+    
+
+    return '?' + queryStr
+  }
 
   async makeRequest<K extends keyof RequestTargetTypesMap, S = boolean>
     (method: RequestMethod, target: K | RequestTarget,
       {
-        extraUrl = '', body = {}, form, headers = {}, makeCache = true, doRaise = false
+        extraUrl = '', body = {}, form, headers = {}, makeCache = true, doRaise = true, query = {},
       }: RequestSettings<S> = {}): Promise<ApiResponse<RequestTargetTypesMap[K], S>> {
 
     let normBody = undefined
@@ -111,23 +129,23 @@ export class ApiService {
 
     await this.global.readyPromise
 
-    const url = `${this.apiUrl}/${target}/${extraUrl ? extraUrl : ''}`
+    const url = `${this.apiUrl}/${target}/${extraUrl ? extraUrl : ''}${this.parseQuery(query)}`
 
     const cacheKey = `${url}${normBody ? hash(normBody) : ''}`
     const cache = this.global.cache[cacheKey]
     if (cache !== undefined) { return cache }
 
-    const finalHeaders: Record<string, string> = await this.constructHeaders(headers, method, normBody);
+    headers = await this.constructHeaders(headers, method, normBody);
 
-    const requestOptions: Record<string, any> = { method: method, headers: finalHeaders }
+    const options: Record<string, any> = { method: method, headers: headers }
     if (body)
-      requestOptions['body'] = normBody
+      options['body'] = normBody
 
-    const response = await (await fetch(url, requestOptions))
+    const response = await (await fetch(url, options))
     const json = response.status < 500 ? await response.json() : undefined
 
     if (doRaise && !response.ok) {
-      throw Error('Got error from server')
+      throw new TypeError('Got error from server')
     }
 
     const parsedResponse: Record<any, any> | ApiResponse = {

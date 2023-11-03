@@ -49,25 +49,11 @@ export class ItemComponent {
   @ViewChild('checkbox')
   checkbox!: IonCheckbox
   
-  constructor(public global: GlobalService, public lang: LanguageService, public cart: CartService) { 
+  constructor(public global: GlobalService, public lang: LanguageService, public cart: CartService) {}
+
+  ngOnInit() {
     if (this.data) {
-      Object.assign(this, this.data);  // FIXME: maybe XSS?
+      Object.assign(this, this.data);  // FIXME: Possible XSS?
     }
-  }
-  
-  onClick(event: CheckboxCustomEvent) {
-    if (this.onChange.observed) {
-      this.onChange.emit(event)
-      return
-    }
-    if (event.detail.checked) {
-      this.cart.addItem(
-        new ItemClass(this.id, this.name, this.image, this.imageAlt, this.price, this.shop)
-      )
-    } else {
-      this.cart.removeItem(this.id)
-    }
-    
-    this.global.commit()
   }
 }

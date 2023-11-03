@@ -16,6 +16,8 @@ export class ItemPage implements OnInit {
   data!: Item;
   inCart: boolean = false
 
+  id!: string
+
   public isLoadingFailed = false
 
   constructor(
@@ -26,10 +28,7 @@ export class ItemPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    const rawId = (this.activatedRoute.snapshot.paramMap.get('id') as string)
-    this.readyPromise = this.api.makeRequest(
-      RequestMethod.GET, RequestTarget.ITEM, {extraUrl: rawId, doRaise: true}
-    )
+    this.id = this.activatedRoute.snapshot.paramMap.get('id') as string
     this.readyPromise.then((resp) => {
       this.data = resp.data
       this.inCart = this.cart.includes(this.data.id)
@@ -38,6 +37,12 @@ export class ItemPage implements OnInit {
 
   renderMD() {
     this.data.markdown = marked.parse(this.data.markdown)
+  }
+
+  private async _load() {
+    await this.api.makeRequest(
+      RequestMethod.GET, RequestTarget.ITEM, {extraUrl: this.id, doRaise: true}
+    )
   }
 
   cartAction() {

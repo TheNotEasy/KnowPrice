@@ -6,7 +6,9 @@
             "request": "launch",
             "reAttach": true,
             "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}"
+            "webRoot": "${workspaceFolder}",
+            "firefoxExecutable": "/opt/firefox-dev/firefox",
+            "profileDir": "/home/noteasy/.mozilla/firefox/9z8u1j59.dev-edition-default-1",
         },
         {
             "command": "bun run start",
