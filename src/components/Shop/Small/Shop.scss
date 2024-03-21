@@ -1,0 +1,35 @@
+.shop {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shop img {
+  width: 200px;
+  height: 110px;
+
+  background-color: var(--app-color-image);
+  border-radius: 10px;
+}
+
+.shop__name {
+  font-size: 16px;
+}
+
+.shop__footer {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 0 10px;
+}
+
+.shop__rating {
+  display: flex;
+  gap: 3px;
+
+  color: var(--app-color-note);
+}
+
+.shop__rating svg {
+  font-size: 16px;
+}

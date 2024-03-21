@@ -1,0 +1,47 @@
+.collection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.collection__header {
+  align-items: center;
+}
+
+.collection__header, .collection__header nav {
+  display: flex;
+  gap: 15px;
+}
+
+.collection__header nav svg {
+  font-size: 19px;
+}
+
+.collection__title {
+  font-size: 19px;
+}
+
+.collection__list-inner {
+  display: flex;
+  gap: 15px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  position: absolute;
+  left: -30px;  // Todo: If I want to change side padding? Probably gonna do variables but ehhh...
+
+  padding: 0 30px;
+
+  max-width: 100vw;
+}
+
+.collection__list {
+  position: relative;
+
+  height: 140px;
+}
+
+.collection__list-inner::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,17 @@
+.toolbar {
+  width: 100%;
+  padding: 20px 30px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toolbar__title {
+  font-size: 20px;
+}
+
+.toolbar__nav {
+  display: flex;
+  gap: 10px;
+}

@@ -1,0 +1,17 @@
+.item-pack {
+  display: flex;
+  flex-direction: column;
+
+  gap: 40px;
+}
+
+.pack__title {
+  font-size: 32px;
+
+  margin: 0 auto;
+}
+
+.pack__items {
+  display: flex;
+  width: 100%;
+}

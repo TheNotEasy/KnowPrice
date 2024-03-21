@@ -1,0 +1,38 @@
+body {
+  background: var(--app-color-background);
+  color: var(--app-color-background-contrast);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+
+  padding: 30px 30px 100px;
+
+  width: 100%;
+  flex: 1 0 auto;
+
+  overflow: hidden;
+
+  flex-direction: column;
+
+  box-sizing: border-box;
+
+  gap: 50px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+
+  overflow: hidden;
+}

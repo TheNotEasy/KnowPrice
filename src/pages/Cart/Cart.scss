@@ -1,0 +1,104 @@
+// Maybe transfer more rerenders into css?
+
+.cart-wrapper {
+  position: relative;
+}
+
+.cart-wrapper.deletemode {
+  .item {
+    animation: 0.2s ease-out deleteMode;
+    outline: var(--app-color-primary) dotted 2px;
+
+    &:has(.checkbox__native[checked]) {  // item is checked in delete mode
+      filter: drop-shadow(0 0 1.2rem var(--app-color-primary));
+      outline-style: solid;
+      background: var(--app-color-primary);
+
+      & .item__price {
+        color: white;
+      }
+
+      & .checkbox-wrapper {
+        background: inherit;
+      }
+    }
+  }
+
+  &:has(.delete-button:active) .item:has(.checkbox__native[checked]) {
+    --all-transition-duration: 3s;
+    background: white;
+    outline-color: white;
+    filter: drop-shadow(0 0 0.1rem white);
+  }
+
+  padding-bottom: 90px;  // adding padding-bottom in delete mode cuz delete button overlaps items
+}
+
+.item {
+  --all-transition-duration: 0.2s;
+  transition:
+          filter var(--all-transition-duration),
+          outline var(--all-transition-duration),
+          background-color var(--all-transition-duration);
+}
+
+@keyframes deleteMode {
+  from {
+    outline: var(--app-color-medium) solid 2px;
+  }
+
+  to {
+    outline: var(--app-color-primary) dotted 2px;
+  }
+}
+
+.cart__footer button {
+  margin: 0 auto;
+
+  height: 50px;
+  width: 80vw;
+
+  color: white;
+  border: none;
+
+  border-radius: 10px;
+
+  font-size: 20px;
+  transition: background-color 0.2s;
+
+  user-select: none;
+
+  &:disabled {
+    filter: brightness(0.5);
+  }
+}
+
+.delete-button {
+  background: var(--app-color-primary);
+
+  &:enabled:active {
+    transition: background-color 2s;
+    background: white;
+  }
+}
+
+.end-button {
+  background: var(--app-color-safe);
+
+  &:active {
+    background: var(--app-color-safe-tint);
+  }
+}
+
+.cart__footer {
+  position: fixed;
+  bottom: 90px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  width: 100vw;
+
+  text-align: center;
+}
